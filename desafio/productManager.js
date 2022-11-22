@@ -61,8 +61,7 @@ class ProductManager{
         // return nID
 
         const cont = this.products.length
-        const nID = (cont > 0) ? ProductManager.#idGeneral + 1 : ProductManager.#idGeneral 
-        console.log(nID);
+        
         return (cont > 0) ? ProductManager.#idGeneral++ : ProductManager.#idGeneral
 
     }
