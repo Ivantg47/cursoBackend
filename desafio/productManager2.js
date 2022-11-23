@@ -144,13 +144,13 @@ class ProductManager{
                 console.log('encontro');
                 this.products = productos.filter((prod) => prod.id != id)
                 //console.log(filtro);
-                // fs.promises.writeFile(this.path, JSON.stringify(filtro))
-                //                         .then(() => {
-                //                             console.log('Producto eliminado');
-                //                         })
-                //                         .catch(e => {
-                //                             console.log('error', e);
-                //                     })
+                fs.promises.writeFile(this.path, JSON.stringify(filtro))
+                                        .then(() => {
+                                            console.log('Producto eliminado');
+                                        })
+                                        .catch(e => {
+                                            console.log('error', e);
+                                    })
             } else {
                 console.log('Not found');
             }          
@@ -165,17 +165,19 @@ class ProductManager{
 
 let producto = new ProductManager
 
-producto.addProduct("pc", "computador", 10000, "Sin imagen", "001", 3)
-producto.addProduct("tableta", "computador", 5000, "Sin imagen", "002", 5)
-producto.addProduct()
-producto.addProduct("ps5")
-producto.addProduct("ps5", "juego")
-producto.addProduct("ps5", "juego", 15000) 
-producto.addProduct("ps5", "juego", 15000, "", "001")
-producto.addProduct("ps4", "juego", 7000, "", "003")
-producto.addProduct("ps5", "juego", 15000, "", "004", -10)
-producto.addProduct("ps5", "juego", 15000, "", "004", '10')
-producto.addProduct("ps5", "juego", 15000, "", "004", 10)
+// producto.addProduct("pc", "computador", 10000, "Sin imagen", "001", 3)
+// producto.addProduct("tableta", "computador", 5000, "Sin imagen", "002", 5)
+// producto.addProduct("ps4", "juego", 7000, "", "003")
+// producto.addProduct("ps5", "juego", 15000, "", "004", 10)
+
+// producto.addProduct()
+// producto.addProduct("ps5")
+// producto.addProduct("ps5", "juego")
+// producto.addProduct("ps5", "juego", 15000) 
+// producto.addProduct("ps5", "juego", 15000, "", "001")
+// producto.addProduct("ps5", "juego", 15000, "", "004", -10)
+// producto.addProduct("ps5", "juego", 15000, "", "004", '10')
+
 
 //producto.getProducts()
 //console.log(producto.getProductById(2));
