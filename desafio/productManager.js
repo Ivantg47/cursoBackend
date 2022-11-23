@@ -71,8 +71,8 @@ class ProductManager{
         const prod = this.products.find(product => { 
             return product.id === id
         })
-
-        console.log((typeof(prod) === "undefined") ? "Not found" : prod);
+        return (typeof(prod) === "undefined") ? "Not found" : prod
+        //console.log((typeof(prod) === "undefined") ? "Not found" : prod);
     }
 
 }
@@ -84,13 +84,14 @@ producto.addProduct("tableta", "computador", 5000, "Sin imagen", "002", 5)
 // producto.addProduct()
 // producto.addProduct("ps5")
 // producto.addProduct("ps5", "juego")
-producto.addProduct("ps5", "juego", 15000) 
-producto.addProduct("ps5", "juego", 15000, "", "001")
-producto.addProduct("ps4", "juego", 7000, "", "003")
+// producto.addProduct("ps5", "juego", 15000) 
+// producto.addProduct("ps5", "juego", 15000, "", "001")
+// producto.addProduct("ps4", "juego", 7000, "", "003")
 // producto.addProduct("ps5", "juego", 15000, "", "004", -10)
 // producto.addProduct("ps5", "juego", 15000, "", "004", '10')
 // producto.addProduct("ps5", "juego", 15000, "", "004", 10)
 
 // console.log(producto.getProducts());
 producto.getProductById(10)
-producto.getProductById(3)
+producto.getProductById(2)
+console.log(producto.getProductById(2));

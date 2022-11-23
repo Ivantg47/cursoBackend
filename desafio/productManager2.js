@@ -5,8 +5,8 @@ class ProductManager{
     //static #idGeneral = 1
 
     constructor(){
-        this.products = []
         this.path = 'producto.json'
+        this.products = [] //JSON.parse(fs.readFileSync(this.path, 'utf-8'))    
     }
 
     addProduct = (title = '', description  = '', price = 0, thumbnail  = '', code  = '', stock  = 0) => {
@@ -17,9 +17,7 @@ class ProductManager{
                     if (thumbnail.trim().length === 0){
                         thumbnail = 'Sin imagen'
                     }                   
-                    if (code.trim().length != 0 && typeof(this.products.find(product => { 
-                                                            return product.code === code
-                                                            })) === "undefined") {
+                    if (code.trim().length != 0 && this.validateCode(code)) {
                         if(Number.isInteger(stock) && stock >= 0){
                             const product = {
 
@@ -32,20 +30,12 @@ class ProductManager{
                                 stock
                 
                             }
-                            
-                            // fs.promises.appendFile(this.path, ',' + JSON.stringify(product))
-                            //     .then(() => {
-                            //         console.log('BD salvado');
-                            //     })
-                            //     .catch(e => {
-                            //         console.log('error', e);
-                            //     })
                     
                             this.products.push(product)
 
                             fs.promises.writeFile(this.path, JSON.stringify(this.products))
                                 .then(() => {
-                                    console.log('BD salvado');
+                                    console.log('Producto guardado');
                                 })
                                 .catch(e => {
                                     console.log('error', e);
@@ -74,21 +64,15 @@ class ProductManager{
 
     getProducts = () => {
 
-        const pro =fs.promises.readFile(this.path, 'utf-8')
-            .then(contenido => {
-                console.log(contenido);
-                // const prod = JSON.parse(contenido)
-                // console.log('PARSE: ', prod);
-                JSON.parse(contenido)   
-            })
-            .catch(e => {
-                console.log('error', e);
-            })
-
-        // const prod = fs.readFileSync(this.path, 'utf-8')
-        // console.log(prod);
-        // console.log(JSON.parse(prod));
-        return pro
+        try {
+            const contenido = fs.readFileSync(this.path, 'utf-8')
+            // this.products = JSON.parse(contenido)
+            // return this.products
+            return JSON.parse(contenido)
+        } catch (e) {
+            console.error('error', e);
+        }
+       
     }
 
     getId = () => {
@@ -103,41 +87,149 @@ class ProductManager{
 
     }
 
+    validateCode = (code) => {
+        return typeof(this.products.find(product => { 
+            return product.code === code
+            })) === "undefined" //false: en uso -- true: libre
+    }
+
     getProductById = (id) => {
         
-        const prod = this.products.find(product => { 
+        const prod = this.getProducts().find(product => { 
             return product.id === id
         })
 
-        console.log((typeof(prod) === "undefined") ? "Not found" : prod);
+        return (typeof(prod) === "undefined") ? "Not found" : prod
+        
     }
 
-    // updateProduct = (id) => {
+    updateProduct = (newProd) => {
 
-    // }
+        try{   
+             this.products = this.getProducts()
 
-    // deleteProduct = (id) => {
+            const i = this.products.map(uProd => uProd.id).indexOf(newProd.id) 
+            if(i != -1){
+                const g = (this.validateCode(newProd.code) && i != this.products.map(uProd => uProd.code).indexOf(newProd.code))
+                const h = (i === this.products.map(uProd => uProd.code).indexOf(newProd.code))
+                //console.log(`val: ${g} ver: ${h}  if: ${(g || h)}  code: 002 n: ${newProd.code}`);
+                if((h || g)){
+                    
+                    this.products[i] = newProd
+                    fs.promises.writeFile(this.path, JSON.stringify(this.products))
+                                            .then(() => {
+                                                console.log('Producto actualizado');
+                                            })
+                                            .catch(e => {
+                                                console.log('error', e);
+                                        })
+                } else {
+                    console.log('Codigo en uso');
+                }
+            } else {
+                console.log('Not found');
+            }
+        }  catch(e) {
+            console.error('error', e);
+        }      
+    }
+
+    deleteProduct = (id) => {
+
+        try{
+            
+            const productos = this.getProducts()
+            
+            if (typeof this.getProductById(id) !== "string") {
+                console.log('encontro');
+                this.products = productos.filter((prod) => prod.id != id)
+                //console.log(filtro);
+                // fs.promises.writeFile(this.path, JSON.stringify(filtro))
+                //                         .then(() => {
+                //                             console.log('Producto eliminado');
+                //                         })
+                //                         .catch(e => {
+                //                             console.log('error', e);
+                //                     })
+            } else {
+                console.log('Not found');
+            }          
+
+        } catch(e) {
+            console.error('error', e);
+        }
         
-    // }
+    }
 
 }
 
 let producto = new ProductManager
 
-// producto.addProduct("pc", "computador", 10000, "Sin imagen", "001", 3)
-// producto.addProduct("tableta", "computador", 5000, "Sin imagen", "002", 5)
-// producto.addProduct()
-// producto.addProduct("ps5")
-// producto.addProduct("ps5", "juego")
-// producto.addProduct("ps5", "juego", 15000) 
-// producto.addProduct("ps5", "juego", 15000, "", "001")
-// producto.addProduct("ps4", "juego", 7000, "", "003")
-// producto.addProduct("ps5", "juego", 15000, "", "004", -10)
-// producto.addProduct("ps5", "juego", 15000, "", "004", '10')
-// producto.addProduct("ps5", "juego", 15000, "", "004", 10)
+producto.addProduct("pc", "computador", 10000, "Sin imagen", "001", 3)
+producto.addProduct("tableta", "computador", 5000, "Sin imagen", "002", 5)
+producto.addProduct()
+producto.addProduct("ps5")
+producto.addProduct("ps5", "juego")
+producto.addProduct("ps5", "juego", 15000) 
+producto.addProduct("ps5", "juego", 15000, "", "001")
+producto.addProduct("ps4", "juego", 7000, "", "003")
+producto.addProduct("ps5", "juego", 15000, "", "004", -10)
+producto.addProduct("ps5", "juego", 15000, "", "004", '10')
+producto.addProduct("ps5", "juego", 15000, "", "004", 10)
 
-producto.getProducts()
-console.log('--------------------------');
-console.log(producto.getProducts());
-// producto.getProductById(10)
-// producto.getProductById(3)
+//producto.getProducts()
+//console.log(producto.getProductById(2));
+//console.log('hola: ', producto.getProducts());
+//console.log('--------------------------');
+// console.log('hola: ', producto.getProducts());
+
+
+//producto.getProductById(2)
+// producto.updateProduct(2)
+//producto.deleteProduct(8)
+//producto.deleteProduct(2)
+//console.log('hola: ', producto.products);
+//console.log('hola: ', producto.getProductById(2));
+
+// let product = {
+
+//     id:2,
+//     title:"tableta",
+//     description:"computador",
+//     price:1000,
+//     thumbnail:"Sin imagen",
+//     code:"002",
+//     stock:7
+
+// }
+
+// let product2 = {
+
+//     id:2,
+//     title:"tableta",
+//     description:"computador",
+//     price:1000,
+//     thumbnail:"Sin imagen",
+//     code:"003",
+//     stock:7
+
+// }
+
+// let product3 = {
+
+//     id:2,
+//     title:"tableta",
+//     description:"computador",
+//     price:1000,
+//     thumbnail:"Sin imagen",
+//     code:"0030",
+//     stock:7
+
+// }
+
+//console.log(producto.validateCode('003'));
+//console.log(producto.updateProduct(product));
+// console.log(producto.updateProduct(product2));
+// console.log(producto.updateProduct(product3));
+//console.log('hola: ', producto.getProductById(2));
+console.log('hola: ', producto.products);
