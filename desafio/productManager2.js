@@ -142,7 +142,7 @@ class ProductManager{
             
             if (typeof this.getProductById(id) !== "string") {
                 console.log('encontro');
-                this.products = productos.filter((prod) => prod.id != id)
+                const filtro = productos.filter((prod) => prod.id != id)
                 //console.log(filtro);
                 fs.promises.writeFile(this.path, JSON.stringify(filtro))
                                         .then(() => {
@@ -181,7 +181,7 @@ let producto = new ProductManager
 
 //producto.getProducts()
 //console.log(producto.getProductById(2));
-//console.log('hola: ', producto.getProducts());
+console.log('hola: ', producto.getProducts());
 //console.log('--------------------------');
 // console.log('hola: ', producto.getProducts());
 
@@ -189,7 +189,7 @@ let producto = new ProductManager
 //producto.getProductById(2)
 // producto.updateProduct(2)
 //producto.deleteProduct(8)
-//producto.deleteProduct(2)
+// producto.deleteProduct(2)
 //console.log('hola: ', producto.products);
 //console.log('hola: ', producto.getProductById(2));
 
@@ -234,4 +234,4 @@ let producto = new ProductManager
 // console.log(producto.updateProduct(product2));
 // console.log(producto.updateProduct(product3));
 //console.log('hola: ', producto.getProductById(2));
-console.log('hola: ', producto.products);
+// console.log('hola: ', producto.products);
