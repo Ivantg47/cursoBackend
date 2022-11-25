@@ -3,7 +3,7 @@ const fs = require('fs')
 class ProductManager{
 
     constructor(){
-        this.path = 'producto.json'   
+        this.path = 'producto.json'
     }
 
     getProducts = async() => {
@@ -27,9 +27,9 @@ class ProductManager{
     }
 
     getProductById = async(id) => {
-        
+
         const prods = await this.getProducts()
-        const prod = prods.find(product => { 
+        const prod = prods.find(product => {
             return product.id === id
         })
 
@@ -40,7 +40,7 @@ class ProductManager{
 
         const prods = await this.getProducts()
 
-        return typeof(prods.find(product => { 
+        return typeof(prods.find(product => {
             return product.code === code
             })) === "undefined" //false: en uso -- true: libre
     }
@@ -48,12 +48,12 @@ class ProductManager{
     addProduct = async(prod) => {
 
         const prods = await this.getProducts()
-        
+
         if (!await this.validateCode(prod.code)) {
             console.log('Codigo en uso');
             return
         }
-        
+        prod.id =  await this.getId()
         prods.push(prod)
         await fs.promises.writeFile(this.path, JSON.stringify(prods))
 
@@ -92,7 +92,7 @@ class ProductManager{
         if(!(i && (g || h))){
             console.log('Error al actualizar');
             return
-        } 
+        }
 
         prods[i] = newProd
         fs.promises.writeFile(this.path, JSON.stringify(prods))
@@ -116,17 +116,17 @@ const run = async() => {
     //console.log(await producto.getProducts());
 
     // await producto.addProduct({
-    //     id: await producto.getId(),
+    //     id: null,
     //     title:"PC",
     //     description:"computador",
     //     price:10000,
     //     thumbnail:"Sin imagen",
     //     code:"001",
-    //     stock:3  
+    //     stock:3
     // })
 
     // await producto.addProduct({
-    //     id: await producto.getId(),
+    //     id: null,
     //     title: 'tableta',
     //     description: 'computador',
     //     price: 5000,
@@ -134,9 +134,9 @@ const run = async() => {
     //     code: '002',
     //     stock: 5
     // })
-    
+
     // await producto.addProduct({
-    //     id: await producto.getId(),
+    //     id: null,
     //     title: 'ps4',
     //     description: 'juego',
     //     price: 7000,
@@ -144,9 +144,9 @@ const run = async() => {
     //     code: '003',
     //     stock: 0
     // })
-    
+
     // await producto.addProduct({
-    //     id: await producto.getId(),
+    //     id: null,
     //     title: 'ps5',
     //     description: 'juego',
     //     price: 15000,
@@ -156,19 +156,29 @@ const run = async() => {
     // })
 
     // await producto.addProduct({
-    //     id: await producto.getId(),
+    //     id: null,
     //     title:"P90",
     //     description:"computador",
     //     price:5000,
     //     thumbnail:"Sin imagen",
     //     code:"007",
-    //     stock:1  
+    //     stock:1
     // })
-        
+
+    // await producto.addProduct({
+    //     id: null,
+    //     title:"RTX",
+    //     description:"computador",
+    //     price:20000,
+    //     thumbnail:"Sin imagen",
+    //     code:"005",
+    //     stock:2
+    // })
+
     // console.log(await producto.getProducts());
     // console.log(await producto.getProductById(3));
     // console.log(await producto.getProductById(2));
-    // await producto.deleteProduct(3);
+    // await producto.deleteProduct(6);
     // console.log(await producto.getProductById(3));
     // console.log(await producto.getProducts());
 
