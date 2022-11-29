@@ -110,6 +110,8 @@ class ProductManager{
                                     .catch(e => {
                                         console.log('error', e);
                                     })
+            
+            return
         
         } catch(error) {
             console.log(error);
@@ -123,16 +125,24 @@ class ProductManager{
             const prods = await this.getProducts()
 
             const i = prods.map(uProd => uProd.id).indexOf(newProd.id)
+            console.log(i);
+            if(i === -1){
+                console.log('Not found');
+                return
+            }
             const g = (await this.validateCode(newProd.code) && i != prods.map(uProd => uProd.code).indexOf(newProd.code))
             const h = (i === prods.map(uProd => uProd.code).indexOf(newProd.code))
-            // console.log(`nuevo: ${g}    igual: ${h}    libre: ${(g || h)}    code: ${newProd.code}`);
-            // console.log(`existe id: ${(i != -1)}    codigo libre: ${(g || h)}    cambio: ${i && (g || h)}`);
+            console.log(`v id: ${prods[i].id} sto: ${prods[i].stock}`);
+            console.log(`n id: ${newProd.id} sto: ${newProd.stock}`);
+            console.log(`nuevo: ${g}    igual: ${h}    libre: ${(g || h)}    code: ${newProd.code}`);
+            console.log(`existe id: ${(i != -1)}    codigo libre: ${(g || h)}    cambio: ${i && (g || h)}`);
             if(!(i && (g || h))){
                 console.log('Error al actualizar');
                 return
             }
 
-            prods[i] = newProd
+            prods[i] = {...prods[i], ...newProd}
+            console.log(`nv id: ${prods[i].id} sto: ${prods[i].stock}`);
             fs.promises.writeFile(this.path, JSON.stringify(prods))
                                     .then(() => {
                                         console.log('Producto actualizado');
@@ -140,6 +150,8 @@ class ProductManager{
                                     .catch(e => {
                                         console.log('error', e);
                                 })
+
+            return
         
         } catch(error) {
             console.log(error);
@@ -224,6 +236,16 @@ const run = async() => {
     // console.log(await producto.getProductById(3));
     // console.log(await producto.getProducts());
 
+    await producto.updateProduct({
+        id: 20,
+        stock: 0
+    })
+
+    await producto.updateProduct({
+        id: 1,
+        stock: 10
+    })
+
     // await producto.updateProduct({
     //     id: 3,
     //     title: 'ps4',
@@ -254,8 +276,8 @@ const run = async() => {
     //     stock: 0
     // })
 
-    // console.log(await producto.getProductById(3));
-    console.log(await producto.getProducts());
+    //console.log(await producto.getProductById(1));
+    //console.log(await producto.getProducts());
 
 }
 
