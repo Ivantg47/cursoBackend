@@ -111,7 +111,7 @@ class ProductManager{
                                         console.log('error', e);
                                     })
             
-            return
+            return filtro
         
         } catch(error) {
             console.log(error);
@@ -151,7 +151,7 @@ class ProductManager{
                                         console.log('error', e);
                                 })
 
-            return
+            return prods
         
         } catch(error) {
             console.log(error);
