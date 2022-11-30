@@ -22,5 +22,5 @@ app.get('/products/:pid', async (req, res) => {
 })
 
 app.listen(8080, () => {
-    console.log('Servidor arriba y escuchando el puerto 8080!!');
+    console.log('Puerto 8080 en espera!!');
 })

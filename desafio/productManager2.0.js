@@ -150,71 +150,121 @@ class ProductManager{
 
 module.exports = ProductManager
 
-// const run = async() => {
+const run = async() => {
 
-//     const producto = new ProductManager('./producto.json')
+    const producto = new ProductManager('./producto.json')
 
     //console.log(await producto.getProducts());
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title:"PC",
-    //     description:"computador",
-    //     price:10000,
-    //     thumbnail:"Sin imagen",
-    //     code:"001",
-    //     stock:3
-    // })
+    await producto.addProduct({
+        id: null,
+        title:"PC",
+        description:"computador",
+        price:10000,
+        thumbnail:"Sin imagen",
+        code:"001",
+        stock:3
+    })
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title: 'tableta',
-    //     description: 'computador',
-    //     price: 5000,
-    //     thumbnail: 'Sin imagen',
-    //     code: '002',
-    //     stock: 5
-    // })
+    await producto.addProduct({
+        id: null,
+        title: 'tableta',
+        description: 'computador',
+        price: 5000,
+        thumbnail: 'Sin imagen',
+        code: '002',
+        stock: 5
+    })
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title: 'ps4',
-    //     description: 'juego',
-    //     price: 7000,
-    //     thumbnail: 'Sin imagen',
-    //     code: '003',
-    //     stock: 0
-    // })
+    await producto.addProduct({
+        id: null,
+        title: 'ps4',
+        description: 'juego',
+        price: 7000,
+        thumbnail: 'Sin imagen',
+        code: '003',
+        stock: 0
+    })
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title: 'ps5',
-    //     description: 'juego',
-    //     price: 15000,
-    //     thumbnail: 'Sin imagen',
-    //     code: '004',
-    //     stock: 10
-    // })
+    await producto.addProduct({
+        id: null,
+        title: 'ps5',
+        description: 'juego',
+        price: 15000,
+        thumbnail: 'Sin imagen',
+        code: '004',
+        stock: 10
+    })
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title:"P90",
-    //     description:"computador",
-    //     price:5000,
-    //     thumbnail:"Sin imagen",
-    //     code:"007",
-    //     stock:1
-    // })
+    await producto.addProduct({
+        id: null,
+        title:"RTX",
+        description:"computador",
+        price:20000,
+        thumbnail:"Sin imagen",
+        code:"005",
+        stock:2
+    })
 
-    // await producto.addProduct({
-    //     id: null,
-    //     title:"RTX",
-    //     description:"computador",
-    //     price:20000,
-    //     thumbnail:"Sin imagen",
-    //     code:"005",
-    //     stock:2
-    // })
+    await producto.addProduct({
+        id: null,
+        title:"GTX",
+        description:"computador",
+        price:11000,
+        thumbnail:"Sin imagen",
+        code:"006",
+        stock:2
+    })
+
+    await producto.addProduct({
+        id: null,
+        title:"RAM",
+        description:"computador",
+        price:900,
+        thumbnail:"Sin imagen",
+        code:"007",
+        stock:2
+    })
+
+    await producto.addProduct({
+        id: null,
+        title:"M.2",
+        description:"computador",
+        price:1500,
+        thumbnail:"Sin imagen",
+        code:"008",
+        stock:2
+    })
+
+    await producto.addProduct({
+        id: null,
+        title:"Placa",
+        description:"computador",
+        price:3500,
+        thumbnail:"Sin imagen",
+        code:"009",
+        stock:2
+    })
+
+    await producto.addProduct({
+        id: null,
+        title:"SSD",
+        description:"computador",
+        price:1000,
+        thumbnail:"Sin imagen",
+        code:"010",
+        stock:2
+    })
+
+    await producto.addProduct({
+        id: null,
+        title:"P90",
+        description:"computador",
+        price:5000,
+        thumbnail:"Sin imagen",
+        code:"011",
+        stock:1
+    })
 
     // console.log(await producto.getProducts());
     // console.log(await producto.getProductById(3));
@@ -266,9 +316,9 @@ module.exports = ProductManager
     //console.log(await producto.getProductById(1));
     //console.log(await producto.getProducts());
 
-// }
+}
 
-// console.log(run());
+console.log(run());
 
 
 

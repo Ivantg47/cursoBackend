@@ -22,5 +22,5 @@ app.get('/usuario', (request, response) => {
 })
 
 app.listen(8080, () => {
-    console.log('Puerto 8080 ecuchando');
+    console.log('Puerto 8080 en espera');
 })
