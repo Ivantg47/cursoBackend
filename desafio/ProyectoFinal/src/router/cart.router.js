@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        return
+        console.log(error);
     }
 })
 
@@ -23,7 +23,7 @@ router.get('/:cid', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        return
+        console.log(error);
     }
 })
 
@@ -33,21 +33,21 @@ router.post('/', async (req, res) => {
         console.log(cart);
         return res.status(200).send(cart)
     } catch (error) {
-        return
+        console.log(error);
     }
 })
 
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        console.log('hola');
+        
         const cart = await carrito.updaeCart(Number(req.params.cid), Number(req.params.pid))
-        console.log(cart);
+    
         if(!cart){
             return res.status(404).send("not found 2") 
         }
         return res.status(200).send(cart)
     } catch (error) {
-        return
+        console.log(error);
     }
 })
 

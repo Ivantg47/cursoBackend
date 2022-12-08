@@ -59,7 +59,7 @@ class CartManager {
                 id: await this.getId(),
                 products: []
             }
-            
+            console.log(`arreglo: ${Array.isArray(cart.products)} valor: ${cart.products}`);
             carts.push(cart)
             await fs.promises.writeFile(this.path, JSON.stringify(carts))
 
@@ -78,21 +78,25 @@ class CartManager {
         try{
             
             const carts = await this.getCarts()
-            const i = carts.map(uCart => uCart.id).indexOf(cid)
+            const iC = carts.map(uCart => uCart.id).indexOf(cid)
             
-            if(i === -1){
+            if(iC === -1){
                 return null
             }
-            const iP = carts[i].products.map(uProd => uProd.id).indexOf(pid)
+            console.log(`arreglo: ${Array.isArray(carts[iC].products)} valor: ${carts[iC].products}`);
+            const iP = carts[iC].products.map(uProd => uProd.id).indexOf(pid)
             console.log(iP);
             if (iP !== -1) {
-                carts[i].products[iP].quantity++
+                carts[iC].products[iP].quantity++
             } else {
-                carts[i].products = {
+                console.log('nuevo');
+                carts[iC].products.push({
                     id: pid,
                     quantity: 1
-                }
+                })
             }
+            
+            await fs.promises.writeFile(this.path, JSON.stringify(carts))
             return 'Producto agregado'
         
         } catch(error) {
