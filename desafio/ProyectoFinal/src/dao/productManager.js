@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 
 class ProductManager{
 
@@ -83,6 +83,7 @@ class ProductManager{
                 return 'Codigo en uso'
             }
             prod.id =  await this.getId()
+            prod.price = Number.parseFloat(prod.price).toFixed(2)
             prod.status = true
             prods.push(prod)
             await fs.promises.writeFile(this.path, JSON.stringify(prods))
@@ -146,9 +147,8 @@ class ProductManager{
         }                        
     }
 
-    
-
-
 }
 
-module.exports = ProductManager
+const producto = new ProductManager('./src/json/producto.json')
+
+export default producto

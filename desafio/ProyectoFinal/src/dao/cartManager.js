@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 
 class CartManager {
 
@@ -147,4 +147,6 @@ class CartManager {
 
 }
 
-module.exports = CartManager
+const carrito = new CartManager('./src/json/carritos.json')
+
+export default carrito

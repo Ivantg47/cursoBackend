@@ -1,7 +1,7 @@
-const router = require('express').Router()
-const ProductManager = require('../productManager')
 
-const producto = new ProductManager('./src/producto.json')
+import express from 'express'
+const router = express.Router()
+import producto from '../dao/productManager.js'
 
 router.get('/', async (req, res) => {
     try {
@@ -65,4 +65,4 @@ router.delete('/:id', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router

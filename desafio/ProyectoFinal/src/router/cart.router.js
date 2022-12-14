@@ -1,7 +1,6 @@
-const router = require('express').Router()
-const CartManager = require('../cartManager')
-
-const carrito = new CartManager('./src/carritos.json')
+import express from 'express'
+const router = express.Router()
+import carrito from '../dao/cartManager.js'
 
 router.get('/', async (req, res) => {
     try {
@@ -79,4 +78,4 @@ router.put('/:cid/product/:pid', async (req, res) => {
     }
 })
 
-module.exports = router
+export default router
