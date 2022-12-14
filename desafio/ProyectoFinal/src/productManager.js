@@ -75,6 +75,10 @@ class ProductManager{
             
             const prods = await this.getProducts()
 
+            if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
+                return 'Falta llenar campos'
+            }
+
             if (!await this.validateCode(prod.code)) {
                 return 'Codigo en uso'
             }
@@ -141,6 +145,8 @@ class ProductManager{
             console.log(error);
         }                        
     }
+
+    
 
 
 }

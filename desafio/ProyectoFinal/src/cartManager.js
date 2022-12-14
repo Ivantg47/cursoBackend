@@ -71,10 +71,20 @@ class CartManager {
     }
     
     deleteCart = async(id) => {
+        const carts = await this.getCarts()
 
+            if (!await this.getCartById(id)) {                
+                return null
+            }
+            
+            const filtro = carts.filter((cart) => cart.id != id)
+            
+            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            
+            return 'Carrito eliminado'
     }
     
-    updaeCart = async(cid, pid) => {
+    addProdCart = async(cid, pid) => {
         try{
             
             const carts = await this.getCarts()
@@ -83,9 +93,9 @@ class CartManager {
             if(iC === -1){
                 return null
             }
-            console.log(`arreglo: ${Array.isArray(carts[iC].products)} valor: ${carts[iC].products}`);
+            
             const iP = carts[iC].products.map(uProd => uProd.id).indexOf(pid)
-            console.log(iP);
+            
             if (iP !== -1) {
                 carts[iC].products[iP].quantity++
             } else {
@@ -98,6 +108,37 @@ class CartManager {
             
             await fs.promises.writeFile(this.path, JSON.stringify(carts))
             return 'Producto agregado'
+        
+        } catch(error) {
+            console.log(error);
+        } 
+    }
+
+    deleteProdCart = async(cid, pid) => {
+        try{
+            
+            const carts = await this.getCarts()
+            const iC = carts.map(uCart => uCart.id).indexOf(cid)
+            
+            if(iC === -1){
+                console.log('cart');
+                return null
+            }
+            
+            const iP = carts[iC].products.map(uProd => uProd.id).indexOf(pid)
+            
+            if (iP === -1) {
+                console.log('prod');
+                return null 
+            } 
+
+            carts[iC].products[iP].quantity--
+            if (carts[iC].products[iP].quantity === 0) {
+                carts[iC].products = carts[iC].products.filter((prod) => prod.id != pid)
+            }
+            
+            await fs.promises.writeFile(this.path, JSON.stringify(carts))
+            return 'Producto eliminado'
         
         } catch(error) {
             console.log(error);

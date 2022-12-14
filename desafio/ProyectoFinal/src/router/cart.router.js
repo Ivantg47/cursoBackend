@@ -40,7 +40,35 @@ router.post('/', async (req, res) => {
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
         
-        const cart = await carrito.updaeCart(Number(req.params.cid), Number(req.params.pid))
+        const cart = await carrito.addProdCart(Number(req.params.cid), Number(req.params.pid))
+    
+        if(!cart){
+            return res.status(404).send("not found") 
+        }
+        return res.status(200).send(cart)
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+router.put('/:cid', async (req, res) => {
+    try {
+        
+        const cart = await carrito.deleteCart(Number(req.params.cid))
+    
+        if(!cart){
+            return res.status(404).send("not found") 
+        }
+        return res.status(200).send(cart)
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+router.put('/:cid/product/:pid', async (req, res) => {
+    try {
+        
+        const cart = await carrito.deleteProdCart(Number(req.params.cid), Number(req.params.pid))
     
         if(!cart){
             return res.status(404).send("not found 2") 
