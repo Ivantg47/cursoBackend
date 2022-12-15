@@ -26,7 +26,7 @@ const httpServer = app.listen(8080, () => console.log('Listening...'))
 const socketServer = new Server(httpServer)
 
 socketServer.on('connection', socket => {
-    console.log('hola');
+    //console.log('hola');
 })
 
 
