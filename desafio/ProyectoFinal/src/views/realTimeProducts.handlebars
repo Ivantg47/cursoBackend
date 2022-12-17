@@ -1,6 +1,6 @@
 <div>
     <h1>New product</h1>
-    <form action="/api/product" method="post">
+    <form onsubmit="return addProduct(this)">
         <input type="text" id="titile" placeholder="titile">
         <input type="text" id="description" placeholder="description">
         <input type="text" id="price" placeholder="price $ 0.00">
@@ -8,7 +8,7 @@
         <input type="text" id="code" placeholder="code">
         <input type="text" id="stock" placeholder="stock">
         <input type="text" id="category" placeholder="category">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Add">
     </form>
 </div>
 <hr>
@@ -38,20 +38,12 @@
                 <td>{{this.stock}}</td>
                 <td>{{this.category}}</td>
                 <td>{{this.status}}</td>
-                <td><form action="/article/<%= articles[i]._id %>" method="POST">
-<input type="hidden" name="_method" value="DELETE">
-<button class="btn btn-danger" type="submit">Delete</button></form></td>
+                <td><button type="submit" id="delet" onclick="return deletProduct()" value="{{this.id}}">Delete</button></td>
             </tr>
         {{/each}}
     </table>
 </div>
-<p class='reply'><form action='/comments/#{@comment.id}/approve_comment' method='POST'>
-<input type='submit' value='#{ t('the_comments.approve') }'/>
-<input type='hidden' name='_method' value='PUT'/>
-<input name='authenticity_token' value='#{ form_authenticity_token }' type='hidden'/>
-</form></p>"
 
-<form action="/article/<%= articles[i]._id %>" method="POST">
-<input type="hidden" name="_method" value="DELETE">
-<button class="btn btn-danger" type="submit">Delete</button></form>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
 
