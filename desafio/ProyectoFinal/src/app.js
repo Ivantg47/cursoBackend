@@ -15,18 +15,40 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
-//const server = app.listen(8080, () => console.log("Server running..."))
-
 app.use('/api/product', prodR)
 app.use('/api/carts', cartR)
 app.use('/', viewsRouter)
-//app.use('/', (req, res) => res.send('HOME'))
 
-const httpServer = app.listen(8080, () => console.log('Listening...'))
-const socketServer = new Server(httpServer)
+const httpServer = app.listen(8080, () => console.log('Server running...'))
+const io = new Server(httpServer)
 
-socketServer.on('connection', socket => {
-    //console.log('hola');
+let messages = []
+
+io.on('connection', socket => {
+    console.log('Nuevo cliente');
+
+    socket.on('addProduct', prod => {
+        console.log('Nuevo producto servidor: ');
+    //     const list = prodR.get('/')
+    //     io.emit('realTimeList', list)
+    })
+
+    socket.on('deletProduct', id => {
+        console.log('Borrar producto: ', id);
+    })
+
+    socket.on('message', data => {
+        messages.push(data)
+
+        io.emit('messageLogs', messages)
+    })
+
+    socket.on('authenticated', user => {
+        socket.broadcast.emit('allChat', user)
+
+        socket.emit('mensaje', messages)
+    })
+   
 })
 
 
