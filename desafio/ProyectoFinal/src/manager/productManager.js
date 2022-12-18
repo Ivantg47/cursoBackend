@@ -72,20 +72,20 @@ class ProductManager{
     addProduct = async(prod) => {
 
         try{
-            console.log('creo: ', prod);
-            // const prods = await this.getProducts()
+            console.log('prod');
+            const prods = await this.getProducts()
 
-            // if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-            //     return 'Falta llenar campos'
-            // }
+            if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
+                return 'Falta llenar campos'
+            }
 
-            // if (!await this.validateCode(prod.code)) {
-            //     return 'Codigo en uso'
-            // }
-            // prod.id =  await this.getId()
-            // prod.status = true
-            // prods.push(prod)
-            // await fs.promises.writeFile(this.path, JSON.stringify(prods))
+            if (!await this.validateCode(prod.code)) {
+                return 'Codigo en uso'
+            }
+            prod.id =  await this.getId()
+            prod.status = true
+            prods.push(prod)
+            await fs.promises.writeFile(this.path, JSON.stringify(prods))
 
             return "Producto creado"
                     
@@ -105,8 +105,8 @@ class ProductManager{
             }
             
             const filtro = prods.filter((prod) => prod.id != id)
-            
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            console.log(id);
+            //fs.promises.writeFile(this.path, JSON.stringify(filtro))
             
             return 'Producto eliminado'
         

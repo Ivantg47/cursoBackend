@@ -5,6 +5,7 @@ import __dirname from './utils.js'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import viewsRouter from './router/views.router.js'
+import producto from './manager/productManager.js'
 
 const app = express()
 app.use(express.json())
@@ -24,13 +25,16 @@ const io = new Server(httpServer)
 
 let messages = []
 
-io.on('connection', socket => {
+io.on('connection', async socket => {
     console.log('Nuevo cliente');
 
-    socket.on('addProduct', prod => {
-        console.log('Nuevo producto servidor: ');
-    //     const list = prodR.get('/')
-    //     io.emit('realTimeList', list)
+    const products = await producto.getProducts()
+
+    io.sockets.emit('lista', products)
+
+    socket.on('addProduct', async prod => {
+        console.log('recibe');
+        console.log(await producto.addProduct(prod));
     })
 
     socket.on('deletProduct', id => {

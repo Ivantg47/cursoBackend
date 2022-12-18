@@ -1,12 +1,12 @@
 <div>
     <h1>New product</h1>
-    <form onsubmit="return addProduct(this)">
-        <input type="text" id="titile" placeholder="titile">
+    <form id="formProd">
+        <input type="text" id="title" placeholder="title">
         <input type="text" id="description" placeholder="description">
-        <input type="text" id="price" placeholder="price $ 0.00">
+        <input type="number" id="price" placeholder="price $ 0.00">
         <input type="text" id="thumbnail" placeholder="image">
         <input type="text" id="code" placeholder="code">
-        <input type="text" id="stock" placeholder="stock">
+        <input type="number" id="stock" placeholder="stock">
         <input type="text" id="category" placeholder="category">
         <input type="submit" value="Add">
     </form>
@@ -21,26 +21,10 @@
             <th scope="col">Description</th>
             <th scope="col">Price</th>
             <th scope="col">Image</th>
-            <th scope="col">Code</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Category</th>
-            <th scope="col">Status</th>
             <th scope="col">Borrado</th>
         </tr>
-        {{#each prod}}
-            <tr>
-                <td>{{this.id}}</td>
-                <td>{{this.title}}</td>
-                <td>{{this.description}}</td>
-                <td>$ {{this.price}}</td>
-                <td>{{this.thumbnail}}</td>
-                <td>{{this.code}}</td>
-                <td>{{this.stock}}</td>
-                <td>{{this.category}}</td>
-                <td>{{this.status}}</td>
-                <td><button type="submit" id="delet" onclick="return deletProduct()" value="{{this.id}}">Delete</button></td>
-            </tr>
-        {{/each}}
+        <tbody id="listaTiempo"></tbody>
+     
     </table>
 </div>
 
