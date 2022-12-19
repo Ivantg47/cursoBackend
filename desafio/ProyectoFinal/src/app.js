@@ -33,12 +33,13 @@ io.on('connection', async socket => {
     io.sockets.emit('lista', products)
 
     socket.on('addProduct', async prod => {
-        console.log('recibe');
         console.log(await producto.addProduct(prod));
+        io.sockets.emit('lista', await producto.getProducts())
     })
 
-    socket.on('deletProduct', id => {
-        console.log('Borrar producto: ', id);
+    socket.on('deletProduct', async id => {
+        console.log('Borrar producto: ', await producto.deleteProduct(id));
+        io.sockets.emit('lista', await producto.getProducts())
     })
 
     socket.on('message', data => {

@@ -12,7 +12,7 @@ socket.on('lista', lista => {
         <td>${prod.description}</td>
         <td>$ ${prod.price}</td>
         <td><img src="${prod.thumbnail}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
-        <td><a href="" onclick="deletProduct(${prod.id})">Delete ❌</a></td>
+        <td><a href="" onclick="deletProduct(${prod.id})">❌</a></td>
     </tr>`
     ).join(' ')
 
@@ -23,16 +23,17 @@ form.addEventListener('submit', (e) => {
     e.preventDefault()
     
     const prod = {
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("description").value.trim(),
         price: document.getElementById("price").value,
-        thumbnail: document.getElementById("thumbnail").value,
-        code: document.getElementById("code").value,
+        thumbnail: document.getElementById("thumbnail").value.trim(),
+        code: document.getElementById("code").value.trim(),
         stock: document.getElementById("stock").value,
-        category: document.getElementById("category").value
+        category: document.getElementById("category").value.trim()    
     }
 
     socket.emit('addProduct', prod)
+    return false
 })
 
 // addProduct = async(data) => {
@@ -60,11 +61,10 @@ form.addEventListener('submit', (e) => {
 
 deletProduct = (id) => {
     event.preventDefault();
-    console.log(typeof id);
-    socket.emit('deletProduct', id.value)
+    socket.emit('deletProduct', id)
     //console.log('id: ', id);
     //const respon = await fetch(`/api/product/${id}`, {method: 'DELETE'})   
-    //return false
+    return false
 }
 
 

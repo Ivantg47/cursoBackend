@@ -72,7 +72,7 @@ class ProductManager{
     addProduct = async(prod) => {
 
         try{
-            //console.log('prod');
+ 
             const prods = await this.getProducts()
 
             if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
@@ -105,7 +105,7 @@ class ProductManager{
             }
             
             const filtro = prods.filter((prod) => prod.id != id)
-            //console.log('borro:', id);
+
             fs.promises.writeFile(this.path, JSON.stringify(filtro))
             
             return 'Producto eliminado'
@@ -122,7 +122,7 @@ class ProductManager{
             const prods = await this.getProducts()
 
             const i = prods.map(uProd => uProd.id).indexOf(pid)
-            
+
             if(i === -1){
                 return null
             }
