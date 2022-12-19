@@ -44,6 +44,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
     try {
         const prod = await producto.updateProduct(parseInt(req.params.id), req.body)
+        
         if (!prod) {
             return res.status(404).send('not found')
         }
@@ -55,11 +56,12 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        console.log('entro');
+        //console.log('entro: ', req.params.id);
         const prod = await producto.deleteProduct(req.params.id)
         if (!prod) {
             return res.status(404).send('not found')
         }
+        console.log('borro: ', prod);
         return res.status(200).send(prod)
     } catch (error) {
         console.log(error);

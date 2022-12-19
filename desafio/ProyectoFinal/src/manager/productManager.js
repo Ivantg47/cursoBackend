@@ -72,7 +72,7 @@ class ProductManager{
     addProduct = async(prod) => {
 
         try{
-            console.log('prod');
+            //console.log('prod');
             const prods = await this.getProducts()
 
             if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
@@ -105,8 +105,8 @@ class ProductManager{
             }
             
             const filtro = prods.filter((prod) => prod.id != id)
-            console.log(id);
-            //fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            //console.log('borro:', id);
+            fs.promises.writeFile(this.path, JSON.stringify(filtro))
             
             return 'Producto eliminado'
         
@@ -122,7 +122,7 @@ class ProductManager{
             const prods = await this.getProducts()
 
             const i = prods.map(uProd => uProd.id).indexOf(pid)
-            console.log(`pid: ${pid} ${typeof pid} nid: ${newProd.id} ${typeof newProd.id}`);
+            
             if(i === -1){
                 return null
             }
@@ -132,19 +132,18 @@ class ProductManager{
             if(!(g || h)){
                 return 'Codigo en uso'
             }
-
-            if (newProd.id === null || prods[i].id !== newProd.id) {
+   
+            if (!(typeof newProd.id === "undefined" || prods[i].id === newProd.id)) {
                 return 'No se puede cambiar el id'
             }
             for (const j of Object.keys(newProd)) {
+                console.log(`vp: ${prods[i][j]}`);
+                console.log(`np: ${newProd[j]}`);
                 prods[i][j] = newProd[j]
             }
-            // prods[i] = {...prods[i], ...newProd}
             
             fs.promises.writeFile(this.path, JSON.stringify(prods))
 
-            //console.log("Producto actualizado:");
-            //return prods[i]
             return "Producto actualizado"
         
         } catch(error) {
