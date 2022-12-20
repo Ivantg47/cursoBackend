@@ -10,7 +10,7 @@ import producto from './manager/productManager.js'
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(express.static(__dirname + '/public'))
+app.use(express.static('public'))
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
@@ -26,19 +26,11 @@ const io = new Server(httpServer)
 let messages = []
 
 io.on('connection', async socket => {
-    console.log('Nuevo cliente');
+    console.log(`Nuevo cliente id: ${socket.id}`);
 
-    const products = await producto.getProducts()
+    io.sockets.emit('lista', await producto.getProducts())
 
-    io.sockets.emit('lista', products)
-
-    socket.on('addProduct', async prod => {
-        console.log(await producto.addProduct(prod));
-        io.sockets.emit('lista', await producto.getProducts())
-    })
-
-    socket.on('deletProduct', async id => {
-        console.log('Borrar producto: ', await producto.deleteProduct(id));
+    socket.on('updateList', async prod => {
         io.sockets.emit('lista', await producto.getProducts())
     })
 

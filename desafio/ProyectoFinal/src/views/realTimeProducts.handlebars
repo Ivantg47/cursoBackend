@@ -1,20 +1,36 @@
-<div>
+<div style="margin: 10px;">
     <h1>New product</h1>
-    <form id="formProd">
-        <input type="text" id="title" placeholder="title">
-        <input type="text" id="description" placeholder="description">
-        <input type="number" id="price" placeholder="$ 0.00">
-        <input type="text" id="thumbnail" placeholder="image">
-        <input type="text" id="code" placeholder="code">
-        <input type="number" id="stock" placeholder="stock">
-        <input type="text" id="category" placeholder="category">
-        <input type="submit" value="Add">
+    <form class="row g-3" id="formProd">       
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="title" placeholder="title">
+        </div>
+        <div class="col-md-6">
+            <input class="form-control" type="text" name="category" placeholder="category">
+        </div>
+        <div class="col-12">
+            <input class="form-control" rows="3" type="text" name="description" placeholder="description">
+        </div>
+        <div class="col-7">
+            <input class="form-control" type="text" name="code" placeholder="code">
+        </div>
+        <div class="col-3">
+            <input class="form-control" type="number" name="price" placeholder="$ 0.00">
+        </div>
+        <div class="col-2">
+            <input class="form-control" type="number" name="stock" placeholder="stock">
+        </div>       
+        <div class="col-12">
+            <input class="form-control" type='file' name='thumbnail' multiple/>
+        </div>       
+        <div style="text-align: center">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
     </form>
 </div>
 <hr>
-<div>
+<div style="margin: 10px;">
     <h1>Real Time Products List</h1>
-    <table>
+    <table class="table table-striped table-hover">
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Title</th>
@@ -28,6 +44,7 @@
     </table>
 </div>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realTimeProducts.js"></script>
 

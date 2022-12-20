@@ -2,6 +2,7 @@
 import express from 'express'
 const router = express.Router()
 import producto from '../manager/productManager.js'
+import uploader from '../manager/multer.js'
 
 router.get('/', async (req, res) => {
     try {
@@ -32,9 +33,17 @@ router.get('/:pid', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', uploader.array('thumbnail'), async (req, res) => {
     try {
-        const prod = await producto.addProduct(req.body)
+        let product = req.body
+
+        if(req.files.length === 0) {
+            product.thumbnail = ['/img/noimage.jpg']
+        } else {
+            product.thumbnail = req.files.map(file => file.path.split('\\').slice(1).join('\\'))
+        }
+
+        const prod = await producto.addProduct(product)
         return res.status(200).send(prod)
     } catch (error) {
         console.log(error);

@@ -1,5 +1,6 @@
 import fs from 'fs'
 
+
 class ProductManager{
 
     constructor(path){
@@ -72,22 +73,22 @@ class ProductManager{
     addProduct = async(prod) => {
 
         try{
- 
+            
             const prods = await this.getProducts()
 
             if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return 'Falta llenar campos'
+                return {success: false, product: 'Falta llenar campos'}
             }
 
             if (!await this.validateCode(prod.code)) {
-                return 'Codigo en uso'
+                return {success: false, product: 'Codigo en uso'}
             }
             prod.id =  await this.getId()
             prod.status = true
             prods.push(prod)
             await fs.promises.writeFile(this.path, JSON.stringify(prods))
 
-            return "Producto creado"
+            return {success: true, product: "Producto creado"}
                     
         } catch(error) {
             console.log(error);
@@ -108,7 +109,7 @@ class ProductManager{
 
             fs.promises.writeFile(this.path, JSON.stringify(filtro))
             
-            return 'Producto eliminado'
+            return {success: true, product: 'Producto eliminado'}
         
         } catch(error) {
             console.log(error);
@@ -130,11 +131,11 @@ class ProductManager{
             const h = (i === prods.map(uProd => uProd.code).indexOf(newProd.code) || newProd.code == null)
 
             if(!(g || h)){
-                return 'Codigo en uso'
+                return {success: false, product: 'Codigo en uso'}
             }
    
             if (!(typeof newProd.id === "undefined" || prods[i].id === newProd.id)) {
-                return 'No se puede cambiar el id'
+                return {success: false, product: 'No se puede cambiar el id'}
             }
             for (const j of Object.keys(newProd)) {
                 console.log(`vp: ${prods[i][j]}`);
@@ -144,7 +145,7 @@ class ProductManager{
             
             fs.promises.writeFile(this.path, JSON.stringify(prods))
 
-            return "Producto actualizado"
+            return {success: true, product: 'Producto actualizado'}
         
         } catch(error) {
             console.log(error);
