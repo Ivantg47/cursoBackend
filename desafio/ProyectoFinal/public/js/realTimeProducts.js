@@ -11,11 +11,11 @@ socket.on('lista', lista => {
         <td>${prod.title}</td>
         <td>${prod.description}</td>
         <td>$ ${prod.price}</td>
-        <td><img src="${prod.thumbnail}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
+        <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
         <td><a href="" onclick="deletProduct(${prod.id})">❌</a></td>
     </tr>`
     ).join(' ')
-
+    
     tabla.innerHTML = lProducts
 })
 
@@ -36,8 +36,7 @@ formProd.addEventListener("submit", async (e) => {
     if(res.success){
         Swal.fire({
             icon: 'success',
-            text: res.product,
-            toast: true
+            text: res.product
         })
 
         formProd.reset()
@@ -73,6 +72,17 @@ deletProduct = async (id) => {
     }
   
     return false
+}
+
+ocultar = () => {
+    const div = document.getElementById('ocultar')
+    const bt = document.getElementById('bt')
+    if (div.style.display === 'none') {
+        div.style.display = 'block'
+        bt.style.display = 'none'
+    } else {
+        div.style.display = 'none'
+    }
 }
 
 

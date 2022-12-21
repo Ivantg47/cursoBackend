@@ -47,7 +47,7 @@ class ProductManager{
             const prod = prods.find(product => {
                 return product.id === Number(id)
             })
-            console.log(typeof prod.price);
+            //console.log(typeof prod.price);
             return prod
         
         } catch(error) {
@@ -85,6 +85,8 @@ class ProductManager{
             }
             prod.id =  await this.getId()
             prod.status = true
+            prod.price = Number(prod.price)
+            prod.stock = Number(prod.stock)
             prods.push(prod)
             await fs.promises.writeFile(this.path, JSON.stringify(prods))
 

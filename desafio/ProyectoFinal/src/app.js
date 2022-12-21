@@ -29,7 +29,7 @@ io.on('connection', async socket => {
     console.log(`Nuevo cliente id: ${socket.id}`);
 
     io.sockets.emit('lista', await producto.getProducts())
-
+    const prod = await producto.getProductById()
     socket.on('updateList', async prod => {
         io.sockets.emit('lista', await producto.getProducts())
     })
