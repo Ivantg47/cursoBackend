@@ -1,0 +1,22 @@
+<h1>Pokemon</h1>
+<div>
+    <table>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Img</th>
+        </tr>
+        <tbody>
+            {{#each pokemons}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.type}}</td>
+                    <td><img src="{{this.photo}}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+    
