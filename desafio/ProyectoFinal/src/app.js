@@ -5,7 +5,7 @@ import __dirname from './utils.js'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
 import viewsRouter from './router/views.router.js'
-import producto from './manager/productManager.js'
+import producto from './dao/manager/productManager.js'
 
 const app = express()
 app.use(express.json())
@@ -19,6 +19,13 @@ app.set('view engine', 'handlebars')
 app.use('/api/product', prodR)
 app.use('/api/carts', cartR)
 app.use('/', viewsRouter)
+
+mongoose.connect('mongodb+srv://admin:admin@cluster0.gaqvdp2.mongodb.net/ecommerce?retryWrites=true&w=majority', error => {
+    if (error) {
+        console.error('No conect', error);
+        process.exit()
+    }
+})
 
 const httpServer = app.listen(8080, () => console.log('Server running...'))
 const io = new Server(httpServer)

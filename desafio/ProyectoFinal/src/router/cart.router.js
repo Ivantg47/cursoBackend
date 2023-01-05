@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import carrito from '../manager/cartManager.js'
+import carrito from '../dao/manager/cartManager.js'
 
 router.get('/', async (req, res) => {
     try {
@@ -50,7 +50,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     }
 })
 
-router.put('/:cid', async (req, res) => {
+router.delete('/:cid', async (req, res) => {
     try {
         
         const cart = await carrito.deleteCart(Number(req.params.cid))
@@ -64,7 +64,7 @@ router.put('/:cid', async (req, res) => {
     }
 })
 
-router.put('/:cid/product/:pid', async (req, res) => {
+router.delete('/:cid/product/:pid', async (req, res) => {
     try {
         
         const cart = await carrito.deleteProdCart(Number(req.params.cid), Number(req.params.pid))
