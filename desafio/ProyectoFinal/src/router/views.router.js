@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import producto from '../dao/manager/productManager.js'
+import producto from '../dao/file_manager/productManager.js'
 
 router.get('/', async (req, res) => {
 

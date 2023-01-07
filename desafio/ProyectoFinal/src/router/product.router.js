@@ -1,8 +1,8 @@
 
 import express from 'express'
 const router = express.Router()
-import producto from '../dao/manager/productManager.js'
-import uploader from '../dao/manager/multer.js'
+import producto from '../dao/file_manager/productManager.js'
+import uploader from '../dao/multer.js'
 
 router.get('/', async (req, res) => {
     try {
