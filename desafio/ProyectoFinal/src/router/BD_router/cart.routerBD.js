@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import carrito from '../dao/bd_manager/cartManagerBD.js'
+import carrito from '../../dao/bd_manager/cartManagerBD.js'
 
 router.get('/', async (req, res, next) => {
     try {
@@ -29,7 +29,7 @@ router.get('/:cid', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const cart = await carrito.addCart()
-        console.log(cart);
+        //console.log(cart);
         return res.status(200).send(cart)
     } catch (error) {
         console.log(error);

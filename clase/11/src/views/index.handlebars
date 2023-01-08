@@ -1,12 +1,71 @@
+<style>
+.container {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+@media (max-width:991.98px) {
+    .padding {
+        padding: 1.5rem
+    }
+}
+
+@media (max-width:767.98px) {
+    .padding {
+        padding: 1rem
+    }
+}
+
+.padding {
+    padding: 3rem
+}
+</style>
 <div class="col-12 d-flex flex-wrap justify-content-evenly">
-    <h1>Bienvenidos al Chat de IGNA !! 🔥🔥🔥🔥 </h1>
+    <h1>Bienvenidos al Chat</h1>
     <div>
         <i id="username"></i>: <input type="text" id="chatBox">
     </div>
     <div>
-        <p id="messageLogs"></p>
+        <p id="messageLogss"></p>
     </div>
 </div>
+<hr>
+
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-md-9">
+                <div class="box box-warning direct-chat direct-chat-warning">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"></h3>
+                    </div>
+                    <div class="box-body">                           
+                        <div class="direct-chat-messages" id="messageLogs">
+                            
+                        </div>                    
+                    </div>
+                    <div class="box-footer">
+                        <form action="#" method="post">
+                            <div class="input-group">
+                                <input type="text" name="message" placeholder="Type Message ..." class="form-control">
+                                <span class="input-group-btn" >
+                                    <button type="button" class="btn btn-warning btn-flat">Send</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

@@ -1,8 +1,8 @@
 
 import express from 'express'
 const router = express.Router()
-import producto from '../dao/bd_manager/productManagerBD.js'
-import uploader from '../dao/multer.js'
+import producto from '../../dao/bd_manager/productManagerBD.js'
+import uploader from '../../dao/multer.js'
 
 router.get('/', async (req, res, next) => {
     try {
@@ -36,19 +36,19 @@ router.get('/:pid', async (req, res, next) => {
 router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
     try {
         let product = req.body
-
-        // if(req.files.length === 0) {
-        //     product.thumbnail = ['/img/noimage.jpg']
-        // } else {
-        //     product.thumbnail = req.files.map(file => file.path.split('\\').slice(1).join('\\'))
-        // }
-
-        const prod = await producto.addProduct(product)
+        //console.log(product);
+        if(req.files.length === 0) {
+            product.thumbnail = ['/img/noimage.jpg']
+        } else {
+            product.thumbnail = req.files.map(file => file.path.split('\\').slice(1).join('\\'))
+        }
         
+        const prod = await producto.addProduct(product)
+        //console.log(prod);
         if (prod.success) {
             return res.status(200).send(prod)
         } else {
-            return res.status(400).send(prod.message)
+            return res.status(400).send(prod)
         }
         
     } catch (error) {
@@ -78,7 +78,7 @@ router.delete('/:pid', async (req, res, next) => {
         console.log(pid);
         const prod = await producto.deleteProduct({_id: pid})
         
-        return res.status(prod.status).send(prod.message)
+        return res.status(prod.status).send(prod)
         
     } catch (error) {
         console.log(error);

@@ -33,11 +33,22 @@ socket.on('messageLogs', data => {
     let log = document.getElementById('messageLogs')
     console.log(log);
     let messages = ''
-
+    let cont = 0
     data.forEach(message => {
-        messages += `<b>${message.user}</b>: ${message.message}<br>`
+        if(cont % 2 === 0){
+            messages += `<div class="container">
+                            <h3 style="margin: 0;">${message.user}</h3>
+                            <div>${message.message}</div>
+                        </div>`
+        } else {
+            messages += `<div class="container darker">
+                            <span><b>${message.user}</b></span>
+                            <p>${message.message}</p>
+                        </div>`
+        }
+        cont++
     })
-    console.log(messages);
+    //console.log(messages);
     socket.emit('mensaje', messages)
 
     log.innerHTML = messages

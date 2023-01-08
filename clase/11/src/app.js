@@ -6,7 +6,7 @@ import viewsRouter from './routes/views.router.js'
 
 const app = express()
 
-const httpServer = app.listen(8080, () => console.log('Listening...'))
+const httpServer = app.listen(8081, () => console.log('Listening...'))
 const io = new Server(httpServer)
 
 app.engine('handlebars', handlebars.engine())

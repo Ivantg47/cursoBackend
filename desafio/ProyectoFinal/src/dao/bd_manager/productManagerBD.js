@@ -42,7 +42,6 @@ class ProductManagerBD{
     addProduct = async(prod) => {
 
         try{
-            const prods = await this.getProducts()
 
             if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
                 return {success: false, message: 'Falta llenar campos'}
@@ -50,7 +49,7 @@ class ProductManagerBD{
 
             const result = await productModel.create(prod)
             
-            return {success: true, product: result}
+            return {success: true, product: result, message: 'Producto añadido'}
 
         } catch(error) {
             console.log(error)
@@ -66,13 +65,13 @@ class ProductManagerBD{
 
             console.log(result);
             if (result.deletedCount === 0) {
-                return {status: 404, message: 'Not found'}
+                return {success: false, status: 404, message: 'Not found'}
             }
-            return {status: 200, message: 'Producto eliminado'}
+            return {success: true, status: 200, message: 'Producto eliminado'}
         
         } catch(error) {
             if (error.name === 'CastError') {
-                return {status: 400, message: 'Id invalido'}
+                return {success: false, status: 400, message: 'Id invalido'}
             }
             console.log(error)
             return error

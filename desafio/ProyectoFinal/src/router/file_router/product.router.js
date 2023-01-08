@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.log(error);
     }
-         
+
 })
 
 router.get('/:pid', async (req, res) => {

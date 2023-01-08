@@ -1,8 +1,8 @@
 <div>
     <h1>Products List</h1>
-    <table>
+    <table class="table table-striped table-hover">
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col" style="display:none">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Description</th>
             <th scope="col">Price</th>
@@ -15,7 +15,7 @@
         <tbody>
         {{#each prod}}
             <tr>
-                <td>{{this.id}}</td>
+                <td style="display:none">{{this._id}}</td>
                 <td>{{this.title}}</td>
                 <td>{{this.description}}</td>
                 <td>$ {{this.price}}</td>
