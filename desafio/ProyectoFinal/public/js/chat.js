@@ -46,12 +46,12 @@ socket.on('messageLogs', data => {
     //let cont = 0
     data.forEach(message => {
         if(/*cont % 2 === 0*/user !== message.user){
-            messages += `<div class="container">
+            messages += `<div class="container container2">
                             <span><b>${message.user}</b></span>
                             <div>${message.message}</div>
                         </div>`
         } else {
-            messages += `<div class="container darker">
+            messages += `<div class="container container2 darker">
                             <span><b>${message.user}</b></span>
                             <div>${message.message}</div>
                         </div>`

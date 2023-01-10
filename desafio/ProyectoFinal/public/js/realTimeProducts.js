@@ -12,7 +12,7 @@ socket.on('lista', lista => {
         <td>${prod.description}</td>
         <td>$ ${prod.price}</td>
         <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
-        <td><a href="" onclick="deletProduct('${prod._id}')">❌</a></td>
+        <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deletProduct('${prod._id}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
     </tr>`
     ).join(' ')
     
