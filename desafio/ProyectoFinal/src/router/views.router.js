@@ -25,10 +25,21 @@ router.get('/chat', async (req, res) => {
 
 router.get('/products', async (req, res) => {
     let prods = await product.getProducts()
+    // console.log(typeof prods[0].price)
     prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
     { style: 'currency', currency: 'MXN' }).format(prod.price))
-
+    // console.log(typeof prods[0].price)
     res.render('product', {prods})
+})
+
+router.get('/product/:pid', async (req, res) => {
+    const data = await product.getProductById(req.params.pid)
+    let prod = data.message
+
+    prod.price = new Intl.NumberFormat('es-MX',
+    { style: 'currency', currency: 'MXN' }).format(prod.price)
+
+    res.render('productD', {title: prod.title, data: prod})
 })
 
 router.get('/carts/:cid', async (req, res) => {
