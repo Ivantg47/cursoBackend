@@ -24,12 +24,28 @@ router.get('/chat', async (req, res) => {
 })
 
 router.get('/products', async (req, res) => {
-    let prods = await product.getProducts()
+    let page = parseInt(req.query.page)
+    let limit = parseInt(req.query.limit)
+    let sort = req.query.sort
+    if(!page) page = 1
+    if(!limit) limit = 10
+    // let page = parseInt(req.query.page)
+    // if(!page) page = 1
+
+    // //const result = await userModel.paginate({}, {page, limit: 5, lean: true})
+
+    // let prods = await product.getProducts({page, limit: 5, lean: true})
+    // // console.log(typeof prods[0].price)
+    // // prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
+    // // { style: 'currency', currency: 'MXN' }).format(prod.price))
+    // // console.log(typeof prods[0].price)
+    let prod = await product.getProducts({page, limit})
+    console.log(prod);
     // console.log(typeof prods[0].price)
-    prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
-    { style: 'currency', currency: 'MXN' }).format(prod.price))
+    // prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
+    // { style: 'currency', currency: 'MXN' }).format(prod.price))
     // console.log(typeof prods[0].price)
-    res.render('product', {prods})
+    res.render('product', {prod})
 })
 
 router.get('/product/:pid', async (req, res) => {
@@ -44,7 +60,7 @@ router.get('/product/:pid', async (req, res) => {
 
 router.get('/carts/:cid', async (req, res) => {
     
-    res.render('cart', {title: "Chat"})
+    res.render('cart', {title: "Mi carrito"})
 })
 
 export default router

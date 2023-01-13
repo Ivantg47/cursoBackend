@@ -77,4 +77,29 @@ router.delete('/:cid/product/:pid', async (req, res, next) => {
     }
 })
 
+router.put('/:cid', async (req, res, next) => {
+    try {
+        const { cid } = req.params
+        const cart = await carrito.updateCart({_id: cid}, req.body)
+    
+        return res.status(cart.status).send(cart.message)
+    } catch (error) {
+        console.log(error);
+        return next()
+    }
+})
+
+router.put('/:cid/product/:pid', async (req, res, next) => {
+    try {
+        const { cid } = req.params
+        const { pid } = req.params
+
+        const cart = await carrito.updateProdCart({_id: cid}, {id: pid}, req.body)
+    
+        return res.status(cart.status).send(cart.message)
+    } catch (error) {
+        console.log(error);
+        return next()
+    }
+})
 export default router

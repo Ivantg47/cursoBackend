@@ -6,15 +6,26 @@ import uploader from '../../dao/multer.js'
 
 router.get('/', async (req, res, next) => {
     try {
-        const prod = await producto.getProducts()
-        if (!prod) {
+        let page = parseInt(req.query.page)
+        let limit = parseInt(req.query.limit)
+        let sort = req.query.sort
+        if(!page) page = 1
+        if(!limit) limit = 10
+        //if(sort && (sort))
+        const prod = await producto.getProducts({page, limit})
+        console.log(prod);
+        if (prod.docs.length == 0) {
             return res.status(404).send("not found")
         }
-        if (req.query.limit != null) {
-            return res.status(200).send(prod.slice(0,req.query.limit))
-        }else{
-            return res.status(200).send(prod)
-        }
+        prod.status = 'suucces'
+        return res.status(200).send(prod)
+    
+        // let page = parseInt(req.query.page)
+        // if(!page) page = 1
+
+        // let prods = await producto.getProducts({page: page, limit: 5, lean: true})
+
+        return prods
     } catch (error) {
         console.log(error);
         return next()
