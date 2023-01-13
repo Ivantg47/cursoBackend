@@ -8,6 +8,7 @@
                         <div class="col-12">
                             <div class="card shadow-2-strong">
                                 <div class="card-body p-0">
+                                    {{#if prod.isValid}}
                                     <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative; height: 700px">
                                         <table class="table table-striped table-bordered table-sm" cellspacing="0" style="width:100%">
                                             <tr class="text-uppercase text-success">
@@ -22,13 +23,13 @@
                                                 <th scope="col">Status</th>
                                             </tr>
                                             <tbody>
-                                            {{#each prod}}
+                                            {{#each prod.payload}}
                                                 <tr class="alert">
                                                     <td style="display:none">{{this._id}}</td>
                                                     <td>{{this.title}}</td>
                                                     <td>{{this.description}}</td>
                                                     <td>{{this.price}}</td>
-                                                    <td><img src="{{this.thumbnail}}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
+                                                    <td><img src="{{this.thumbnail.[0]}}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
                                                     <td>{{this.code}}</td>
                                                     <td>{{this.stock}}</td>
                                                     <td>{{this.category}}</td>
@@ -38,6 +39,24 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div class="row">
+                                        <div class="d-flex justify-content-center">
+                                            {{#if prod.hasPrevPage}}
+                                            <a class="btn btn-outline-dark mt-auto" href="{{prod.prevLink}}"><i class="bi bi-caret-left-fill"></i> Anterior</a>
+                                            {{else}}
+                                            <a class="btn btn-outline-dark mt-auto disabled" ><i class="bi bi-caret-left-fill"></i> Anterior</a>
+                                            {{/if}}
+                                            <a class="btn btn-outline-dark mt-auto disabled">{{ prod.page }}</a>
+                                            {{#if prod.hasNextPage}}
+                                            <a class="btn btn-outline-dark mt-auto" href="{{prod.nextLink}}">Siguiente <i class="bi bi-caret-right-fill"></i></a>
+                                            {{else}}
+                                            <a class="btn btn-outline-dark mt-auto disabled" >Siguiente <i class="bi bi-caret-right-fill"></i></a>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                    {{else}}
+                                    <h1>No hay users</h1>
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>

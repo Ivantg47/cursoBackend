@@ -6,10 +6,25 @@ import product from '../dao/bd_manager/productManagerBD.js'
 
 router.get('/', async (req, res) => {
 
-    // let prod = await producto.getProducts()
-    let prod = await product.getProducts()
-    prod.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
-    { style: 'currency', currency: 'MXN' }).format(prod.price))
+    let parm = {
+        page: parseInt(req.query.page),
+        limit: parseInt(req.query.limit)
+    }
+    
+    if(!page) page = 1
+    if(!limit) limit = 3
+    if(req.query.sort) parm.sort = req.query.sort
+    
+    let prod = await product.getProducts(parm)
+    
+    if (prod.isValid) {
+        prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
+        prod.nextLink = prod.hasNextPage ? `/?page=${prod.nextPage}` : ''
+        prod.isValid = !(page <= 0 || page>prod.totalPages)
+        prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
+        { style: 'currency', currency: 'MXN' }).format(prod.price))
+    }
+
     res.render('home', {prod})
 })
 
@@ -28,24 +43,21 @@ router.get('/products', async (req, res) => {
     let limit = parseInt(req.query.limit)
     let sort = req.query.sort
     if(!page) page = 1
-    if(!limit) limit = 10
-    // let page = parseInt(req.query.page)
-    // if(!page) page = 1
+    if(!limit) limit = 2
+    //console.log('p: ', page, ' l: ', limit);
 
-    // //const result = await userModel.paginate({}, {page, limit: 5, lean: true})
-
-    // let prods = await product.getProducts({page, limit: 5, lean: true})
-    // // console.log(typeof prods[0].price)
-    // // prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
-    // // { style: 'currency', currency: 'MXN' }).format(prod.price))
-    // // console.log(typeof prods[0].price)
     let prod = await product.getProducts({page, limit})
-    console.log(prod);
-    // console.log(typeof prods[0].price)
-    // prods.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
-    // { style: 'currency', currency: 'MXN' }).format(prod.price))
-    // console.log(typeof prods[0].price)
-    res.render('product', {prod})
+    
+    if (prod.isValid) {
+        prod.prevLink = prod.hasPrevPage ? `/products?page=${prod.prevPage}` : ''
+        prod.nextLink = prod.hasNextPage ? `/products?page=${prod.nextPage}` : ''
+        prod.isValid = !(page <= 0 || page>prod.totalPages)
+        prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
+        { style: 'currency', currency: 'MXN' }).format(prod.price))
+    }
+    // console.log(prod);
+
+    res.render('product', {title: 'Catalogo', prod})
 })
 
 router.get('/product/:pid', async (req, res) => {

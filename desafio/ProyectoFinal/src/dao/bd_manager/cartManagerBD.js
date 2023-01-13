@@ -23,7 +23,7 @@ class CartManager {
         try{
             
             const cart = await cartModel.findOne({_id: id}).lean().exec()
-            console.log('=>',await cartModel.findOne({_id: id, "products.id": "63b4a6ed2af774c4b6a64cf3"}).lean().exec());
+            //console.log('=>',await cartModel.findOne({_id: id, "products.id": "63b4a6ed2af774c4b6a64cf3"}).lean().exec());
             //console.log(cart);
             if (!cart) {
                 return {status: 404, message: 'Not found'}
@@ -150,14 +150,11 @@ class CartManager {
 
     updateProdCart = async(cid, pid, prod) => {
         try {
-            console.log('--> ', cid, '--', pid, '---', prod);
-            console.log(`${cid}, ${pid}, prod`);
-            console.log(await cartModel.findOne({cid, products: {$elemMatch: {pid}}}));
-            console.log('==>', await cartModel.findOne({_id: cid._id, 'products.id': pid.id}));
-            const result = await cartModel.findAndUpdate({_id: cid._id, 'products.id': pid.id}, {$set: {"product.$.quantity": prod.quantity}})
+            
+            const result = await cartModel.findOneAndUpdate({_id: cid._id, 'products.product': pid.id}, {'$set': {"products.$.quantity": prod.quantity}})
 
-            console.log(result);
             return {status: 200, message: result}
+
         } catch (error) {
             console.log(error)
             return error

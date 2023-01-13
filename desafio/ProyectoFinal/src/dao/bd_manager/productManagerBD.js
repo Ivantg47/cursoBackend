@@ -10,12 +10,22 @@ class ProductManagerBD{
     getProducts = async (parm) => {
 
         try{
-            console.log('par: ', parm);
-            const dat = await productModel.find().lean().exec()
+            // console.log('par: ', parm);
+            // const dat = await productModel.find().lean().exec()
             parm.lean = true
             const data = await productModel.paginate({}, parm)
-            // console.log(dat);
-            // return dat
+
+            const prods = {
+                status: 'success',
+                payload: data.docs,
+                totalPages: data.totalPages,
+                prevPage: data.prevPage,
+                nextPage: data.nextPage, 
+                page: data.page, 
+                hasPrevPage: data.hasPrevPage, 
+                hasNextPage: data.hasNextPage
+            }
+            // console.log(prods);
             // status:success/error
             // payload: Resultado de los productos solicitados
             // totalPages: Total de páginas
@@ -26,19 +36,10 @@ class ProductManagerBD{
             // hasNextPage: Indicador para saber si la página siguiente existe.
             // prevLink: Link directo a la página previa (null si hasPrevPage=false)
             // nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-            let res 
             
-            // console.log(data);
-            // let page
-            // if(!page) page = 1
-            // const data = await productModel.paginate({}, {page, limit: 5, lean: true})
-
-            data.prevLink = data.hasPrevPage ? `/product?page=${data.prevPage}` : ''
-            data.nextLink = data.hasNextPage ? `/product?page=${data.nextPage}` : ''
-            data.isValid = !(parm.page <= 0 || parm.page>data.totalPages)
-            console.log(data);
-            console.log(Object.keys(data));
-            return data
+            
+            
+            return prods
 
         } catch(error) {
             console.log(error);
