@@ -12,8 +12,8 @@ router.get('/', async (req, res, next) => {
         if(!page) page = 1
         if(!limit) limit = 10
         //if(sort && (sort))
-        const prod = await producto.getProducts({page, limit})
-        console.log(prod);
+        const prod = await producto.getProducts({}, {page, limit})
+        //console.log(prod);
         if (!prod.isValid) {
             return res.status(404).send("not found")
         }

@@ -7,14 +7,22 @@ class ProductManagerBD{
         
     }
 
-    getProducts = async (parm) => {
+    getProducts = async (arg, parm) => {
 
         try{
             // console.log('par: ', parm);
             // const dat = await productModel.find().lean().exec()
             parm.lean = true
+            console.log(arg);
             // parm.sort = {price: 'desc'}
             // console.log(parm);
+            const data2 = await productModel.aggregate([
+                {
+                    $match: {category: 'electronico'}
+                }
+
+            ])
+            console.log('data2: ', data2);
             const data = await productModel.paginate({}, parm)
             
             const prods = {
