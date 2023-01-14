@@ -42,7 +42,7 @@ class ProductManagerBD{
             // hasNextPage: Indicador para saber si la página siguiente existe.
             // prevLink: Link directo a la página previa (null si hasPrevPage=false)
             // nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-            console.log(prods);
+            //console.log(prods);
             
             
             return prods

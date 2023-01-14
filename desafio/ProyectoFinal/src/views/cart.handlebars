@@ -24,12 +24,12 @@
                                             {{#each cart.products}}    
                                                 <tr class="alert">
                                                     <td style="display:none">{{this.product._id}}</td>
-                                                    <td><input type="checkbox" name="" id="" Checked></td>
+                                                    <td style="text-align: center;"><input type="checkbox" name="" id="" Checked></td>
                                                     <td><img src="{{this.product.thumbnail.[0]}}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
                                                     <td>{{this.product.title}}</td>
                                                     <td>{{this.product.price}}</td>
                                                     <td>{{this.quantity}}</td>
-                                                    <td>0</td>
+                                                    <td>{{this.totalPrice}}</td>
                                                     <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick=""><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
                                                 </tr>
                                             {{/each}}
@@ -73,3 +73,8 @@
         </table>
     </div>-->
 </div>
+<style>
+td {
+    vertical-align: middle;
+}
+</style>

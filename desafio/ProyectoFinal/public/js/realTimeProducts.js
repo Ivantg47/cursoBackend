@@ -4,17 +4,22 @@ const tabla = document.getElementById('listaTiempo')
 const formProd = document.getElementById('formProd')
 
 socket.on('lista', lista => {
-    console.log(lista);
-    const lProducts = lista.payload.map(prod => 
-    `<tr>
-        <td style="display:none">${prod._id}</td>
-        <td>${prod.title}</td>
-        <td>${prod.description}</td>
-        <td>$ ${prod.price}</td>
-        <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
-        <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deletProduct('${prod._id}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
-    </tr>`
-    ).join(' ')
+    
+    let lProducts 
+    if (lista.isValid) {
+        lProducts = lista.payload.map(prod => 
+            `<tr>
+                <td style="display:none">${prod._id}</td>
+                <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
+                <td>${prod.title}</td>
+                <td>${prod.description}</td>
+                <td>${prod.price = new Intl.NumberFormat('es-MX',{ style: 'currency', currency: 'MXN' }).format(prod.price)}</td>
+                <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deletProduct('${prod._id}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
+            </tr>`
+            ).join(' ')
+    } else {
+        lProducts = 'No hay productos registrados'
+    }
     
     tabla.innerHTML = lProducts
 })

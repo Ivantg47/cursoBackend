@@ -73,7 +73,13 @@ router.get('/product/:pid', async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
     let data = await carrito.getCartById(req.params.cid)
     let cart = data.message
-    //cart.products.forEach(prod => cartprodTotal => )
+    
+    cart.products.forEach(prod => prod.totalPrice = Intl.NumberFormat('es-MX',
+    { style: 'currency', currency: 'MXN' }).format(prod.product.price * prod.quantity))
+    //console.log(cart.products.totalPrice);
+    cart.products.forEach(prod => prod.product.price = new Intl.NumberFormat('es-MX',
+        { style: 'currency', currency: 'MXN' }).format(prod.product.price))
+    //console.log(cart.products);
     res.render('cart', {title: "Mi carrito", cart: cart})
 })
 

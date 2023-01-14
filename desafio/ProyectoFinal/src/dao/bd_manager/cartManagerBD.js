@@ -24,7 +24,7 @@ class CartManager {
             
             const cart = await cartModel.findOne({_id: id}).populate('products.product').lean().exec()
             // console.log(JSON.stringify(cart, null, ' '));
-            console.log(cart);
+            //console.log(cart);
             if (!cart) {
                 return {status: 404, message: 'Not found'}
             }
