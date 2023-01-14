@@ -13,8 +13,8 @@ class ProductManagerBD{
             // console.log('par: ', parm);
             // const dat = await productModel.find().lean().exec()
             parm.lean = true
-            parm.sort = {price: 'desc'}
-            console.log(parm);
+            // parm.sort = {price: 'desc'}
+            // console.log(parm);
             const data = await productModel.paginate({}, parm)
             
             const prods = {

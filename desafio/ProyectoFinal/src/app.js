@@ -44,7 +44,7 @@ app.set("io", io);
 io.on('connection', async socket => {
     console.log(`Nuevo cliente id: ${socket.id}`);
 
-    io.sockets.emit('lista', await producto.getProducts())
+    io.sockets.emit('lista', await producto.getProducts({}))
     
     socket.on('updateList', async prod => {
         io.sockets.emit('lista', await producto.getProducts())

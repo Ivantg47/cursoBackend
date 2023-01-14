@@ -22,7 +22,7 @@ class CartManager {
     getCartById = async(id) => {
         try{
             
-            const cart = await cartModel.findOne({_id: id}).populate('products.product')
+            const cart = await cartModel.findOne({_id: id}).populate('products.product').lean().exec()
             // console.log(JSON.stringify(cart, null, ' '));
             console.log(cart);
             if (!cart) {
