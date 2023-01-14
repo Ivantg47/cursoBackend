@@ -22,9 +22,9 @@ class CartManager {
     getCartById = async(id) => {
         try{
             
-            const cart = await cartModel.findOne({_id: id}).lean().exec()
-            //console.log('=>',await cartModel.findOne({_id: id, "products.id": "63b4a6ed2af774c4b6a64cf3"}).lean().exec());
-            //console.log(cart);
+            const cart = await cartModel.findOne({_id: id}).populate('products.product')
+            // console.log(JSON.stringify(cart, null, ' '));
+            console.log(cart);
             if (!cart) {
                 return {status: 404, message: 'Not found'}
             }
@@ -79,9 +79,14 @@ class CartManager {
 
     updateCart = async(cid, prods) => {
         try {
-            
-            const result = await cartModel.updateOne(cid, prods)
+            if (!await cartModel.findOne({_id: cid})) {
+                return {status: 404, message: 'Carrito no encontrado'}
+            }
 
+            const result = await cartModel.updateOne({_id: cid}, {'$push': { products: prods}})
+            console.log(result);
+
+            return {status: 200, message: 'Carrito modificado'}
         } catch (error) {
             console.log(error)
             return error
@@ -91,22 +96,17 @@ class CartManager {
     addProdCart = async(cid, pid) => {
         try{
             
-            let cart = await cartModel.findOne({_id: cid}).lean().exec()
-            
-            if(!cart){
-                return {status: 404, message: 'Not found'}
+            if (!await cartModel.findOne({_id: cid})) {
+                return {status: 404, message: 'Carrito no encontrado'}
             }
-
-            const iP = cart.products.map(uProd => JSON.stringify(uProd.product)).indexOf(JSON.stringify(pid._id))
-
-            if (iP !== -1) {
-                cart.products[iP].quantity++
+            const res = await cartModel.findOne({_id: cid, 'products.product': pid}, {"products.$": 1, "_id": 0}).lean().exec()
+            let result
+            if (res) {
+                result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": res.products[0].quantity+1}})
             } else {
-                cart.products.push({product: pid, quantity: 1})
+                result = await cartModel.updateOne({_id: cid}, {'$push': { products: {product: pid}}})
             }
-            
-            const result = await cartModel.updateOne(cid, cart)
-            
+          
             return {status: 200, message: 'Producto agregado'}
 
         } catch(error) {
@@ -119,41 +119,38 @@ class CartManager {
     deleteProdCart = async(cid, pid) => {
         try{
             
-            let cart = await cartModel.findOne({_id: cid}).lean().exec()
-            
-            if(!cart){
-                return {status: 404, message: 'Not found'}
+            if (!await cartModel.findOne({_id: cid})) {
+                return {status: 404, message: 'Carrito no encontrado'}
             }
-
-            const iP = cart.products.map(uProd => JSON.stringify(uProd.product)).indexOf(JSON.stringify(pid._id))
-
-            if (iP === -1) {
-                return {status: 404, message: 'Producto no encontrado'} 
+            const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$pull': {products: {product: pid}}}).lean().exec()
+            
+            if (!result) {
+                return {status: 404, message: 'Producto no encontrado'}
             } 
 
-            cart.products[iP].quantity--
-
-            if (cart.products[iP].quantity === 0) {
-                cart.products = cart.products.filter((uProd) => JSON.stringify(uProd.product) != JSON.stringify(pid._id))
-            } 
-            
-            const result = await cartModel.updateOne(cid, cart)
-            
             return {status: 200, message: 'Producto eliminado'}
+            
         
         } catch(error) {
 
             console.log(error);
 
-        } 
+        }
     }
 
     updateProdCart = async(cid, pid, prod) => {
         try {
-            
-            const result = await cartModel.findOneAndUpdate({_id: cid._id, 'products.product': pid.id}, {'$set': {"products.$.quantity": prod.quantity}})
+            if (!await cartModel.findOne({_id: cid})) {
+                return {status: 404, message: 'Carrito no encontrado'}
+            }
 
-            return {status: 200, message: result}
+            const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": prod.quantity}}).lean().exec()
+
+            if (!result) {
+                return {status: 404, message: 'Producto no encontrado'}
+            } 
+            console.log(result);
+            return {status: 200, message: 'Producto actualizado'}
 
         } catch (error) {
             console.log(error)

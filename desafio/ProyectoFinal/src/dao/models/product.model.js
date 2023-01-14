@@ -22,6 +22,7 @@ productSchema.post('save', function(error, doc, next) {
     }
 });
 
+
 productSchema.plugin(mongoosePaginate)
 
 export const productModel = mongoose.model(productCollection, productSchema)

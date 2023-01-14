@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
         //if(sort && (sort))
         const prod = await producto.getProducts({page, limit})
         console.log(prod);
-        if (prod.docs.length == 0) {
+        if (!prod.isValid) {
             return res.status(404).send("not found")
         }
         prod.status = 'suucces'
