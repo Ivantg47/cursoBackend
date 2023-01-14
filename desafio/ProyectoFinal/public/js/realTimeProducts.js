@@ -4,8 +4,8 @@ const tabla = document.getElementById('listaTiempo')
 const formProd = document.getElementById('formProd')
 
 socket.on('lista', lista => {
-
-    const lProducts = lista.map(prod => 
+    console.log(lista);
+    const lProducts = lista.payload.map(prod => 
     `<tr>
         <td style="display:none">${prod._id}</td>
         <td>${prod.title}</td>

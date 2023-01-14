@@ -71,8 +71,10 @@ router.get('/product/:pid', async (req, res) => {
 })
 
 router.get('/carts/:cid', async (req, res) => {
-    const data = await carrito.getCartById(req.params.cid)
-    res.render('cart', {title: "Mi carrito", cart: data})
+    let data = await carrito.getCartById(req.params.cid)
+    let cart = data.message
+    //cart.products.forEach(prod => cartprodTotal => )
+    res.render('cart', {title: "Mi carrito", cart: cart})
 })
 
 export default router
