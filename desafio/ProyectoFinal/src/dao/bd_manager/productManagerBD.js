@@ -10,10 +10,10 @@ class ProductManagerBD{
     getProducts = async (arg, parm) => {
 
         try{
-            // console.log('par: ', parm);
+            console.log('parm: ', parm);
             // const dat = await productModel.find().lean().exec()
             parm.lean = true
-            console.log(arg);
+            console.log('arg: ', arg);
             // parm.sort = {price: 'desc'}
             // console.log(parm);
             const data2 = await productModel.aggregate([
@@ -22,12 +22,12 @@ class ProductManagerBD{
                 }
 
             ])
-            console.log('data2: ', data2);
-            const data = await productModel.paginate({}, parm)
+            //console.log('data2: ', data2);
+            const data = await productModel.paginate(arg, parm)
             
             const prods = {
                 status: 'success',
-                isValid: !(data.page <= 0 || data.page>data.totalPages),
+                isValid: !(data.page <= 0 || data.page>data.totalPages || data.docs.length === 0),
                 payload: data.docs,
                 totalPages: data.totalPages,
                 prevPage: data.prevPage,
@@ -36,6 +36,7 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
+            //console.log(data.docs.length);
             if (!prods.isValid) {
                 prods.status = 'error'
             }
@@ -50,7 +51,7 @@ class ProductManagerBD{
             // hasNextPage: Indicador para saber si la página siguiente existe.
             // prevLink: Link directo a la página previa (null si hasPrevPage=false)
             // nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-            //console.log(prods);
+            console.log(prods);
             
             
             return prods

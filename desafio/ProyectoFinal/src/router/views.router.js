@@ -7,16 +7,19 @@ import carrito from '../dao/bd_manager/cartManagerBD.js'
 
 router.get('/', async (req, res) => {
 
+    let arg = {}
     let parm = {
         page: parseInt(req.query.page),
         limit: parseInt(req.query.limit)
     }
     
     if(!parm.page) parm.page = 1
-    if(!parm.limit) parm.limit = 3
+    if(!parm.limit) parm.limit = 10
     if(req.query.sort) parm.sort = {price: req.query.sort}
-    
-    let prod = await product.getProducts(parm)
+    if(req.query.category) arg = {category: req.query.category}
+    if(req.query.status) arg = {status: req.query.status}
+
+    let prod = await product.getProducts(arg, parm)
     
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
