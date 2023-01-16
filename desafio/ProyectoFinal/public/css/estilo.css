@@ -30,7 +30,7 @@ body {
 }
 
 .box.box-warning {
-    border-top-color: #f39c12;
+    border-top-color: #22211f;
 }
 
 .box {
@@ -47,10 +47,6 @@ body {
     border-bottom: 1px solid #f4f4f4
 }
 
-.box-header.with-border {
-    border-bottom: 1px solid #f4f4f4;
-}
-
 .box-header {
     color: #444;
     display: block;
@@ -61,13 +57,6 @@ body {
 .box-header:before, .box-body:before, .box-footer:before, .box-header:after, .box-body:after, .box-footer:after {
     content: " ";
     display: table;
-}
-
-.box-header {
-    color: #444;
-    display: block;
-    padding: 10px;
-    position: relative
 }
 
 .btn {
@@ -161,7 +150,7 @@ td {
 }
 /* -------------------------galeria detalle producto ---------------------*/
 .gallery-wrapper{
-    width: 570px;
+    width: 60%;
     background: rgba(255, 255, 255, 0.8);
     padding: 10px;
     display: flex;
@@ -170,7 +159,9 @@ td {
 }
 
 .g{
-    background: rgba(106, 101, 101, 0.8);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    padding-top: 25px;
 }
 
 .thumb ul{
@@ -196,8 +187,8 @@ td {
 
 .prim-image{
     position: relative;
-    height: 450px;
-    width: 450px;
+    height: 650px;
+    width: 650px;
 }
 .prim-image img{
     max-width: 100%;
@@ -207,4 +198,16 @@ td {
 
 .pad{
     padding: 5px;
+}
+
+.card-img-top {
+    height: 20vh;
+    object-fit: contain;
+}
+
+.dd{
+    border: 1px solid #DDD;
+    border-radius: 4px 4px 4px 4px;
+    padding: 3px;
+    width: 15%;
 }
