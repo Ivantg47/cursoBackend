@@ -30,7 +30,7 @@ body {
 }
 
 .box.box-warning {
-    border-top-color: #f39c12;
+    border-top-color: #22211f;
 }
 
 .box {
@@ -47,10 +47,6 @@ body {
     border-bottom: 1px solid #f4f4f4
 }
 
-.box-header.with-border {
-    border-bottom: 1px solid #f4f4f4;
-}
-
 .box-header {
     color: #444;
     display: block;
@@ -61,13 +57,6 @@ body {
 .box-header:before, .box-body:before, .box-footer:before, .box-header:after, .box-body:after, .box-footer:after {
     content: " ";
     display: table;
-}
-
-.box-header {
-    color: #444;
-    display: block;
-    padding: 10px;
-    position: relative
 }
 
 .btn {
