@@ -10,18 +10,18 @@ class ProductManagerBD{
     getProducts = async (arg, parm) => {
 
         try{
-            console.log('parm: ', parm);
             // const dat = await productModel.find().lean().exec()
+            //console.log('parm1: ', parm);
             parm.lean = true
-            console.log('arg: ', arg);
+            console.log('>>arg', arg, '--parm', parm);
             // parm.sort = {price: 'desc'}
             // console.log(parm);
-            const data2 = await productModel.aggregate([
-                {
-                    $match: {category: 'electronico'}
-                }
+            // const data2 = await productModel.aggregate([
+            //     {
+            //         $match: {category: 'electronico'}
+            //     }
 
-            ])
+            // ])
             //console.log('data2: ', data2);
             const data = await productModel.paginate(arg, parm)
             
@@ -36,23 +36,10 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
-            //console.log(data.docs.length);
+            console.log(prods);
             if (!prods.isValid) {
                 prods.status = 'error'
             }
-            // console.log(prods);
-            // status:success/error
-            // payload: Resultado de los productos solicitados
-            // totalPages: Total de páginas
-            // prevPage: Página anterior
-            // nextPage: Página siguiente
-            // page: Página actual
-            // hasPrevPage: Indicador para saber si la página previa existe
-            // hasNextPage: Indicador para saber si la página siguiente existe.
-            // prevLink: Link directo a la página previa (null si hasPrevPage=false)
-            // nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-            console.log(prods);
-            
             
             return prods
 

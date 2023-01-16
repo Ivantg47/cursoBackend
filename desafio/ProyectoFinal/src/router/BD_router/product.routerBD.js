@@ -18,7 +18,7 @@ router.get('/', async (req, res, next) => {
         if(req.query.category) arg = {category: req.query.category}
         if(req.query.status) arg = {status: req.query.status}
 
-        console.log('>>', parm, arg);
+        //console.log('>>', parm, arg);
         
         const prod = await producto.getProducts(arg, parm)
         //console.log(prod);
