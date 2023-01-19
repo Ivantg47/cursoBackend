@@ -7,14 +7,15 @@ import uploader from '../../dao/multer.js'
 router.get('/', async (req, res, next) => {
     try {
         let parm = {
-            page: parseInt(req.query.page),
-            limit: parseInt(req.query.limit)
+            page: parseInt(req.query?.page) || 1,
+            limit: parseInt(req.query?.limit) || 10
         }
+        const filter = req.query?.query || req.body?.query
+
         let arg = {}
 
-        if(!parm.page) parm.page = 1
-        if(!parm.limit) parm.limit = 10
         if(req.query.sort) parm.sort = {price: req.query.sort}
+        if(filter) arg = {title: {$regex: filter}}
         if(req.query.category) arg = {category: req.query.category}
         if(req.query.status) arg = {status: req.query.status}
 

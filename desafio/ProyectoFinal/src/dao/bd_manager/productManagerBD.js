@@ -36,7 +36,7 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
-            console.log(prods);
+            //console.log(prods);
             if (!prods.isValid) {
                 prods.status = 'error'
             }
