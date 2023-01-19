@@ -14,6 +14,10 @@ router.get('/', async (req, res) => {
         limit: parseInt(req.query?.limit) || 10
     }
     const filter = req.query?.query || req.body?.query
+    if(filter) arg['$or'] = [
+        {title: {$regex: filter}},
+        {category: {$regex: filter}}
+    ]
 
     if(filter) arg['title'] = {$regex: filter}
     if(req.query.sort) parm.sort = {price: req.query.sort}
