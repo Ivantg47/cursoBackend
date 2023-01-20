@@ -22,7 +22,7 @@ const BD = {dbname: 'ecommerce'}
 mongoose.set('strictQuery', false)
 mongoose.connect(MONGO_URL, BD,  error => {
     if (error) {
-        console.error('No conect', error);
+        console.error('No connect', error);
         process.exit()
     }
 })

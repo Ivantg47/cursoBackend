@@ -114,4 +114,16 @@ router.get('/chat', async (req, res) => {
     res.render('chat', {})
 })
 
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas sesion>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/sessions/login', async (req, res) => {
+    
+    res.render('session/login', {title: 'Login'})
+})
+
+router.get('/sessions/register', async (req, res) => {
+    
+    res.render('session/register', {title: 'Register'})
+})
+
 export default router
