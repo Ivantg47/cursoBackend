@@ -5,16 +5,21 @@ import producto from '../dao/file_manager/productManager.js'
 import product from '../dao/bd_manager/productManagerBD.js'
 import carrito from '../dao/bd_manager/cartManagerBD.js'
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
 
     let arg = {}
     let parm = {
-        page: parseInt(req.query.page),
-        limit: parseInt(req.query.limit)
+        page: parseInt(req.query?.page) || 1,
+        limit: parseInt(req.query?.limit) || 10
     }
-    
-    if(!parm.page) parm.page = 1
-    if(!parm.limit) parm.limit = 10
+    const filter = req.query?.query || req.body?.query
+    if(filter) arg['$or'] = [
+        {title: {$regex: filter}},
+        {category: {$regex: filter}}
+    ]
+
+    if(filter) arg['title'] = {$regex: filter}
     if(req.query.sort) parm.sort = {price: req.query.sort}
     if(req.query.category) arg = {category: req.query.category}
     if(req.query.status) arg = {status: req.query.status}
@@ -29,28 +34,23 @@ router.get('/', async (req, res) => {
 
     }
 
-    res.render('home', {title: "Products List", prod})
+    res.render('product/home', {title: "Products List", prod, query: filter})
 })
 
 router.get('/realtimeproducts', async (req, res) => {
     
-    res.render('realTimeProducts', {title: "Products List"})
-})
-
-router.get('/chat', async (req, res) => {
-    
-    res.render('chat', {})
+    res.render('product/realTimeProducts', {title: "Products List"})
 })
 
 router.get('/product', async (req, res) => {
     let arg = {}
     let parm = {
-        page: parseInt(req.query.page),
-        limit: parseInt(req.query.limit)
+        page: parseInt(req.query?.page) || 1,
+        limit: parseInt(req.query?.limit) || 10
     }
-    
-    if(!parm.page) parm.page = 1
-    if(!parm.limit) parm.limit = 10
+    const filter = req.query?.query || req.body?.query
+
+    if(filter) arg = {title: {$regex: filter}}
     if(req.query.sort) parm.sort = {price: req.query.sort}
     if(req.query.category) arg = {category: req.query.category}
     if(req.query.status) arg = {status: req.query.status}
@@ -65,7 +65,7 @@ router.get('/product', async (req, res) => {
     }
     // console.log(prod);
 
-    res.render('product', {title: 'Catalogo', prod})
+    res.render('product/product', {title: 'Catalogo', prod, query: filter})
 })
 
 router.get('/product/:pid', async (req, res) => {
@@ -75,9 +75,10 @@ router.get('/product/:pid', async (req, res) => {
     prod.price = new Intl.NumberFormat('es-MX',
     { style: 'currency', currency: 'MXN' }).format(prod.price)
 
-    res.render('productD', {title: prod.title, data: prod})
+    res.render('product/productD', {title: prod.title, data: prod})
 })
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/carts/:cid', async (req, res) => {
     let data = await carrito.getCartById(req.params.cid)
     console.log(data);
@@ -105,6 +106,24 @@ router.get('/carts/:cid', async (req, res) => {
     }
     
     res.render('cart', {title: "Mi carrito", cart: cart})
+})
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/chat', async (req, res) => {
+    
+    res.render('chat', {})
+})
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas sesion>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/sessions/login', async (req, res) => {
+    
+    res.render('session/login', {title: 'Login'})
+})
+
+router.get('/sessions/register', async (req, res) => {
+    
+    res.render('session/register', {title: 'Register'})
 })
 
 export default router
