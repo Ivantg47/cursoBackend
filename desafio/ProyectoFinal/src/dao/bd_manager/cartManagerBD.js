@@ -93,20 +93,25 @@ class CartManager {
         }
     }
     
-    addProdCart = async(cid, pid) => {
+    addProdCart = async(cid, pid, body) => {
         try{
-            
+            // console.log(cid, pid);           
+            //console.log(body.quantity);
+            let quantity = Number(body.quantity) || 1
+            //console.log(typeof quantity);
+
             if (!await cartModel.findOne({_id: cid})) {
                 return {status: 404, message: 'Carrito no encontrado'}
             }
             const res = await cartModel.findOne({_id: cid, 'products.product': pid}, {"products.$": 1, "_id": 0}).lean().exec()
+            //console.log(res);
             let result
             if (res) {
-                result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": res.products[0].quantity+1}})
+                result = await cartModel.updateOne({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": res.products[0].quantity+quantity}})
             } else {
                 result = await cartModel.updateOne({_id: cid}, {'$push': { products: {product: pid}}})
             }
-          
+            console.log(result);
             return {status: 200, message: 'Producto agregado'}
 
         } catch(error) {

@@ -3,7 +3,7 @@
         <div class="bg-image h-100">
             <div class="mask d-flex align-items-center h-100">
                 <div class="container">
-                    <h1>Cart: {{cart._id}}</h1>
+                    <h1>Cart: <samp id="cart">{{cart._id}}</samp></h1>
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="card shadow-2-strong">
@@ -27,12 +27,12 @@
                                                 <tr class="alert">
                                                     <td style="display:none">{{this.product._id}}</td>
                                                     <td style="text-align: center;"><input type="checkbox" name="" id="" Checked></td>
-                                                    <td><img src="{{this.product.thumbnail.[0]}}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
+                                                    <td><img src="{{this.product.thumbnail.[0]}}" alt="No image" width="72" height="72" style="vertical-align:middle; object-fit: contain;"></td>
                                                     <td>{{this.product.title}}</td>
                                                     <td align="right">{{this.product.price}}</td>
                                                     <td align="right">{{this.quantity}}</td>
                                                     <td align="right">{{this.totalPrice}}</td>
-                                                    <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick=""><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
+                                                    <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deleteProduct('{{this.product._id}}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
                                                 </tr>
                                             {{/each}}
                                             <tr>
@@ -61,3 +61,4 @@ td {
     vertical-align: middle;
 }
 </style>
+<script src="/js/carrito.js"></script>

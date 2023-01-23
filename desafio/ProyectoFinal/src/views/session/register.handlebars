@@ -4,25 +4,25 @@
             <div>
                 <h1 class="logo-badge text-whitesmoke"><span class="fa fa-user-circle"></span></h1>
             </div>
-                <h3 class="text-whitesmoke">Login</h3>
+                <h3 class="text-whitesmoke">Registro de Usuario</h3>
                 <br>
             <div class="container-content">
-                <form class="margin-t">
+                <form class="margin-t" action="/session/create" method="POST">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="text" name="first_name" class="form-control" placeholder="first name" aria-label="first name" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+                        <input type="text" name="last_name" class="form-control" placeholder="last name" aria-label="last name" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-fill"></i></span>
+                        <input type="text" name="email" class="form-control" placeholder="email" aria-label="email" aria-describedby="basic-addon1">
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" class="form-control" placeholder="*****" aria-label="Username" aria-describedby="basic-addon1">
+                        <input type="password" name="password" class="form-control" placeholder="*****" aria-label="password" aria-describedby="basic-addon1">
                     </div>
                     
                     <button type="submit" class="form-button button-l margin-b">Registrar</button>
@@ -33,7 +33,7 @@
 
                 <p class="text-whitesmoke text-center">
                     <small>Do not have an account?</small>
-                    <a class="text-darkyellow" href="/sessions/login"><small>Sign In</small></a>
+                    <a class="text-darkyellow" href="/login"><small>Sign In</small></a>
                 </p>
             </div>
     </div>

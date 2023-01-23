@@ -10,17 +10,18 @@ let options = {
     scale: .68
 };
 
+//window.imageZoom = new ImageZoom(container, options)
+
 gallery = (img) => {
     options.img = img.src;
-    window.imageZoom.kill();
-    window.imageZoom= new ImageZoom(container, options);
+    document.getElementById('prim-image').src = img.src
+    // window.imageZoom.kill();
+    // window.imageZoom = new ImageZoom(container, options);
 } 
-
-window.imageZoom = new ImageZoom(container, options)
 
 addOptions = (num) => {
     let sel = document.getElementById('quantity')
-    console.log(sel);
+    //console.log(sel);
     
     for (let i = 1; i < num; i++) {
         let element = document.createElement('option')

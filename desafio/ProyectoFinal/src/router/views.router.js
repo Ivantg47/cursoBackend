@@ -34,6 +34,7 @@ router.get('/', async (req, res) => {
 
     }
 
+    
     res.render('product/home', {title: "Products List", prod, query: filter})
 })
 
@@ -64,27 +65,38 @@ router.get('/product', async (req, res) => {
         { style: 'currency', currency: 'MXN' }).format(prod.price))
     }
     // console.log(prod);
-
-    res.render('product/product', {title: 'Catalogo', prod, query: filter})
+    console.log('user:', req.session.user);
+    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user})
 })
 
 router.get('/product/:pid', async (req, res) => {
     const data = await product.getProductById(req.params.pid)
+    //console.log(data);
+    if (data.status !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
+    
     let prod = data.message
 
     prod.price = new Intl.NumberFormat('es-MX',
     { style: 'currency', currency: 'MXN' }).format(prod.price)
 
     res.render('product/productD', {title: prod.title, data: prod})
+    
+})
+
+router.get('/products/register', async (req, res) => {
+
+    res.render('product/registerProd', {title: 'Registrar nuevo producto'})
+    
 })
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/carts/:cid', async (req, res) => {
     let data = await carrito.getCartById(req.params.cid)
-    console.log(data);
+    //console.log(data);
     let cart
     if (data.status == 200) {
         cart = data.message
+        //console.log(cart);
         cart.isValid = true
         cart.total = 0
         //obtine el valor del subtotal de cada producto
@@ -102,10 +114,10 @@ router.get('/carts/:cid', async (req, res) => {
         //total
         cart.total = new Intl.NumberFormat('es-MX',
             { style: 'currency', currency: 'MXN' }).format(cart.total)
-        console.log(cart);
+        //console.log(cart);
     }
     
-    res.render('cart', {title: "Mi carrito", cart: cart})
+    res.render('cart/cart', {title: "Mi carrito", cart: cart})
 })
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -116,12 +128,13 @@ router.get('/chat', async (req, res) => {
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas sesion>>>>>>>>>>>>>>>>>>>>>>>>>>
-router.get('/sessions/login', async (req, res) => {
+router.get('/login', async (req, res) => {
     
     res.render('session/login', {title: 'Login'})
+
 })
 
-router.get('/sessions/register', async (req, res) => {
+router.get('/register', async (req, res) => {
     
     res.render('session/register', {title: 'Register'})
 })

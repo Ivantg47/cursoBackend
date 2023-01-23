@@ -53,7 +53,9 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         if(req.files.length === 0) {
             product.thumbnail = ['/img/noimage.jpg']
         } else {
-            product.thumbnail = req.files.map(file => file.path.split('\\').slice(1).join('\\'))
+            console.log(product.thumbnail);
+            product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
+            console.log(product.thumbnail);
         }
         
         const prod = await producto.addProduct(product)
@@ -61,6 +63,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         if (prod.success) {
             return res.status(200).send(prod)
         } else {
+            
             return res.status(400).send(prod)
         }
         
