@@ -39,17 +39,19 @@
                     <span style="color: red;"><b>No Disponible</b></span>
                     {{/if}}
                 </div>
-                <div style="margin-bottom: 25px;">
-                    <label for="quantity">Cantidad:</label>
-                    <select class="dd" name="quantity" id="quantity" style="width: 15%;" disabled>
-                        <option value="{{data.stock}}" selected="">1</option>
-                    </select>
-                    <script type="text/javascript">addOptions({{data.stock}});</script>
-                </div>
-                <br>
-                <div class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 25px;">
-                    <button class="btn btn-dark" onclick="addProduct('63c1f48201b5a3071ad7e987','{{this._id}}')">Agregar al Carrito</button>
-                </div>
+                <form id="addProduct" action="javascript:addProducts('63c1f48201b5a3071ad7e987','{{data._id}}')">
+                    <div style="margin-bottom: 25px; margin-top: 10px;">
+                        <label for="quantity">Cantidad:</label>
+                        <select class="dd" name="quantity" id="quantity" style="width: 15%;">
+                            <option value="{{data.stock}}" selected="">1</option>
+                        </select>
+                        <script type="text/javascript">addOptions({{data.stock}});</script>
+                    </div>
+                    <br>
+                    <div class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 25px;">
+                        <button class="btn btn-dark">Agregar al Carrito</button>
+                    </div>
+                </form>
                 <div>
                     <hr>
                     <b>Acerca de este artículo</b>

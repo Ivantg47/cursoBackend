@@ -41,9 +41,11 @@ router.post('/:cid/product/:pid', async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
-        const cart = await carrito.addProdCart({_id: cid}, {_id: pid})
+        //console.log(req.body);
+        const cart = await carrito.addProdCart({_id: cid}, {_id: pid}, req.body)
     
-        return res.status(cart.status).send(cart.message)
+        //return res.status(cart.status).send(cart.message)
+        return res.status(200).send('hola')
     } catch (error) {
         console.log(error);
         return next()
@@ -53,7 +55,7 @@ router.post('/:cid/product/:pid', async (req, res, next) => {
 router.delete('/:cid', async (req, res, next) => {
     try {
         const { cid } = req.params
-        console.log(cid);
+        //console.log(cid);
         const cart = await carrito.deleteCart({__id: cid})
 
         return res.status(cart.status).send(cart.message)
@@ -68,7 +70,7 @@ router.delete('/:cid/product/:pid', async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
-        console.log(cid, pid);
+        //console.log(cid, pid);
         const cart = await carrito.deleteProdCart({_id: cid}, pid)
     
         return res.status(cart.status).send(cart.message)
