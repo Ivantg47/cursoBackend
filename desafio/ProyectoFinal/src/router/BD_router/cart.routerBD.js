@@ -68,6 +68,7 @@ router.delete('/:cid/product/:pid', async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
+        console.log(cid, pid);
         const cart = await carrito.deleteProdCart({_id: cid}, pid)
     
         return res.status(cart.status).send(cart.message)

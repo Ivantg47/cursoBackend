@@ -186,6 +186,9 @@ td {
 }
 
 .prim-image{
+    display: flex; 
+    text-align: center; 
+    align-items: center;
     position: relative;
     height: 650px;
     width: 650px;
@@ -210,4 +213,21 @@ td {
     border-radius: 4px 4px 4px 4px;
     padding: 3px;
     width: 15%;
+}
+
+.link-catalog{
+    color: black;
+    text-decoration: none;
+}
+
+.link-catalog:visited{
+    color: black
+}
+
+.link-catalog:hover{
+    color: red
+}
+
+.link-catalog:active{
+    color: black
 }

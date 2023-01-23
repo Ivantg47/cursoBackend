@@ -165,8 +165,13 @@
 
 /* Login & Register Pages*/
 
+@media (max-width: 750px){
+    .login-container {
+        max-width: 400px!important;
+    }
+}
 .login-container {
-    max-width: 400px;
+    max-width: 550px;
     z-index: 100;
     margin: 100px auto;
     padding-top: 20px;
