@@ -6,22 +6,22 @@ import uploader from '../../dao/multer.js'
 
 router.get('/', async (req, res, next) => {
     try {
-        let parm = {
+        let pagination = {
             page: parseInt(req.query?.page) || 1,
             limit: parseInt(req.query?.limit) || 10
         }
         const filter = req.query?.query || req.body?.query
 
-        let arg = {}
+        let query = {}
 
-        if(req.query.sort) parm.sort = {price: req.query.sort}
-        if(filter) arg = {title: {$regex: filter}}
-        if(req.query.category) arg = {category: req.query.category}
-        if(req.query.status) arg = {status: req.query.status}
+        if(req.query.sort) pagination.sort = {price: req.query.sort}
+        if(filter) query = {title: {$regex: `/${filter}/i`}}
+        if(req.query.category) query = {category: req.query.category}
+        if(req.query.status) query = {status: req.query.status}
 
-        //console.log('>>', parm, arg);
+        //console.log('>>', pagination, query);
         
-        const prod = await producto.getProducts(arg, parm)
+        const prod = await producto.getProducts(query, pagination)
         //console.log(prod);
         if (!prod.isValid) {
             return res.status(404).send("not found")

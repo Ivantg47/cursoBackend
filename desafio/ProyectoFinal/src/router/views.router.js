@@ -8,23 +8,27 @@ import carrito from '../dao/bd_manager/cartManagerBD.js'
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
 
-    let arg = {}
-    let parm = {
+    let query = {}
+    let pagination = {
         page: parseInt(req.query?.page) || 1,
         limit: parseInt(req.query?.limit) || 10
     }
     const filter = req.query?.query || req.body?.query
-    if(filter) arg['$or'] = [
-        {title: {$regex: filter}},
-        {category: {$regex: filter}}
-    ]
+    
+    // if(filter) {
+        
+    //     query['$or'] = [
+    //         {title: {$regex: `/${filter}/i`}},
+    //         {category: {$regex: `/${filter}/i`}}
+    //     ]
+    // }
 
-    if(filter) arg['title'] = {$regex: filter}
-    if(req.query.sort) parm.sort = {price: req.query.sort}
-    if(req.query.category) arg = {category: req.query.category}
-    if(req.query.status) arg = {status: req.query.status}
-
-    let prod = await product.getProducts(arg, parm)
+    if(filter) query['title'] = {$regex: `(?i)${filter}(?i)`}
+    if(req.query.sort) pagination.sort = {price: req.query.sort}
+    if(req.query.category) query = {category: req.query.category}
+    if(req.query.status) query = {status: req.query.status}
+    console.log('>>', pagination, query);
+    let prod = await product.getProducts(query, pagination)
     
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
@@ -44,19 +48,19 @@ router.get('/realtimeproducts', async (req, res) => {
 })
 
 router.get('/product', async (req, res) => {
-    let arg = {}
-    let parm = {
+    let query = {}
+    let pagination = {
         page: parseInt(req.query?.page) || 1,
         limit: parseInt(req.query?.limit) || 10
     }
     const filter = req.query?.query || req.body?.query
 
-    if(filter) arg = {title: {$regex: filter}}
-    if(req.query.sort) parm.sort = {price: req.query.sort}
-    if(req.query.category) arg = {category: req.query.category}
-    if(req.query.status) arg = {status: req.query.status}
+    if(filter) query = {title: {$regex: `/${filter}/i`}}
+    if(req.query.sort) pagination.sort = {price: req.query.sort}
+    if(req.query.category) query = {category: req.query.category}
+    if(req.query.status) query = {status: req.query.status}
 
-    let prod = await product.getProducts(arg, parm)
+    let prod = await product.getProducts(query, pagination)
     
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
@@ -137,6 +141,11 @@ router.get('/login', async (req, res) => {
 router.get('/register', async (req, res) => {
     
     res.render('session/register', {title: 'Register'})
+})
+
+router.get('/restor', async (req, res) => {
+    
+    res.render('session/restaurar', {title: 'Recuperar Contrasseña'})
 })
 
 export default router

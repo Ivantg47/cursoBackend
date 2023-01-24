@@ -1,16 +1,21 @@
 import express from 'express'
+import passport from 'passport'
 const router = express.Router()
 
 import { userModel } from '../../dao/models/user.model.js'
+import { createHash, isValidPassword } from '../../utils.js'
 
-router.post('/create', async (req, res, next) => {
+router.post('/create', passport.authenticate('login', {failureRedirect: '/session/faillogin'}), async (req, res, next) => {
     try {
         
-        const newUser = req.body 
+        const newUser = req.body
+        //console.log(newUser);
         
         if(!newUser.first_name || !newUser.last_name || !newUser.email || !newUser.password){
             return res.status(400).render('error/general', {error: 'Todos los campos son obligatorios'})
         }
+        newUser.password = createHash(newUser.password)
+        //console.log(newUser);
         const result = await userModel.create(newUser)
         //console.log(result);
         res.redirect('/login')
@@ -21,26 +26,30 @@ router.post('/create', async (req, res, next) => {
     }
 })
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', passport.authenticate('login', {failureRedirect: '/session/faillogin'}), async (req, res) => {
     try {
         
-        const { email, password } = req.body
-        const user = await userModel.findOne({email, password}).lean().exec()
-
-        if (!user) {
-            return res.status(401).render('error/general', {error: 'Error en email y/o contraseña'})
+        console.log('no entra');
+        if (!req.user) {
+            return res.status(401).render('error/general', {error: 'Correo incorrecto'})
         }
-        //console.log(user);
-        req.session.user = user
-        req.session.user.rol = (user.email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
-        //console.log(req.session.user);
+
+        req.session.user = req.user
+        
+        req.session.user.rol = (req.user.email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
+        
         res.redirect('/product')
+        //res.status(200)
             
 
     } catch (error) {
         console.log(error);
-        return next()
+        //return next()
     }
+})
+
+router.get('/faillogin', (req, res) => {
+    res.json({error: 'Failed login'})
 })
 
 router.get('/logout', async (req, res, next) => {

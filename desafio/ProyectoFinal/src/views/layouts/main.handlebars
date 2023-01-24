@@ -24,7 +24,7 @@
                             <li><a class="dropdown-item" href="/product">All Products</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li><a class="dropdown-item" href="/realtimeproducts">Real Time List</a></li>
-                            <li><a class="dropdown-item" href="/products/register">Registrar Producto</a></li>
+                            <li><a class="dropdown-item" href="/products/register">Register Product</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -37,7 +37,7 @@
                 <script>
                     //alert('hola')
                     document.getElementById('user').innerHTML = "Hola, {{user.first_name}} {{user.last_name}}"
-                    document.getElementById('logbt').href = "/session/logout"
+                    document.getElementById('logbt').href = "/api/session/logout"
                     document.getElementById('logbt').innerHTML = "Salir"
                 </script>
                 {{/if}}

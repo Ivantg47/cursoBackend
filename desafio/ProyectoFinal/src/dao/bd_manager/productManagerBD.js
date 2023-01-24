@@ -7,13 +7,13 @@ class ProductManagerBD{
         
     }
 
-    getProducts = async (arg, parm) => {
+    getProducts = async (query, pagination) => {
 
         try{
-            parm.lean = true
-            //console.log('>>arg', arg, '--parm', parm);
+            pagination.lean = true
+            //console.log('>>query', query, '--pagination', pagination);
 
-            const data = await productModel.paginate(arg, parm)
+            const data = await productModel.paginate(query, pagination)
             
             const prods = {
                 status: 'success',
