@@ -5,18 +5,30 @@ import producto from '../dao/file_manager/productManager.js'
 import product from '../dao/bd_manager/productManagerBD.js'
 import carrito from '../dao/bd_manager/cartManagerBD.js'
 
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
 
-    let parm = {
-        page: parseInt(req.query.page),
-        limit: parseInt(req.query.limit)
+    let query = {}
+    let pagination = {
+        page: parseInt(req.query?.page) || 1,
+        limit: parseInt(req.query?.limit) || 10
     }
+    const filter = req.query?.query || req.body?.query
     
-    if(!parm.page) parm.page = 1
-    if(!parm.limit) parm.limit = 3
-    if(req.query.sort) parm.sort = {price: req.query.sort}
-    
-    let prod = await product.getProducts(parm)
+    // if(filter) {
+        
+    //     query['$or'] = [
+    //         {title: {$regex: `/${filter}/i`}},
+    //         {category: {$regex: `/${filter}/i`}}
+    //     ]
+    // }
+
+    if(filter) query['title'] = {$regex: `(?i)${filter}(?i)`}
+    if(req.query.sort) pagination.sort = {price: req.query.sort}
+    if(req.query.category) query = {category: req.query.category}
+    if(req.query.status) query = {status: req.query.status}
+    console.log('>>', pagination, query);
+    let prod = await product.getProducts(query, pagination)
     
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
@@ -26,61 +38,114 @@ router.get('/', async (req, res) => {
 
     }
 
-    res.render('home', {title: "Products List", prod})
+    
+    res.render('product/home', {title: "Products List", prod, query: filter})
 })
 
 router.get('/realtimeproducts', async (req, res) => {
     
-    res.render('realTimeProducts', {title: "Products List"})
+    res.render('product/realTimeProducts', {title: "Products List"})
 })
 
-router.get('/chat', async (req, res) => {
-    
-    res.render('chat', {})
-})
+router.get('/product', async (req, res) => {
+    let query = {}
+    let pagination = {
+        page: parseInt(req.query?.page) || 1,
+        limit: parseInt(req.query?.limit) || 10
+    }
+    const filter = req.query?.query || req.body?.query
 
-router.get('/products', async (req, res) => {
-    let page = parseInt(req.query.page)
-    let limit = parseInt(req.query.limit)
-    let sort = req.query.sort
-    if(!page) page = 1
-    if(!limit) limit = 2
-    //console.log('p: ', page, ' l: ', limit);
+    if(filter) query = {title: {$regex: `/${filter}/i`}}
+    if(req.query.sort) pagination.sort = {price: req.query.sort}
+    if(req.query.category) query = {category: req.query.category}
+    if(req.query.status) query = {status: req.query.status}
 
-    let prod = await product.getProducts({page, limit})
+    let prod = await product.getProducts(query, pagination)
     
     if (prod.isValid) {
-        prod.prevLink = prod.hasPrevPage ? `/products?page=${prod.prevPage}` : ''
-        prod.nextLink = prod.hasNextPage ? `/products?page=${prod.nextPage}` : ''
+        prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
+        prod.nextLink = prod.hasNextPage ? `/product?page=${prod.nextPage}` : ''
         prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
         { style: 'currency', currency: 'MXN' }).format(prod.price))
     }
     // console.log(prod);
-
-    res.render('product', {title: 'Catalogo', prod})
+    console.log('user:', req.session.user);
+    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user})
 })
 
 router.get('/product/:pid', async (req, res) => {
     const data = await product.getProductById(req.params.pid)
+    //console.log(data);
+    if (data.status !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
+    
     let prod = data.message
 
     prod.price = new Intl.NumberFormat('es-MX',
     { style: 'currency', currency: 'MXN' }).format(prod.price)
 
-    res.render('productD', {title: prod.title, data: prod})
+    res.render('product/productD', {title: prod.title, data: prod})
+    
 })
 
+router.get('/products/register', async (req, res) => {
+
+    res.render('product/registerProd', {title: 'Registrar nuevo producto'})
+    
+})
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/carts/:cid', async (req, res) => {
     let data = await carrito.getCartById(req.params.cid)
-    let cart = data.message
+    //console.log(data);
+    let cart
+    if (data.status == 200) {
+        cart = data.message
+        //console.log(cart);
+        cart.isValid = true
+        cart.total = 0
+        //obtine el valor del subtotal de cada producto
+        cart.products.forEach(prod => prod.totalPrice = prod.product.price * prod.quantity)
+        //obtine el valor del total de los productos del carrito
+        cart.products.forEach(prod => cart.total = cart.total += prod.totalPrice)
+        
+        //se cambia de valor numerico una cadena en formato moneda MXN del precio, subtotal y total
+        //precio
+        cart.products.forEach(prod => prod.totalPrice = Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(prod.totalPrice))
+        //subtotal
+        cart.products.forEach(prod => prod.product.price = new Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(prod.product.price))
+        //total
+        cart.total = new Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(cart.total)
+        //console.log(cart);
+    }
     
-    cart.products.forEach(prod => prod.totalPrice = Intl.NumberFormat('es-MX',
-    { style: 'currency', currency: 'MXN' }).format(prod.product.price * prod.quantity))
-    //console.log(cart.products.totalPrice);
-    cart.products.forEach(prod => prod.product.price = new Intl.NumberFormat('es-MX',
-        { style: 'currency', currency: 'MXN' }).format(prod.product.price))
-    //console.log(cart.products);
-    res.render('cart', {title: "Mi carrito", cart: cart})
+    res.render('cart/cart', {title: "Mi carrito", cart: cart})
+})
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/chat', async (req, res) => {
+    
+    res.render('chat', {})
+})
+
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas sesion>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/login', async (req, res) => {
+    
+    res.render('session/login', {title: 'Login'})
+
+})
+
+router.get('/register', async (req, res) => {
+    
+    res.render('session/register', {title: 'Register'})
+})
+
+router.get('/restor', async (req, res) => {
+    
+    res.render('session/restaurar', {title: 'Recuperar Contrasseña'})
 })
 
 export default router

@@ -4,6 +4,21 @@
             <div class="mask d-flex align-items-center h-100">
                 <div class="container">
                     <h1>Products List</h1>
+                    <form action="/">
+                        <div class="input-group mb-3">
+                        <!--    <span class="input-group-text" id="basic-addon1">
+                                <select class="form-select" name="category" id="quantity" >
+                                    <option selected disabled>Category</option>
+                                </select>
+                            </span> -->
+                            <select class="form-select" name="category" id="quantity" style="
+                            width: 50px; background-color: #e9ecef">
+                                    <option selected disabled>Category</option>
+                                </select>
+                            <input type="text" class="form-control" placeholder="nombre" name="query" value="{{query}}" style="width: 80%;">
+                            <button class="btn btn-outline-dark" type="submit"><i class="bi bi-search"></i></button>
+                        </div>
+                    </form>
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="card shadow-2-strong">

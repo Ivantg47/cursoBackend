@@ -13,12 +13,12 @@ socket.on('lista', lista => {
                 <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle"></td>
                 <td>${prod.title}</td>
                 <td>${prod.description}</td>
-                <td>${prod.price = new Intl.NumberFormat('es-MX',{ style: 'currency', currency: 'MXN' }).format(prod.price)}</td>
+                <td align="right">${prod.price = new Intl.NumberFormat('es-MX',{ style: 'currency', currency: 'MXN' }).format(prod.price)}</td>
                 <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deletProduct('${prod._id}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
             </tr>`
             ).join(' ')
     } else {
-        lProducts = 'No hay productos registrados'
+        lProducts = '<td align="center" colspan="5" height="100px">No hay productos registrados</td>'
     }
     
     tabla.innerHTML = lProducts
@@ -30,7 +30,7 @@ formProd.addEventListener("submit", async (e) => {
     const formData = new FormData(formProd);
 
     // console.log(product);
-    console.log(formData);
+    //console.log(formData);
     const response = await fetch("/api/product", {
         body: formData,
         method: "POST",        
@@ -57,13 +57,13 @@ formProd.addEventListener("submit", async (e) => {
     //console.log(res);
 })
 
-document.addEventListener('click', (e) => { 
+// document.addEventListener('click', (e) => { 
     
-    if (e.target.matches('a')) {
-        e.preventDefault();
-      //e.preventImmediatePropagation(); // might not be necessary
-    }
-})
+//     if (e.target.matches('a')) {
+//         e.preventDefault();
+//       //e.preventImmediatePropagation(); // might not be necessary
+//     }
+// })
 
 deletProduct = async (id) => {
 

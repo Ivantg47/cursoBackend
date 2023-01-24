@@ -7,19 +7,17 @@ class ProductManagerBD{
         
     }
 
-    getProducts = async (parm) => {
+    getProducts = async (query, pagination) => {
 
         try{
-            // console.log('par: ', parm);
-            // const dat = await productModel.find().lean().exec()
-            parm.lean = true
-            // parm.sort = {price: 'desc'}
-            // console.log(parm);
-            const data = await productModel.paginate({}, parm)
+            pagination.lean = true
+            //console.log('>>query', query, '--pagination', pagination);
+
+            const data = await productModel.paginate(query, pagination)
             
             const prods = {
                 status: 'success',
-                isValid: !(data.page <= 0 || data.page>data.totalPages),
+                isValid: !(data.page <= 0 || data.page>data.totalPages || data.docs.length === 0),
                 payload: data.docs,
                 totalPages: data.totalPages,
                 prevPage: data.prevPage,
@@ -28,22 +26,10 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
+            //console.log(prods);
             if (!prods.isValid) {
                 prods.status = 'error'
             }
-            // console.log(prods);
-            // status:success/error
-            // payload: Resultado de los productos solicitados
-            // totalPages: Total de páginas
-            // prevPage: Página anterior
-            // nextPage: Página siguiente
-            // page: Página actual
-            // hasPrevPage: Indicador para saber si la página previa existe
-            // hasNextPage: Indicador para saber si la página siguiente existe.
-            // prevLink: Link directo a la página previa (null si hasPrevPage=false)
-            // nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-            //console.log(prods);
-            
             
             return prods
 

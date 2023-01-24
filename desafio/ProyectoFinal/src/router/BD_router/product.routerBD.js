@@ -6,26 +6,28 @@ import uploader from '../../dao/multer.js'
 
 router.get('/', async (req, res, next) => {
     try {
-        let page = parseInt(req.query.page)
-        let limit = parseInt(req.query.limit)
-        let sort = req.query.sort
-        if(!page) page = 1
-        if(!limit) limit = 10
-        //if(sort && (sort))
-        const prod = await producto.getProducts({page, limit})
-        console.log(prod);
+        let pagination = {
+            page: parseInt(req.query?.page) || 1,
+            limit: parseInt(req.query?.limit) || 10
+        }
+        const filter = req.query?.query || req.body?.query
+
+        let query = {}
+
+        if(req.query.sort) pagination.sort = {price: req.query.sort}
+        if(filter) query = {title: {$regex: `/${filter}/i`}}
+        if(req.query.category) query = {category: req.query.category}
+        if(req.query.status) query = {status: req.query.status}
+
+        //console.log('>>', pagination, query);
+        
+        const prod = await producto.getProducts(query, pagination)
+        //console.log(prod);
         if (!prod.isValid) {
             return res.status(404).send("not found")
         }
-        prod.status = 'suucces'
         return res.status(200).send(prod)
-    
-        // let page = parseInt(req.query.page)
-        // if(!page) page = 1
 
-        // let prods = await producto.getProducts({page: page, limit: 5, lean: true})
-
-        return prods
     } catch (error) {
         console.log(error);
         return next()
@@ -51,7 +53,9 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         if(req.files.length === 0) {
             product.thumbnail = ['/img/noimage.jpg']
         } else {
-            product.thumbnail = req.files.map(file => file.path.split('\\').slice(1).join('\\'))
+            console.log(product.thumbnail);
+            product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
+            console.log(product.thumbnail);
         }
         
         const prod = await producto.addProduct(product)
@@ -59,6 +63,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         if (prod.success) {
             return res.status(200).send(prod)
         } else {
+            
             return res.status(400).send(prod)
         }
         
