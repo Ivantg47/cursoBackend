@@ -44,8 +44,8 @@ router.post('/:cid/product/:pid', async (req, res, next) => {
         //console.log(req.body);
         const cart = await carrito.addProdCart({_id: cid}, {_id: pid}, req.body)
     
-        //return res.status(cart.status).send(cart.message)
-        return res.status(200).send('hola')
+        return res.status(cart.status).send(cart.message)
+        //return res.status(200).send('hola')
     } catch (error) {
         console.log(error);
         return next()
