@@ -1,4 +1,5 @@
 import express from 'express'
+import dotenv from 'dotenv'
 // import prodR from './router/file_router/product.router.js'
 // import cartR from './router/file_router/cart.router.js'
 import prodR from './router/BD_router/product.routerBD.js'
@@ -17,12 +18,11 @@ import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 
+dotenv.config()
 const app = express()
-
-const MONGO_URL = 'mongodb+srv://admin:admin@cluster0.gaqvdp2.mongodb.net/?retryWrites=true&w=majority'
-const BD = {dbname: 'ecommerce'}
+console.log(process.env);
 mongoose.set('strictQuery', false)
-mongoose.connect(MONGO_URL, BD,  error => {
+mongoose.connect(process.env.MONGO_URL, process.env.BD,  error => {
     if (error) {
         console.error('No connect', error);
         process.exit()
@@ -32,8 +32,8 @@ mongoose.connect(MONGO_URL, BD,  error => {
 app.use(session({
     secret: 'hola',
     store: MongoStore.create({
-        mongoUrl: MONGO_URL,
-        dbName: "ecommerce",
+        mongoUrl: process.env.MONGO_URL,
+        dbName: process.env.BD_NAME,
         mongoOptions: {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -67,7 +67,7 @@ app.use('/api/session', sessionR)
 app.use('/api/chat', chatR)
 app.use('/', viewsRouter)
 
-const httpServer = app.listen(8080, () => console.log('Server running...'))
+const httpServer = app.listen(process.env.DEV_PORT, () => console.log('Server running...'))
 const io = new Server(httpServer)
 
 app.set("io", io);
