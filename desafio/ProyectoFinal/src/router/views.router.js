@@ -39,12 +39,12 @@ router.get('/', async (req, res) => {
     }
 
     
-    res.render('product/home', {title: "Products List", prod, query: filter})
+    res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
 })
 
 router.get('/realtimeproducts', async (req, res) => {
     
-    res.render('product/realTimeProducts', {title: "Products List"})
+    res.render('product/realTimeProducts', {title: "Products List", user: req.session.user})
 })
 
 router.get('/product', async (req, res) => {
@@ -89,7 +89,7 @@ router.get('/product/:pid', async (req, res) => {
 
 router.get('/products/register', async (req, res) => {
 
-    res.render('product/registerProd', {title: 'Registrar nuevo producto'})
+    res.render('product/registerProd', {title: 'Registrar nuevo producto', user: req.session.user})
     
 })
 
@@ -121,7 +121,7 @@ router.get('/carts/:cid', async (req, res) => {
         //console.log(cart);
     }
     
-    res.render('cart/cart', {title: "Mi carrito", cart: cart})
+    res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session.user})
 })
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
