@@ -1,5 +1,6 @@
 import passport, { Passport } from 'passport'
 import local from 'passport-local'
+import GitHubStrategy from 'passport-github2'
 import { userModel } from '../dao/models/user.model.js'
 import { createHash, isValidPassword } from '../utils.js'
 
@@ -7,16 +8,48 @@ const LocalStrategy = local.Strategy
 
 const initializePassport = () => {
 
+    passport.use('github', new GitHubStrategy(
+        {
+            clientID: 'Iv1.cfabb8cc5c93e548',
+            clientSecret: '1832377d066db4868b03152d153cd40dfd79a06a',
+            callbackURL: 'http://127.0.0.1:8080/api/session/githubcallback'
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            //console.log(profile);
+            try {
+                
+                let user = await userModel.findOne({email: profile._json.email})
+                if (!user) {
+                    let newUser = {
+                        first_name: profile._json.name, 
+                        last_name: '', 
+                        email: profile._json.email,
+                        password: '',
+                        method: 'github'
+                    }
+                    let result = userModel.create(newUser)
+                    return done(null, result)
+                } else {
+                    return done(null, user)
+                }
+                
+            } catch (error) {
+                return done('error to login with github' + error)
+            }
+        }
+    ))
+
     passport.use('register', new LocalStrategy(
         {
             passReqToCallback: true, usernameField: 'email'
         },
         async (req, username, password, done) => {
-            const {first_name, last_name, email} = req.query //req.body
+            const {first_name, last_name, email} =  req.body //req.query
+            //console.log(first_name, last_name, email);
             try {
                 const user = await userModel.findOne({email: username})
                 if (user) {
-                    console.log('Existe');
+                    //console.log('Existe');
                     return done(null, false)
                 }
 
@@ -24,7 +57,8 @@ const initializePassport = () => {
                     first_name, 
                     last_name, 
                     email,
-                    password: createHash(Passport)
+                    password: createHash(password),
+                    method: 'local'
                 }
 
                 let result = await userModel.create(newUser)
