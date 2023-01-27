@@ -57,11 +57,11 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect: 
 })
 
 router.get('/faillogin', (req, res) => {
-    res.json({error: 'Failed login'})
+    res.render('error/general',{error: 'Failed login'})
 })
 
 router.get('/failregister', (req, res) => {
-    res.json({error: 'Failed to register'})
+    res.render('error/general',{error: 'Failed to register'})
 })
 
 router.get('/logout', async (req, res, next) => {

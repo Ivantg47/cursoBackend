@@ -5,12 +5,14 @@ import producto from '../dao/file_manager/productManager.js'
 import product from '../dao/bd_manager/productManagerBD.js'
 import carrito from '../dao/bd_manager/cartManagerBD.js'
 
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
 
-    //console.log(req.session);
-    // if (!req.session.user) {
-    //     res.redirect('/login')
-    // } else {
+    console.log(req.session);
+    if (!req.session.user) {
+        res.redirect('/login')
+    } else {
 
         let query = {}
         let pagination = {
@@ -34,49 +36,12 @@ router.get('/', async (req, res) => {
             { style: 'currency', currency: 'MXN' }).format(prod.price))
 
         }
-
         
         res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
-    // }
-    
-    
-
-})
-//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
-router.get('/products-list', async (req, res) => {
-
-    let query = {}
-    let pagination = {
-        page: parseInt(req.query?.page) || 1,
-        limit: parseInt(req.query?.limit) || 10
     }
-    const filter = req.query?.query || req.body?.query
     
-    // if(filter) {
-        
-    //     query['$or'] = [
-    //         {title: {$regex: `/${filter}/i`}},
-    //         {category: {$regex: `/${filter}/i`}}
-    //     ]
-    // }
-
-    if(filter) query['title'] = {$regex: `(?i)${filter}(?i)`}
-    if(req.query.sort) pagination.sort = {price: req.query.sort}
-    if(req.query.category) query = {category: req.query.category}
-    if(req.query.status) query = {status: req.query.status}
-    console.log('>>', pagination, query);
-    let prod = await product.getProducts(query, pagination)
     
-    if (prod.isValid) {
-        prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
-        prod.nextLink = prod.hasNextPage ? `/?page=${prod.nextPage}` : ''
-        prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
-        { style: 'currency', currency: 'MXN' }).format(prod.price))
 
-    }
-
-    
-    res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
 })
 
 router.get('/realtimeproducts', async (req, res) => {
@@ -106,8 +71,10 @@ router.get('/product', async (req, res) => {
         { style: 'currency', currency: 'MXN' }).format(prod.price))
     }
     // console.log(prod);
+    let admin = req.session.user.rol == 'admin'
+    console.log('ad:', admin);
     console.log('user:', req.session.user);
-    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user})
+    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin: admin})
 })
 
 router.get('/product/:pid', async (req, res) => {
