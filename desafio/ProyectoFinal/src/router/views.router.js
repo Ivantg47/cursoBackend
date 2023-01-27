@@ -5,8 +5,45 @@ import producto from '../dao/file_manager/productManager.js'
 import product from '../dao/bd_manager/productManagerBD.js'
 import carrito from '../dao/bd_manager/cartManagerBD.js'
 
-//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
+
+    //console.log(req.session);
+    // if (!req.session.user) {
+    //     res.redirect('/login')
+    // } else {
+
+        let query = {}
+        let pagination = {
+            page: parseInt(req.query?.page) || 1,
+            limit: parseInt(req.query?.limit) || 10
+        }
+        const filter = req.query?.query || req.body?.query
+        const category = req.query?.category || req.body?.category
+
+        if(filter) query['title'] = {$regex: `(?i)${filter}(?i)`}
+        if(req.query.sort) pagination.sort = {price: req.query.sort}
+        if(req.query.category) query = {category: {$regex: `(?i)${category}(?i)`}}
+        if(req.query.status) query = {status: req.query.status}
+        console.log('>>', pagination, query);
+        let prod = await product.getProducts(query, pagination)
+        
+        if (prod.isValid) {
+            prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
+            prod.nextLink = prod.hasNextPage ? `/?page=${prod.nextPage}` : ''
+            prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(prod.price))
+
+        }
+
+        
+        res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
+    // }
+    
+    
+
+})
+//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
+router.get('/products-list', async (req, res) => {
 
     let query = {}
     let pagination = {
@@ -39,12 +76,12 @@ router.get('/', async (req, res) => {
     }
 
     
-    res.render('product/home', {title: "Products List", prod, query: filter})
+    res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
 })
 
 router.get('/realtimeproducts', async (req, res) => {
     
-    res.render('product/realTimeProducts', {title: "Products List"})
+    res.render('product/realTimeProducts', {title: "Products List", user: req.session.user})
 })
 
 router.get('/product', async (req, res) => {
@@ -89,7 +126,7 @@ router.get('/product/:pid', async (req, res) => {
 
 router.get('/products/register', async (req, res) => {
 
-    res.render('product/registerProd', {title: 'Registrar nuevo producto'})
+    res.render('product/registerProd', {title: 'Registrar nuevo producto', user: req.session.user})
     
 })
 
@@ -121,7 +158,7 @@ router.get('/carts/:cid', async (req, res) => {
         //console.log(cart);
     }
     
-    res.render('cart/cart', {title: "Mi carrito", cart: cart})
+    res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session.user})
 })
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>

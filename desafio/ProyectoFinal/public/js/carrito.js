@@ -4,6 +4,8 @@ addProduct = async (cid, pid) => {
     console.log(response);
     if (response.status == 200) {
         alert('Producto añadido')
+    } else if (response.status == 401){
+        alert(response.statusText)
     } else {
         alert('Error al añadir')
     }
@@ -15,11 +17,13 @@ deleteProduct = async (pid) => {
     const cid = document.getElementById('cart').innerText
     //console.log(cid);
     const response = await fetch(`/api/carts/${cid}/product/${pid}`, {method: 'DELETE'})
-    //console.log(response);
+    console.log(response);
     
     if (response.status == 200) {
         alert('Producto eliminado')
         window.location.reload();
+    } else if (response.status == 401){
+        alert(response.statusText)
     } else {
         alert('Error al eliminar')
     }
@@ -48,7 +52,9 @@ addProducts = async (cid, pid) => {
     //console.log(response);
     if (response.status == 200) {
         alert('Producto añadido')
-    } else {
+    } else if (response.status == 401){
+        alert(response.statusText)
+    }else {
         alert('Error al añadir')
     }
     
