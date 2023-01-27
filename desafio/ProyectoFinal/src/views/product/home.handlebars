@@ -8,7 +8,9 @@
                         <div class="input-group mb-3">
                             <select class="form-select" name="category" id="quantity" style="
                             width: 50px; background-color: #e9ecef">
-                                    <option selected disabled>Category</option>
+                                    <option value="" selected disabled hidden>Category</option>
+                                    <option value="Juegos">Juegos</option>
+                                    <option value="Manga">Manga</option>
                                 </select>
                             <input type="text" class="form-control" placeholder="nombre" name="query" value="{{query}}" style="width: 80%;">
                             <button class="btn btn-outline-dark" type="submit"><i class="bi bi-search"></i></button>

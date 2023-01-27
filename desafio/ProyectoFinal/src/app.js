@@ -20,13 +20,11 @@ import initializePassport from './config/passport.config.js'
 
 dotenv.config()
 const app = express()
-//console.log(process.env);
 
-const MONGO_URI = `mongodb+srv://${process.env.USER_BD}:${process.env.PASSWORD_BD}@cluster0.gaqvdp2.mongodb.net/?retryWrites=true&w=majority`
 const BD = {dbname: process.env.BD_NAME}
 
 mongoose.set('strictQuery', false)
-mongoose.connect(MONGO_URI, BD,  error => {
+mongoose.connect(process.env.MONGO_URL, BD,  error => {
     if (error) {
         console.error('No connect', error);
         process.exit()
@@ -36,7 +34,7 @@ mongoose.connect(MONGO_URI, BD,  error => {
 app.use(session({
     secret: 'hola',
     store: MongoStore.create({
-        mongoUrl: MONGO_URI,
+        mongoUrl: process.env.MONGO_URL,
         dbName: process.env.BD_NAME,
         mongoOptions: {
             useNewUrlParser: true,
@@ -66,7 +64,7 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 
 app.use('/api/product', prodR)
-app.use('/api/carts', cartR)
+app.use('/api/carts', auth, cartR)
 app.use('/api/session', sessionR)
 app.use('/api/chat', chatR)
 app.use('/', viewsRouter)
