@@ -78,4 +78,25 @@ router.get('/logout', async (req, res, next) => {
     }
 })
 
+router.post('/restorPass', async (req, res, next) => {
+    try {
+        //console.log(req.body);
+        const {email, password} = req.body
+        //console.log('aa:', email, password);
+        const result = await userModel.findOneAndUpdate({email: email, method: 'local'}, {'$set': {password: createHash(password)}})
+
+        if (!result) {
+            console.log('Usuario no encontrado')
+            res.status(404).redirect('/restor')
+        } else {
+            console.log('Cambio contraseña exitoso')
+            res.status(200).redirect('/login')
+        }
+
+    } catch (error) {
+        console.log(error);
+        return next()
+    }
+})
+
 export default router
