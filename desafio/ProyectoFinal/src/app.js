@@ -20,9 +20,13 @@ import initializePassport from './config/passport.config.js'
 
 dotenv.config()
 const app = express()
-console.log(process.env);
+//console.log(process.env);
+
+const MONGO_URI = `mongodb+srv://${process.env.USER_BD}:${process.env.PASSWORD_BD}@cluster0.gaqvdp2.mongodb.net/?retryWrites=true&w=majority`
+const BD = {dbname: process.env.BD_NAME}
+
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGO_URL, process.env.BD,  error => {
+mongoose.connect(MONGO_URI, BD,  error => {
     if (error) {
         console.error('No connect', error);
         process.exit()
@@ -32,7 +36,7 @@ mongoose.connect(process.env.MONGO_URL, process.env.BD,  error => {
 app.use(session({
     secret: 'hola',
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URL,
+        mongoUrl: MONGO_URI,
         dbName: process.env.BD_NAME,
         mongoOptions: {
             useNewUrlParser: true,
