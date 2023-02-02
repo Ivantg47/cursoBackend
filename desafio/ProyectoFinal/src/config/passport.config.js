@@ -1,12 +1,41 @@
 import passport, { Passport } from 'passport'
 import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
+import jwt from 'passport-jwt'
 import { userModel } from '../dao/models/user.model.js'
 import { createHash, isValidPassword } from '../utils.js'
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = jwt.Strategy
+const ExtractJWT = jwt.ExtractJwt
 
+const cookieExtractor = req => {
+    let token = (req && req.cookies) ? req.cookies['coderCookieToken'] : null
+    token = token.split(' ')[1]
+
+    console.log('Cookie extractor: ', token);
+    return token
+
+}
 const initializePassport = () => {
+
+    passport.use('jwt', new JWTStrategy ({
+
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
+        secretOrKey: 'secret'
+
+    }, async (jwt_payload, done) => {
+        try {
+
+            //console.log(jwt_payload);
+            return done(null, jwt_payload)
+
+        } catch (error) {
+
+            return done(error)
+
+        }
+    }))
 
     passport.use('github', new GitHubStrategy(
         {
