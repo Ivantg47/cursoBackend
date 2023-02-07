@@ -31,13 +31,13 @@
                 <span id="user" style="color: white; margin-right: 10px;"></span>
                 
                 <div>
-                    <a id="logbt" class="btn btn-outline-light" href="/login" style="border: 1px solid transparent;">Identificate</a>
+                    <a id="logbt" class="btn btn-outline-light" href="/session/login" style="border: 1px solid transparent;">Identificate</a>
                 </div>
                 {{#if user}}
                 <script>
                     //alert('hola')
                     document.getElementById('user').innerHTML = "Hola, {{user.first_name}} {{user.last_name}}"
-                    document.getElementById('logbt').href = "/api/session/logout"
+                    document.getElementById('logbt').href = "/session/logout"
                     document.getElementById('logbt').innerHTML = "Salir"
                 </script>
                 {{/if}}

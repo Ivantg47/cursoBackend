@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
         }
         return res.status(200).send(messages)
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
@@ -19,17 +19,15 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         let mensaje = req.body
-        //console.log(mensaje);
         const message = await mensajes.addMessage(mensaje)
-        //console.log(await mensajes.getMessages());
+        
         req.app.get('io')
             .sockets.emit('mensaje', await mensajes.getMessages())
 
         return res.status(message.status).send(message.message)
-        //return res.status(200).send(message)
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })

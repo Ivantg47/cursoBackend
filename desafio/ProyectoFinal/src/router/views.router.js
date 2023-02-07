@@ -9,7 +9,6 @@ import carrito from '../dao/bd_manager/cartManagerBD.js'
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/', async (req, res) => {
 
-    console.log(req.session);
     if (!req.session.user) {
         res.redirect('/login')
     } else {
@@ -26,7 +25,7 @@ router.get('/', async (req, res) => {
         if(req.query.sort) pagination.sort = {price: req.query.sort}
         if(req.query.category) query = {category: {$regex: `(?i)${category}(?i)`}}
         if(req.query.status) query = {status: req.query.status}
-        console.log('>>', pagination, query);
+        
         let prod = await product.getProducts(query, pagination)
         
         if (prod.isValid) {
@@ -70,16 +69,15 @@ router.get('/product', async (req, res) => {
         prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
         { style: 'currency', currency: 'MXN' }).format(prod.price))
     }
-    // console.log(prod);
-    let admin = req.session.user.rol == 'admin'
-    console.log('ad:', admin);
-    console.log('user:', req.session.user);
-    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin: admin})
+    
+    let admin = req.session.user?.rol == 'admin'
+    
+    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin})
 })
 
 router.get('/product/:pid', async (req, res) => {
     const data = await product.getProductById(req.params.pid)
-    //console.log(data);
+    
     if (data.status !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
     
     let prod = data.message
@@ -100,11 +98,10 @@ router.get('/products/register', async (req, res) => {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/carts/:cid', async (req, res) => {
     let data = await carrito.getCartById(req.params.cid)
-    //console.log(data);
+    
     let cart
     if (data.status == 200) {
         cart = data.message
-        //console.log(cart);
         cart.isValid = true
         cart.total = 0
         //obtine el valor del subtotal de cada producto
@@ -122,7 +119,7 @@ router.get('/carts/:cid', async (req, res) => {
         //total
         cart.total = new Intl.NumberFormat('es-MX',
             { style: 'currency', currency: 'MXN' }).format(cart.total)
-        //console.log(cart);
+        
     }
     
     res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session.user})
@@ -132,24 +129,6 @@ router.get('/carts/:cid', async (req, res) => {
 router.get('/chat', async (req, res) => {
     
     res.render('chat', {})
-})
-
-
-//<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas sesion>>>>>>>>>>>>>>>>>>>>>>>>>>
-router.get('/login', async (req, res) => {
-    
-    res.render('session/login', {title: 'Login'})
-
-})
-
-router.get('/register', async (req, res) => {
-    
-    res.render('session/register', {title: 'Register'})
-})
-
-router.get('/restor', async (req, res) => {
-    
-    res.render('session/restaurar', {title: 'Recuperar Contrasseña'})
 })
 
 export default router

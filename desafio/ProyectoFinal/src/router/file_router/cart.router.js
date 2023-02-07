@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 
@@ -22,17 +22,16 @@ router.get('/:cid', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 
 router.post('/', async (req, res) => {
     try {
         const cart = await carrito.addCart()
-        console.log(cart);
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 
@@ -46,7 +45,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 
@@ -60,7 +59,7 @@ router.delete('/:cid', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 
@@ -74,7 +73,7 @@ router.delete('/:cid/product/:pid', async (req, res) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 })
 

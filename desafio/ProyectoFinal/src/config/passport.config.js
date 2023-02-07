@@ -3,31 +3,23 @@ import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import jwt from 'passport-jwt'
 import { userModel } from '../dao/models/user.model.js'
-import { createHash, isValidPassword } from '../utils.js'
+import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
+import { COOKIE_NAME_JWT, JWT_PRIVATE_KEY } from "./credentials.js";
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
 
-const cookieExtractor = req => {
-    let token = (req && req.cookies) ? req.cookies['coderCookieToken'] : null
-    token = token.split(' ')[1]
-
-    console.log('Cookie extractor: ', token);
-    return token
-
-}
 const initializePassport = () => {
 
     passport.use('jwt', new JWTStrategy ({
 
-        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: 'secret'
+        jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
+        secretOrKey: JWT_PRIVATE_KEY
 
     }, async (jwt_payload, done) => {
         try {
 
-            //console.log(jwt_payload);
             return done(null, jwt_payload)
 
         } catch (error) {
@@ -44,7 +36,7 @@ const initializePassport = () => {
             callbackURL: process.env.CALL_BACK_URL
         },
         async (accessToken, refreshToken, profile, done) => {
-            //console.log(profile);
+            
             try {
                 
                 let user = await userModel.findOne({email: profile._json.email})
@@ -74,11 +66,11 @@ const initializePassport = () => {
         },
         async (req, username, password, done) => {
             const {first_name, last_name, email} =  req.body //req.query
-            //console.log(first_name, last_name, email);
+            
             try {
                 const user = await userModel.findOne({email: username})
                 if (user) {
-                    //console.log('Existe');
+                    
                     return done(null, false)
                 }
 
@@ -94,7 +86,7 @@ const initializePassport = () => {
                 return done(null, result)
                 
             } catch (error) {
-                return done('Error al registrar '+ error)
+                return done('[LOCAL] Error al registrar '+ error)
             }
         }
     ))
@@ -103,16 +95,18 @@ const initializePassport = () => {
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                //console.log('passport: ', username, ' ', password);
+                
                 const user = await userModel.findOne({email: username}).lean().exec()
                 
                 if (!user) {
                     console.error('User no exite');
                     return done(null,false)
                 }
-                //console.log(isValidPassword(user, password));
+                
                 if(!isValidPassword(user, password)) return done(null,false)
                 delete user.password
+                user.token = generateToken(user)
+                
                 return done(null,user)
 
             } catch (error) {

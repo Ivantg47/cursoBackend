@@ -21,7 +21,7 @@ class ProductManager{
             return []
 
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -35,7 +35,7 @@ class ProductManager{
             return (cont > 0) ? prods[cont-1].id + 1 : 1
 
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -47,11 +47,11 @@ class ProductManager{
             const prod = prods.find(product => {
                 return product.id === Number(id)
             })
-            //console.log(typeof prod.price);
+            
             return prod
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }    
     }
 
@@ -66,7 +66,7 @@ class ProductManager{
                 })) === "undefined" //false: en uso -- true: libre
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }        
     }
 
@@ -93,7 +93,7 @@ class ProductManager{
             return {success: true, product: "Producto creado"}
                     
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }    
     }
 
@@ -114,7 +114,7 @@ class ProductManager{
             return {success: true, product: 'Producto eliminado'}
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }                            
     }
 
@@ -140,8 +140,6 @@ class ProductManager{
                 return {success: false, product: 'No se puede cambiar el id'}
             }
             for (const j of Object.keys(newProd)) {
-                console.log(`vp: ${prods[i][j]}`);
-                console.log(`np: ${newProd[j]}`);
                 prods[i][j] = newProd[j]
             }
             
@@ -150,7 +148,7 @@ class ProductManager{
             return {success: true, product: 'Producto actualizado'}
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }                        
     }
 

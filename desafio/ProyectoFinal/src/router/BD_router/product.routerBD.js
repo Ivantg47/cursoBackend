@@ -18,18 +18,16 @@ router.get('/', async (req, res, next) => {
         if(filter) query = {title: {$regex: `/${filter}/i`}}
         if(req.query.category) query = {category: req.query.category}
         if(req.query.status) query = {status: req.query.status}
-
-        //console.log('>>', pagination, query);
         
         const prod = await producto.getProducts(query, pagination)
-        //console.log(prod);
+
         if (!prod.isValid) {
             return res.status(404).send("not found")
         }
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
@@ -41,7 +39,7 @@ router.get('/:pid', async (req, res, next) => {
 
         return res.status(prod.status).send(prod.message)
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
@@ -49,17 +47,15 @@ router.get('/:pid', async (req, res, next) => {
 router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
     try {
         let product = req.body
-        //console.log(product);
+
         if(req.files.length === 0) {
             product.thumbnail = ['/img/noimage.jpg']
         } else {
-            console.log(product.thumbnail);
             product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
-            console.log(product.thumbnail);
         }
         
         const prod = await producto.addProduct(product)
-        //console.log(prod);
+
         if (prod.success) {
             return res.status(200).send(prod)
         } else {
@@ -68,7 +64,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         }
         
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
@@ -83,7 +79,7 @@ router.put('/:pid', async (req, res, next) => {
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
@@ -91,13 +87,12 @@ router.put('/:pid', async (req, res, next) => {
 router.delete('/:pid', async (req, res, next) => {
     try {
         const { pid } = req.params
-        console.log(pid);
         const prod = await producto.deleteProduct({_id: pid})
         
         return res.status(prod.status).send(prod)
         
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })

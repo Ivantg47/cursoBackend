@@ -11,7 +11,7 @@ class MessageManagerBD{
 
         } catch (error) {
 
-            console.log(error);
+            console.error(error);
             return error
 
         }
@@ -19,7 +19,6 @@ class MessageManagerBD{
 
     addMessage = async (data) => {
         try {
-            //console.log('mana: ', data);
             if (!data.user || !data.message) {
                 return {status: 400, message: 'Falta llenar campos'}
             }
@@ -30,7 +29,7 @@ class MessageManagerBD{
 
         } catch (error) {
 
-            console.log(error);
+            console.error(error);
             return error
         }
     }

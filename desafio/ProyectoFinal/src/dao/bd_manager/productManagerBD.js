@@ -11,7 +11,6 @@ class ProductManagerBD{
 
         try{
             pagination.lean = true
-            //console.log('>>query', query, '--pagination', pagination);
 
             const data = await productModel.paginate(query, pagination)
             
@@ -26,7 +25,7 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
-            //console.log(prods);
+            
             if (!prods.isValid) {
                 prods.status = 'error'
             }
@@ -34,7 +33,7 @@ class ProductManagerBD{
             return prods
 
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -43,7 +42,7 @@ class ProductManagerBD{
         try{
             
             const data = await productModel.findOne({_id: id}).lean().exec()
-            //console.log(data);
+            
             if (!data) {
                 return {status: 404, message: 'Not found'}
             }
@@ -53,7 +52,7 @@ class ProductManagerBD{
             if (error.name === 'CastError') {
                 return {status: 400, message: 'Id invalido'}
             }
-            console.log(error)
+            console.error(error);
             return error
         }    
     }
@@ -71,7 +70,7 @@ class ProductManagerBD{
             return {success: true, product: result, message: 'Producto añadido'}
 
         } catch(error) {
-            console.log(error)
+            console.error(error);
             return error
             
         }    
@@ -82,7 +81,6 @@ class ProductManagerBD{
         try{
             const result = await productModel.deleteOne(id)
 
-            console.log(result);
             if (result.deletedCount === 0) {
                 return {success: false, status: 404, message: 'Not found'}
             }
@@ -92,7 +90,7 @@ class ProductManagerBD{
             if (error.name === 'CastError') {
                 return {success: false, status: 400, message: 'Id invalido'}
             }
-            console.log(error)
+            console.error(error);
             return error
         }                            
     }
@@ -101,7 +99,7 @@ class ProductManagerBD{
 
         try{
             const result = await productModel.updateOne(pid, newProd)
-            //console.log('1: ', result);
+            
             return {success: true, product: 'Producto actualizado'}
         
         } catch(error) {
@@ -114,7 +112,7 @@ class ProductManagerBD{
             if (error.name === 'MongoServerError' && error.code === 11000) {
                 return {status: 400, message: 'Codigo en uso'}
             }
-            console.log(error)
+            console.error(error);
             return error
         }                        
     }
