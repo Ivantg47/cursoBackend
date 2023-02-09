@@ -35,7 +35,6 @@
                 </div>
                 {{#if user}}
                 <script>
-                    //alert('hola')
                     document.getElementById('user').innerHTML = "Hola, {{user.first_name}} {{user.last_name}}"
                     document.getElementById('logbt').href = "/session/logout"
                     document.getElementById('logbt').innerHTML = "Salir"

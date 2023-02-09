@@ -18,13 +18,12 @@ import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 import cookieParser from "cookie-parser";
-import { COOKIE_SECRET } from './config/credentials.js'
 
 dotenv.config()
 const app = express()
 
 const BD = {dbname: process.env.BD_NAME}
-app.use(cookieParser(COOKIE_SECRET))
+app.use(cookieParser(process.env.COOKIE_SECRET))
 
 mongoose.set('strictQuery', false)
 mongoose.connect(process.env.MONGO_URL, BD,  error => {
@@ -72,7 +71,7 @@ app.use('/session', sessionR)
 app.use('/api/chat', chatR)
 app.use('/', viewsRouter)
 
-const httpServer = app.listen(process.env.DEV_PORT, () => console.log('Server running...'))
+const httpServer = app.listen(process.env.PORT, () => console.log('Server running...'))
 const io = new Server(httpServer)
 
 app.set("io", io);

@@ -4,7 +4,6 @@ import GitHubStrategy from 'passport-github2'
 import jwt from 'passport-jwt'
 import { userModel } from '../dao/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
-import { COOKIE_NAME_JWT, JWT_PRIVATE_KEY } from "./credentials.js";
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -15,7 +14,7 @@ const initializePassport = () => {
     passport.use('jwt', new JWTStrategy ({
 
         jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
-        secretOrKey: JWT_PRIVATE_KEY
+        secretOrKey: process.env.JWT_PRIVATE_KEY
 
     }, async (jwt_payload, done) => {
         try {
@@ -46,7 +45,7 @@ const initializePassport = () => {
                         last_name: '', 
                         email: profile._json.email,
                         password: '',
-                        method: 'github'
+                        method: 'GITHUB'
                     }
                     let result = userModel.create(newUser)
                     return done(null, result)
@@ -79,7 +78,7 @@ const initializePassport = () => {
                     last_name, 
                     email,
                     password: createHash(password),
-                    method: 'local'
+                    method: 'LOCAL'
                 }
 
                 let result = await userModel.create(newUser)

@@ -4,7 +4,6 @@ const router = express.Router()
 
 import { userModel } from '../../dao/models/user.model.js'
 import { createHash, generateToken, isValidPassword } from '../../utils.js'
-import { COOKIE_NAME_JWT } from "../../config/credentials.js";
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Crear usuario>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/register', async (req, res) => {
@@ -35,7 +34,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
         req.session.user.rol = (req.user.email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
 
 
-        res.cookie(COOKIE_NAME_JWT, req.user.token).redirect('/product')
+        res.cookie(process.env.COOKIE_NAME_JWT, req.user.token).redirect('/product')
             
 
     } catch (error) {
@@ -66,7 +65,7 @@ router.get('/logout', async (req, res, next) => {
             if(err) return res.status(500).render('error/general', {error: err})
         })
         //return res.status(200).send('Logout success')
-        res.clearCookie(COOKIE_NAME_JWT).redirect("/session/login");
+        res.clearCookie(process.env.COOKIE_NAME_JWT).redirect("/session/login");
 
     } catch (error) {
         console.error(error);
@@ -100,7 +99,9 @@ router.post('/restorPass', async (req, res, next) => {
 })
 
 router.get('/current', async (req, res, next) => {
-
+    const user = req.session?.user || 'no user'
+    console.log('user', user);
+    res.status(200).send(user)
 })
 
 export default router
