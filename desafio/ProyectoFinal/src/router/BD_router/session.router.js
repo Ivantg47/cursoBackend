@@ -30,13 +30,9 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
         }
 
         req.session.user = req.user
-        
-        req.session.user.rol = (req.user.email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
-
 
         res.cookie(process.env.COOKIE_NAME_JWT, req.user.token).redirect('/product')
             
-
     } catch (error) {
         console.error(error);
         return next()
@@ -99,9 +95,13 @@ router.post('/restorPass', async (req, res, next) => {
 })
 
 router.get('/current', async (req, res, next) => {
-    const user = req.session?.user || 'no user'
-    console.log('user', user);
-    res.status(200).send(user)
+    const user = req.session?.user || null
+    //console.log('user', user);
+    if (user) {
+        if(!user.cart) user.cart = 'No cart'
+    }
+    
+    res.status(200).render('session/profile', {title: "Perfil", user})
 })
 
 export default router

@@ -10,7 +10,7 @@ import carrito from '../dao/bd_manager/cartManagerBD.js'
 router.get('/', async (req, res) => {
 
     if (!req.session.user) {
-        res.redirect('/login')
+        res.redirect('session/login')
     } else {
 
         let query = {}
@@ -70,7 +70,7 @@ router.get('/product', async (req, res) => {
         { style: 'currency', currency: 'MXN' }).format(prod.price))
     }
     
-    let admin = req.session.user?.rol == 'admin'
+    let admin = req.session.user?.role == 'admin'
     
     res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin})
 })
