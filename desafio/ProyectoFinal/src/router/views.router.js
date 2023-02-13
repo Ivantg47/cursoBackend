@@ -34,9 +34,18 @@ router.get('/', async (req, res) => {
             prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
             { style: 'currency', currency: 'MXN' }).format(prod.price))
 
+            const pagination = []
+
+            for (let i = 1; i <= prod.totalPages; i++) {
+                pagination.push({
+                    page: i,
+                    active: i == prod.page
+                })
+            }
+            //console.log(pagination);
         }
         
-        res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user})
+        res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user, pagination})
     }
     
     
@@ -62,17 +71,25 @@ router.get('/product', async (req, res) => {
     if(req.query.status) query = {status: req.query.status}
 
     let prod = await product.getProducts(query, pagination)
+    const index = []
     
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
         prod.nextLink = prod.hasNextPage ? `/product?page=${prod.nextPage}` : ''
         prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
         { style: 'currency', currency: 'MXN' }).format(prod.price))
+
+        for (let i = 1; i <= prod.totalPages; i++) {
+            index.push({
+                page: i,
+                active: i == prod.page
+            })
+        }
     }
     
     let admin = req.session.user?.role == 'admin'
     
-    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin})
+    res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
 })
 
 router.get('/product/:pid', async (req, res) => {
