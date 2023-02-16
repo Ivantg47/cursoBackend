@@ -4,6 +4,7 @@ import GitHubStrategy from 'passport-github2'
 import jwt from 'passport-jwt'
 import { userModel } from '../dao/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
+import credentials from './credentials.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -14,7 +15,7 @@ const initializePassport = () => {
     passport.use('jwt', new JWTStrategy ({
 
         jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
-        secretOrKey: process.env.JWT_PRIVATE_KEY
+        secretOrKey: credentials.JWT_PRIVATE_KEY
 
     }, async (jwt_payload, done) => {
         try {
@@ -30,9 +31,9 @@ const initializePassport = () => {
 
     passport.use('github', new GitHubStrategy(
         {
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: process.env.CALL_BACK_URL
+            clientID: credentials.CLIENT_ID,
+            clientSecret: credentials.CLIENT_SECRET,
+            callbackURL: credentials.CALL_BACK_URL
         },
         async (accessToken, refreshToken, profile, done) => {
             

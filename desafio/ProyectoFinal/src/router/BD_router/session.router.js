@@ -1,9 +1,10 @@
 import express from 'express'
 import passport from 'passport'
-const router = express.Router()
-
+import credentials from '../../config/credentials.js'
 import { userModel } from '../../dao/models/user.model.js'
 import { createHash, generateToken, isValidPassword } from '../../utils.js'
+
+const router = express.Router()
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Crear usuario>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/register', async (req, res) => {
@@ -34,7 +35,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
         req.session.user.rol = (req.user.email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
 
 
-        res.cookie(process.env.COOKIE_NAME_JWT, req.user.token).redirect('/product')
+        res.cookie(credentials.COOKIE_NAME_JWT, req.user.token).redirect('/product')
             
 
     } catch (error) {
@@ -65,7 +66,7 @@ router.get('/logout', async (req, res, next) => {
             if(err) return res.status(500).render('error/general', {error: err})
         })
         //return res.status(200).send('Logout success')
-        res.clearCookie(process.env.COOKIE_NAME_JWT).redirect("/session/login");
+        res.clearCookie(credentials.COOKIE_NAME_JWT).redirect("/session/login");
 
     } catch (error) {
         console.error(error);

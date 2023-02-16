@@ -18,15 +18,14 @@ import MongoStore from 'connect-mongo'
 import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 import cookieParser from "cookie-parser";
+import credentials from './config/credentials.js'
 
-dotenv.config()
 const app = express()
 
-const BD = {dbname: process.env.BD_NAME}
-app.use(cookieParser(process.env.COOKIE_SECRET))
+app.use(cookieParser(credentials.COOKIE_SECRET))
 
 mongoose.set('strictQuery', false)
-mongoose.connect(process.env.MONGO_URL, BD,  error => {
+mongoose.connect(credentials.MONGO_URL, {dbname: credentials.BD_NAME},  error => {
     if (error) {
         console.error('No connect', error);
         process.exit()
@@ -36,8 +35,8 @@ mongoose.connect(process.env.MONGO_URL, BD,  error => {
 app.use(session({
     secret: 'hola',
     store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URL,
-        dbName: process.env.BD_NAME,
+        mongoUrl: credentials.MONGO_URL,
+        dbName: credentials.BD_NAME,
         mongoOptions: {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -71,7 +70,7 @@ app.use('/session', sessionR)
 app.use('/api/chat', chatR)
 app.use('/', viewsRouter)
 
-const httpServer = app.listen(process.env.PORT, () => console.log('Server running...'))
+const httpServer = app.listen(credentials.PORT, () => console.log('Server running...'))
 const io = new Server(httpServer)
 
 app.set("io", io);

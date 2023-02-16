@@ -3,7 +3,7 @@ import { Command } from 'commander'
 
 const program = new Command()
 
-program.option('--mode <mode>', 'Modo de trabajo', 'PRODUCTION')
+program.option('--mode <mode>', 'Modo de trabajo', 'DEV')
 program.parse()
 
 const enviroment = program.opts().mode
