@@ -23,5 +23,6 @@ export default {
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     CALL_BACK_URL: process.env.CALL_BACK_URL,
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    PERCISTRENCE: process.env.PERCISTRENCE
 }
