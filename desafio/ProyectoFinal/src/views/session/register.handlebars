@@ -7,32 +7,42 @@
                 <h3 class="text-whitesmoke">Registro de Usuario</h3>
                 <br>
             <div class="container-content">
-                <form class="margin-t" action="/session/register" method="POST">
-                    <div class="input-group mb-3">
+                <form id="registro" class="margin-t" action="/session/register" method="POST">
+                    <div class="input-group mt-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" name="first_name" class="form-control" placeholder="first name" aria-label="first name" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
-                        <input type="text" name="last_name" class="form-control" placeholder="last name" aria-label="last name" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-fill"></i></span>
-                        <input type="text" name="email" class="form-control" placeholder="email" aria-label="email" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" name="password" class="form-control" placeholder="*****" aria-label="password" aria-describedby="basic-addon1">
+                        <input type="text" name="first_name" class="form-control" placeholder="nombre" aria-label="first name" aria-describedby="basic-addon1" >
+                        <br>
                     </div>
                     
-                    <button type="submit" class="form-button button-l margin-b">Registrar</button>
+                    <div class="input-group mt-4">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person"></i></span>
+                        <input type="text" name="last_name" class="form-control" placeholder="apellido" aria-label="last name" aria-describedby="basic-addon1" >
+                    </div>
+                    
+                    <div class="input-group mt-4">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-envelope-fill"></i></span>
+                        <input type="email" name="email" class="form-control" placeholder="correo electronico" aria-label="email" aria-describedby="basic-addon1" >
+                    </div>
+                    
+                    <div class="input-group mt-4">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                    </div>
+                    
+                    <div class="input-group mt-4">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-key"></i></span>
+                        <input type="password" name="confirm_password" class="form-control" placeholder="confirmar contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                    </div>
+                    
+                    <button type="submit" class="form-button button-l margin-b mt-4">Registrar</button>
                     
                 </form>
 
                 <p class="text-whitesmoke text-center">
-                    <small>Have an account?</small>
-                    <a class="text-darkyellow" href="/session/login"><small>Log In</small></a>
+                    <small>¿Tener una cuenta?</small>
+                    <a class="text-darkyellow" href="/session/login"><small>Acceder</small></a>
                 </p>
             </div>
     </div>
 </div>
+<script src="/js/validar.js"></script>

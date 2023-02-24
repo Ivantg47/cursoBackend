@@ -1,7 +1,7 @@
 import express from 'express'
 import passport from 'passport'
 import credentials from '../../config/credentials.js'
-import { userModel } from '../../dao/models/user.model.js'
+import { userModel } from '../../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, generateToken, isValidPassword } from '../../utils.js'
 
 const router = express.Router()

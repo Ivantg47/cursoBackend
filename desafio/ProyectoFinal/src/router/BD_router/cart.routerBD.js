@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import carrito from '../../dao/bd_manager/cartManagerBD.js'
+import carrito from '../../dao/bd_manager/mogo/cartManagerBD.js'
 
 router.get('/', async (req, res, next) => {
     try {

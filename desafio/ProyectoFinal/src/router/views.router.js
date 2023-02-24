@@ -2,8 +2,8 @@ import express from 'express'
 const router = express.Router()
 
 import producto from '../dao/file_manager/productManager.js'
-import product from '../dao/bd_manager/productManagerBD.js'
-import carrito from '../dao/bd_manager/cartManagerBD.js'
+import product from '../dao/bd_manager/mogo/productManagerBD.js'
+import carrito from '../dao/bd_manager/mogo/cartManagerBD.js'
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>

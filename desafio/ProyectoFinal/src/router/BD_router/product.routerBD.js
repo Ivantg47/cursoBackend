@@ -1,7 +1,7 @@
 
 import express from 'express'
 const router = express.Router()
-import producto from '../../dao/bd_manager/productManagerBD.js'
+import producto from '../../dao/bd_manager/mogo/productManagerBD.js'
 import uploader from '../../dao/multer.js'
 
 router.get('/', async (req, res, next) => {

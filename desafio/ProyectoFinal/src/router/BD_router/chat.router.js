@@ -1,5 +1,5 @@
 import express from 'express'
-import { mensajes } from '../../dao/bd_manager/chatManagerBD.js';
+import { mensajes } from '../../dao/bd_manager/mogo/chatManagerBD.js';
 const router = express.Router()
 
 router.get('/', async (req, res, next) => {
