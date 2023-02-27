@@ -49,8 +49,7 @@ $().ready(function () {
                 email: true
             },
             password: {
-                required: true,
-                minlength: 8
+                required: true
             }
         },
         messages:  {
@@ -59,8 +58,7 @@ $().ready(function () {
                 email: "Introduzca un correo valido"
             },
             password: {
-                required: "Favor de introducir contraseña",
-                minlength: "La contraseña debe ser mayor a 8 caracteres"
+                required: "Favor de introducir contraseña"
             }
         },
         errorPlacement: function (error, element) {               

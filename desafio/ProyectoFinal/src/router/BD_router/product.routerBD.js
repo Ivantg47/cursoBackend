@@ -1,8 +1,10 @@
 
 import express from 'express'
-const router = express.Router()
+import { ProductService } from '../../repositories/index.js'
 import producto from '../../dao/bd_manager/mogo/productManagerBD.js'
 import uploader from '../../dao/multer.js'
+
+const router = express.Router()
 
 router.get('/', async (req, res, next) => {
     try {
@@ -19,8 +21,8 @@ router.get('/', async (req, res, next) => {
         if(req.query.category) query = {category: req.query.category}
         if(req.query.status) query = {status: req.query.status}
         
-        const prod = await producto.getProducts(query, pagination)
-
+        const prod = await ProductService.getProducts(query, pagination)
+        
         if (!prod.isValid) {
             return res.status(404).send("not found")
         }
@@ -35,7 +37,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:pid', async (req, res, next) => {
     try {
         const { pid } = req.params
-        const prod = await producto.getProductById({_id: pid})
+        const prod = await ProductService.getProductById({_id: pid})
 
         return res.status(prod.status).send(prod.message)
     } catch (error) {
@@ -54,7 +56,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
             product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
         }
         
-        const prod = await producto.addProduct(product)
+        const prod = await ProductService.addProduct(product)
 
         if (prod.success) {
             return res.status(200).send(prod)
@@ -74,7 +76,7 @@ router.put('/:pid', async (req, res, next) => {
         const { pid } = req.params
         const newProd = req.body
 
-        const prod = await producto.updateProduct({_id: pid}, newProd)
+        const prod = await ProductService.updateProduct({_id: pid}, newProd)
         
         return res.status(200).send(prod)
 
@@ -87,7 +89,7 @@ router.put('/:pid', async (req, res, next) => {
 router.delete('/:pid', async (req, res, next) => {
     try {
         const { pid } = req.params
-        const prod = await producto.deleteProduct({_id: pid})
+        const prod = await ProductService.deleteProduct({_id: pid})
         
         return res.status(prod.status).send(prod)
         

@@ -4,7 +4,7 @@ import GitHubStrategy from 'passport-github2'
 import jwt from 'passport-jwt'
 import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
-import credentials from './credentials.js'
+import config from './config.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -15,7 +15,7 @@ const initializePassport = () => {
     passport.use('jwt', new JWTStrategy ({
 
         jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
-        secretOrKey: credentials.JWT_PRIVATE_KEY
+        secretOrKey: config.JWT_PRIVATE_KEY
 
     }, async (jwt_payload, done) => {
         try {
@@ -31,9 +31,9 @@ const initializePassport = () => {
 
     passport.use('github', new GitHubStrategy(
         {
-            clientID: credentials.CLIENT_ID,
-            clientSecret: credentials.CLIENT_SECRET,
-            callbackURL: credentials.CALL_BACK_URL
+            clientID: config.CLIENT_ID,
+            clientSecret: config.CLIENT_SECRET,
+            callbackURL: config.CALL_BACK_URL
         },
         async (accessToken, refreshToken, profile, done) => {
             

@@ -1,6 +1,6 @@
 import express from 'express'
 import passport from 'passport'
-import credentials from '../../config/credentials.js'
+import config from '../../config/config.js'
 import { userModel } from '../../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, generateToken, isValidPassword } from '../../utils.js'
 
@@ -32,7 +32,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
 
         req.session.user = req.user
 
-        res.cookie(credentials.COOKIE_NAME_JWT, req.user.token).redirect('/product')
+        res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/product')
             
     } catch (error) {
         console.error(error);
@@ -62,7 +62,7 @@ router.get('/logout', async (req, res, next) => {
             if(err) return res.status(500).render('error/general', {error: err})
         })
         //return res.status(200).send('Logout success')
-        res.clearCookie(credentials.COOKIE_NAME_JWT).redirect("/session/login");
+        res.clearCookie(config.COOKIE_NAME_JWT).redirect("/session/login");
 
     } catch (error) {
         console.error(error);

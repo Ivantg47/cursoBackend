@@ -1,12 +1,12 @@
-export default ProductRepository {
+export default class ProductRepository {
 
     constructor (dao) {
         this.dao = dao
     }
 
-    getProducts = async () => {
+    getProducts = async (query, pagination) => {
 
-        const result = await this.dao.getProducts()
+        const result = await this.dao.getProducts(query, pagination)
 
         return result
     }

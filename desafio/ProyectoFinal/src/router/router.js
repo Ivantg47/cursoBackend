@@ -1,5 +1,6 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken'
+import config from "../config/config.js";
 
 export default class MiRouter {
 
@@ -18,15 +19,15 @@ export default class MiRouter {
         this.router.get(path, this.generateCustomResponses, this.handlePolicies(policies), this.applyCallbacks(callbacks))
     }
 
-    post(path, this.generateCustomResponses, ...callbacks){
+    post(path, policies, ...callbacks){
         this.router.post(path, this.generateCustomResponses, this.handlePolicies(policies), this.applyCallbacks(callbacks))
     }
 
-    put(path, this.generateCustomResponses, ...callbacks){
+    put(path, policies, ...callbacks){
         this.router.put(path, this.generateCustomResponses, this.handlePolicies(policies), this.applyCallbacks(callbacks))
     }
 
-    delete(path, this.generateCustomResponses, ...callbacks){
+    delete(path, policies, ...callbacks){
         this.router.delete(path, this.generateCustomResponses, this.handlePolicies(policies), this.applyCallbacks(callbacks))
     }
 
@@ -42,10 +43,12 @@ export default class MiRouter {
     }
 
     generateCustomResponses = (req, res, next) => {
-        res.sendSuccess = payload => res.send({status: "error", payload})
+        res.sendSuccess = payload => res.status(200).send({status: "success", payload})
         res.sendServerError = error => res.status(500).send({status: "error", error})
         res.sendUserError = error => res.status(400).send({status: "error", error})
-        res.sendNoAuthorizedError = error => res.status(401).send({status: "error", error})
+        res.sendNoAuthenticatedError = error => res.status(401).send({status: "error", error})
+        res.sendNoAuthorizatedError = error => res.status(403).send({status: "error", error})
+        res.sendNoFoundError = error => res.status(404).send({status: "error", error})
 
         next()
     }
@@ -55,14 +58,14 @@ export default class MiRouter {
 
         if (policies.includes('USER') || policies.includes('ADMIN')) {
             const authHeaders = req.headers.authorization
-            if(!authHeaders) return res.sendNoAuthError('Unauthorized')
+            if(!authHeaders) return res.sendNoAuthorizatedError('Unauthorized')
 
             const tokenArray = authHeaders.split(" ")
             const token = (tokenArray.length > 1) ? tokenArray[1] : tokenArray[0]
 
-            const user = jwt.verify(token, 'secret')
-
-            if(!policies.includes(user.role.toUpperCase()) ) {
+            const user = jwt.verify(token, config.JWT_PRIVATE_KEY)
+            
+            if(!policies.includes(user.user.role.toUpperCase()) ) {
                 return res.sendNoAuthorizatedError("Unauthorizated")
             }
 

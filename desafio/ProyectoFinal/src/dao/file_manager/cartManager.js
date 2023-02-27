@@ -2,8 +2,8 @@ import fs from 'fs'
 
 class CartManager {
 
-    constructor(path){
-        this.path = path
+    constructor(){
+        this.path = '../../json/carritos.json'
     }
 
     getCarts = async() => {

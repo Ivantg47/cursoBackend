@@ -1,24 +1,57 @@
+import { count } from 'console'
 import fs from 'fs'
-
+import __dirname from '../../utils.js'
 
 class ProductManager{
 
-    constructor(path){
-        this.path = path
+    constructor(){
+        this.path = __dirname + '/json/producto.json'
+        this.init()
     }
 
-    getProducts = async() => {
+    init = () => {
+        try {
+            let file = fs.existsSync(this.path,'utf-8')
+            if (!file) {
+                fs.writeFileSync(this.path,JSON.stringify([]))
+            }
+            return null
+        } catch(error) {
+            console.error(error);
+        }
+    }
+
+    getProducts = async(query, pagination) => {
 
         try{
+            
+            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
-            if(fs.existsSync(this.path)){
-                const data = await fs.promises.readFile(this.path, 'utf-8')
-                const prod = JSON.parse(data)
+            let index, limit
+            if (pagination.page == 1) {
+                index = 0
+                limit = pagination.limit
+            } else {
+                index = pagination.page * pagination.limit - pagination.limit
+                limit = index + pagination.limit
+            }
+            let total = Math.ceil(data.length / pagination.limit)
 
-                return prod
+            const prods = {
+                status: 'success',
+                isValid: !(pagination.page <= 0 || pagination.page>total || data.length === 0),
+                payload: data.slice(index, limit),
+                totalPages: total, 
+                page: pagination.page, 
+                hasPrevPage: pagination.page !== 1, 
+                hasNextPage:  pagination.page < total
+            }
+            
+            if (!prods.isValid) {
+                prods.status = 'error'
             }
 
-            return []
+            return prods
 
         } catch(error) {
             console.error(error);
@@ -28,11 +61,11 @@ class ProductManager{
     getId = async() => {
 
         try{
-            
-            const prods = await this.getProducts()
+            console.log('id');
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const cont = prods.length
-
-            return (cont > 0) ? prods[cont-1].id + 1 : 1
+            console.log(cont);
+            return (cont > 0) ? prods[cont-1]._id + 1 : 1
 
         } catch(error) {
             console.error(error);
@@ -43,11 +76,14 @@ class ProductManager{
 
         try{
             
-            const prods = await this.getProducts()
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const prod = prods.find(product => {
-                return product.id === Number(id)
+                return product._id === Number(id)
             })
             
+            if (!prod) {
+                return null
+            }
             return prod
         
         } catch(error) {
@@ -59,7 +95,7 @@ class ProductManager{
 
         try{
             
-            const prods = await this.getProducts()
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             return typeof(prods.find(product => {
                 return product.code === code
@@ -74,23 +110,24 @@ class ProductManager{
 
         try{
             
-            const prods = await this.getProducts()
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
-            if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return {success: false, product: 'Falta llenar campos'}
+            if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
+                return 'Falta llenar campos'
             }
 
             if (!await this.validateCode(prod.code)) {
-                return {success: false, product: 'Codigo en uso'}
+                return 'Codigo en uso'
             }
-            prod.id =  await this.getId()
+            prod._id =  await this.getId()
             prod.status = true
             prod.price = Number(prod.price)
             prod.stock = Number(prod.stock)
             prods.push(prod)
-            await fs.promises.writeFile(this.path, JSON.stringify(prods))
-
-            return {success: true, product: "Producto creado"}
+            
+            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 4))
+            
+            return prod
                     
         } catch(error) {
             console.error(error);
@@ -101,7 +138,7 @@ class ProductManager{
 
         try{
             
-            const prods = await this.getProducts()
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             if (!await this.getProductById(id)) {                
                 return null
@@ -122,7 +159,7 @@ class ProductManager{
 
         try{
             
-            const prods = await this.getProducts()
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             const i = prods.map(uProd => uProd.id).indexOf(pid)
 
@@ -150,6 +187,10 @@ class ProductManager{
         } catch(error) {
             console.error(error);
         }                        
+    }
+
+    paginate = async () => {
+
     }
 
 }

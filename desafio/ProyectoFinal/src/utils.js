@@ -3,25 +3,25 @@ import { dirname } from 'path'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
-import credentials from './config/credentials.js'
+import config from './config/config.js'
 
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
 
 export const generateToken = (user) => {
-    const token = jwt.sign({user}, credentials.JWT_PRIVATE_KEY, {expiresIn: '24h'})
+    const token = jwt.sign({user}, config.JWT_PRIVATE_KEY, {expiresIn: '24h'})
 
     return token
 }
 export const authToken = (req, res, next) => {
     
-    const authToken = req.cookies[credentials.COOKIE_NAME_JWT]
+    const authToken = req.cookies[config.COOKIE_NAME_JWT]
     
     if(!authToken) return res.status(401).render('error/general', {error: "Not Auth"})
 
-    jwt.verify(token, credentials.JWT_PRIVATE_KEY, (error, credentials) => {
+    jwt.verify(token, config.JWT_PRIVATE_KEY, (error, config) => {
         if(error) return res.status(403).render('error/general', {error: 'Not authorized'})
-        req.user = credentials.user
+        req.user = config.user
         next()
     })
 }
@@ -42,7 +42,7 @@ export const passportCall = (strategy) => {
 }
 
 export const extractCookie = req => {
-    return (req && req.cookies) ? req.cookies[credentials.COOKIE_NAME_JWT] : null
+    return (req && req.cookies) ? req.cookies[config.COOKIE_NAME_JWT] : null
 }
 
 const __filename = fileURLToPath(import.meta.url)

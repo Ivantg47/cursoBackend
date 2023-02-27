@@ -1,9 +1,9 @@
 import express from 'express'
 const router = express.Router()
 
-import producto from '../dao/file_manager/productManager.js'
-import product from '../dao/bd_manager/mogo/productManagerBD.js'
-import carrito from '../dao/bd_manager/mogo/cartManagerBD.js'
+import product from '../../dao/bd_manager/mogo/productManagerBD.js'
+import { ProductService } from '../../repositories/index.js'
+import carrito from '../../dao/bd_manager/mogo/cartManagerBD.js'
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
         if(req.query.category) query = {category: {$regex: `(?i)${category}(?i)`}}
         if(req.query.status) query = {status: req.query.status}
         
-        let prod = await product.getProducts(query, pagination)
+        let prod = await ProductService.getProducts(query, pagination)
         
         if (prod.isValid) {
             prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
@@ -69,10 +69,11 @@ router.get('/product', async (req, res) => {
     if(req.query.sort) pagination.sort = {price: req.query.sort}
     if(req.query.category) query = {category: req.query.category}
     if(req.query.status) query = {status: req.query.status}
-
-    let prod = await product.getProducts(query, pagination)
-    const index = []
     
+    let prod = await ProductService.getProducts(query, pagination)
+
+    const index = []
+    console.log('---',prod.isValid);
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
         prod.nextLink = prod.hasNextPage ? `/product?page=${prod.nextPage}` : ''
@@ -93,7 +94,7 @@ router.get('/product', async (req, res) => {
 })
 
 router.get('/product/:pid', async (req, res) => {
-    const data = await product.getProductById(req.params.pid)
+    const data = await ProductService.getProductById(req.params.pid)
     
     if (data.status !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
     

@@ -3,7 +3,10 @@ import { Command } from 'commander'
 
 const program = new Command()
 
-program.option('--mode <mode>', 'Modo de trabajo', 'DEV')
+program.option('-p <port>', 'Puerto servidor')
+        .option('--mode <mode>', 'Modo de trabajo', 'DEV')
+        .option('--store <store>', 'Tipo de persistencia')
+
 program.parse()
 
 const enviroment = program.opts().mode
@@ -23,6 +26,7 @@ export default {
     CLIENT_ID: process.env.CLIENT_ID,
     CLIENT_SECRET: process.env.CLIENT_SECRET,
     CALL_BACK_URL: process.env.CALL_BACK_URL,
-    PORT: process.env.PORT,
-    PERCISTRENCE: process.env.PERCISTRENCE
+    PORT: program.opts().p || process.env.PORT,
+    PERCISTRENCE: program.opts().store || process.env.PERCISTRENCE,
+    SESSION_SECRET: process.env.SESSION_SECRET
 }

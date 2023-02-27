@@ -61,13 +61,13 @@ class ProductManagerBD{
 
         try{
 
-            if (!prod.title || !prod.description || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return {success: false, message: 'Falta llenar campos'}
+            if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
+                return 'Falta llenar campos'
             }
 
             const result = await productModel.create(prod)
             
-            return {success: true, product: result, message: 'Producto añadido'}
+            return result
 
         } catch(error) {
             console.error(error);
@@ -80,15 +80,15 @@ class ProductManagerBD{
 
         try{
             const result = await productModel.deleteOne(id)
-
-            if (result.deletedCount === 0) {
-                return {success: false, status: 404, message: 'Not found'}
+            console.log(result);
+            if (result.deletedCount == 0) {
+                return {status: 404, error: 'Not found'}
             }
-            return {success: true, status: 200, message: 'Producto eliminado'}
+            return {status: 200, payload: 'Producto eliminado'}
         
         } catch(error) {
             if (error.name === 'CastError') {
-                return {success: false, status: 400, message: 'Id invalido'}
+                return {status: 400, error: 'Id invalido'}
             }
             console.error(error);
             return error
@@ -98,19 +98,19 @@ class ProductManagerBD{
     updateProduct = async(pid, newProd) => {
 
         try{
-            const result = await productModel.updateOne(pid, newProd)
+            const result = await productModel.findOneAndUpdate(pid, newProd)
             
-            return {success: true, product: 'Producto actualizado'}
+            return !result ? {status: 400, error: 'Not Found' } : {status: 200, payload: 'Producto actualizado' }
         
         } catch(error) {
             if (error.name === 'CastError') {
-                return {status: 400, message: 'Id invalido'}
+                return {status: 400, error: 'Id invalido' }
             }
             if (error.code === 66) {
-                return {status: 400, message: 'El id no se pude modificar'}
+                return {status: 400, error: 'El id no se pude modificar' }
             }
             if (error.name === 'MongoServerError' && error.code === 11000) {
-                return {status: 400, message: 'Codigo en uso'}
+                return {status: 400, error: 'Codigo en uso' }
             }
             console.error(error);
             return error

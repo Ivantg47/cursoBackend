@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
 
 productSchema.post('save', function(error, doc, next) {
     if (error.name === 'MongoServerError' && error.code === 11000) {
-        next({success: false, message: 'Codigo en uso'});
+        next('Codigo en uso');
     } else {
         next();
     }
