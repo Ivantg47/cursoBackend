@@ -84,6 +84,7 @@ class ProductManagerBD{
             if (result.deletedCount == 0) {
                 return {status: 404, error: 'Not found'}
             }
+            
             return {status: 200, payload: 'Producto eliminado'}
         
         } catch(error) {
@@ -100,7 +101,7 @@ class ProductManagerBD{
         try{
             const result = await productModel.findOneAndUpdate(pid, newProd)
             
-            return !result ? {status: 400, error: 'Not Found' } : {status: 200, payload: 'Producto actualizado' }
+            return !result ? {status: 404, error: 'Not Found' } : {status: 200, message: 'Producto actualizado' , payload: result}
         
         } catch(error) {
             if (error.name === 'CastError') {

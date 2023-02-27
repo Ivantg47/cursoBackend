@@ -78,7 +78,7 @@ class ProductManager{
             
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const prod = prods.find(product => {
-                return product._id === Number(id)
+                return product._id === Number(id._id)
             })
             
             if (!prod) {
@@ -124,9 +124,10 @@ class ProductManager{
             prod.price = Number(prod.price)
             prod.stock = Number(prod.stock)
             prods.push(prod)
-            
-            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 4))
-            
+
+            await fs.promises.writeFile(this.path, JSON.stringify(prods))
+            //await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
+
             return prod
                     
         } catch(error) {
@@ -141,14 +142,15 @@ class ProductManager{
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             if (!await this.getProductById(id)) {                
-                return null
+                return {status: 404, error: 'Not found'}
             }
             
-            const filtro = prods.filter((prod) => prod.id != id)
+            const filtro = prods.filter((prod) => prod._id != id._id)
 
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            await fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            //await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
-            return {success: true, product: 'Producto eliminado'}
+            return {status: 200, payload: 'Producto eliminado'}
         
         } catch(error) {
             console.error(error);
@@ -156,41 +158,37 @@ class ProductManager{
     }
 
     updateProduct = async(pid, newProd) => {
-
         try{
+            const prod = await this.getProductById(pid)
             
+            if (JSON.stringify(newProd) === "{}") {
+                return {status: 400, error: 'No introdujeron datos para modificar' }
+            }
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
-            const i = prods.map(uProd => uProd.id).indexOf(pid)
-
-            if(i === -1){
-                return null
-            }
-            const g = (newProd.code == null || (await this.validateCode(newProd.code) && i != prods.map(uProd => uProd.code).indexOf(newProd.code)))
-            const h = (i === prods.map(uProd => uProd.code).indexOf(newProd.code) || newProd.code == null)
-
-            if(!(g || h)){
-                return {success: false, product: 'Codigo en uso'}
-            }
-   
-            if (!(typeof newProd.id === "undefined" || prods[i].id === newProd.id)) {
-                return {success: false, product: 'No se puede cambiar el id'}
-            }
-            for (const j of Object.keys(newProd)) {
-                prods[i][j] = newProd[j]
-            }
             
-            fs.promises.writeFile(this.path, JSON.stringify(prods))
+            if(!newProd._id) {
+                if (await this.validateCode(newProd.code) || newProd.code == prod.code) {
+                    for (let prop in newProd) {
+                        prod[prop] = newProd[prop]
+                    }
+                    
+                    prods.map(_prod => _prod._id===pid._id ? prod : _prod )
+                                
+                    await fs.promises.writeFile(this.path, JSON.stringify(prods))
+                    // await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
 
-            return {success: true, product: 'Producto actualizado'}
-        
+                    return {status: 200, message: 'Producto actualizado', payload: prod }
+                }
+
+                return {status: 400, error: 'Codigo en uso' }
+
+            } else {
+                return {status: 400, error: 'El id no se pude modificar' }
+            }
+
         } catch(error) {
             console.error(error);
         }                        
-    }
-
-    paginate = async () => {
-
     }
 
 }

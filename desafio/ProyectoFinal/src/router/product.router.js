@@ -25,7 +25,7 @@ export default class ProductRouter extends MiRouter {
                 const prod = await ProductService.getProducts(query, pagination)
                 
                 if (!prod.isValid) {
-                    return res.sendNoFoundError("Not Found 404")
+                    return res.sendNoFoundError("Not Found")
                 }
                 return res.sendSuccess(prod)
             } catch (error) {
@@ -39,7 +39,7 @@ export default class ProductRouter extends MiRouter {
                 const prod = await ProductService.getProductById({_id: pid})
                 
                 if (!prod) {
-                    return res.sendNoFoundError("Not Found 404")
+                    return res.sendNoFoundError("Not Found")
                 }
                 return res.sendSuccess(prod)
 
@@ -48,7 +48,7 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["ADMIN"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
                 let product = req.body
         
@@ -73,11 +73,11 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.put('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.put('/:pid', ["PUBLIC"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const newProd = req.body
-        
+                
                 const prod = await ProductService.updateProduct({_id: pid}, newProd)
 
                 return res.status(prod.status).send(prod)
@@ -88,7 +88,7 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.delete('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.delete('/:pid', ["PUBLIC"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const prod = await ProductService.deleteProduct({_id: pid})
