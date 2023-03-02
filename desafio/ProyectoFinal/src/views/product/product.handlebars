@@ -20,7 +20,7 @@
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="text-center">
-                            <button class="btn btn-dark" onclick="addProduct('63c1f48201b5a3071ad7e987','{{this._id}}')">Add to cart</button>
+                            <button class="btn btn-dark" onclick="addProduct('{{../user.cart}}','{{this._id}}')">Add to cart</button>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,38 @@
         </div>
         <div class="row d-flex justify-content-center">
             <div class="d-flex justify-content-center">
-                
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        {{#if prod.hasPrevPage}}
+                        <li class="page-item">
+                            <a class="page-link" href="{{prod.prevLink}}"><i class="bi bi-caret-left-fill"></i> Anterior</a>
+                        </li>
+                        {{else}}
+                        <li class="page-item disabled">
+                            <span class="page-link"><i class="bi bi-caret-left-fill"></i> Anterior</span>
+                        </li>
+                        {{/if}}
+                        {{#each pagination}}
+                            {{#if this.active}}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{{this.page}}</span>
+                                </li>
+                            {{else}}
+                                <li class="page-item"><a class="page-link" href="/product?page={{this.page}}">{{this.page}}</a></li>
+                            {{/if}}
+                        {{/each}}
+                        {{#if prod.hasNextPage}}
+                        <li class="page-item">
+                            <a class="page-link" href="{{prod.nextLink}}">Siguiente <i class="bi bi-caret-right-fill"></i></a>
+                        </li>
+                        {{else}}
+                        <li class="page-item disabled">
+                            <span class="page-link">Siguiente <i class="bi bi-caret-right-fill"></i></span>
+                        </li>
+                        {{/if}}
+                    </ul>
+                </nav>
+<!--
                 {{#if prod.hasPrevPage}}
                 <a class="btn btn-outline-dark mt-auto" href="{{prod.prevLink}}"><i class="bi bi-caret-left-fill"></i> Anterior</a>
                 {{else}}
@@ -41,10 +72,15 @@
                 {{else}}
                 <a class="btn btn-outline-dark mt-auto disabled" >Siguiente <i class="bi bi-caret-right-fill"></i></a>
                 {{/if}}
-            </div>
+    -->        </div>
         </div>
     </div>
     
 </section>
+{{#if admin}}
+<script>
+    alert('Ingreso como administrador')
+</script>
+{{/if}}
 
 <script src="/js/carrito.js"></script>

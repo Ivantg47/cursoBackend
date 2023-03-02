@@ -1,5 +1,5 @@
 import express from 'express'
-import { mensajes } from '../../dao/bd_manager/chatManagerBD.js';
+import { mensajes } from '../../dao/bd_manager/mogo/chatManagerBD.js';
 const router = express.Router()
 
 router.get('/', async (req, res, next) => {
@@ -11,25 +11,25 @@ router.get('/', async (req, res, next) => {
         }
         return res.status(200).send(messages)
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })
 
 router.post('/', async (req, res, next) => {
     try {
+        console.log('chat');
         let mensaje = req.body
-        //console.log(mensaje);
+        console.log(mensaje);
         const message = await mensajes.addMessage(mensaje)
-        //console.log(await mensajes.getMessages());
+        
         req.app.get('io')
             .sockets.emit('mensaje', await mensajes.getMessages())
 
         return res.status(message.status).send(message.message)
-        //return res.status(200).send(message)
 
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return next()
     }
 })

@@ -12,6 +12,7 @@ Swal.fire({
     user = result.value
     let TxtUserName = document.getElementById('username')
     document.getElementById('user').value = user
+    
     TxtUserName.innerHTML = 'Bienvenido ' + user
     socket.emit('authenticated', user)
 
@@ -21,12 +22,16 @@ formMensaje.addEventListener("submit", async (e) => {
     e.preventDefault()
     
     const formData = new FormData(formMensaje)
-    const mensaje = {};
-
-    for (const field of formData.entries()) {
-        mensaje[field[0]] = field[1];
-    }
+    const mensaje = {
+        user: document.getElementById('user').value,
+        message: document.getElementById('message').value
+    };
     
+    // for (const field of formData.entries()) {
+    //     mensaje[field[0]] = field[1];
+    //     console.log('lll: ', field);
+    // }
+    //console.log('sss: ', mensaje);
     const response = await fetch("/api/chat", {
         body: JSON.stringify(mensaje),
         method: "POST", 
@@ -35,7 +40,7 @@ formMensaje.addEventListener("submit", async (e) => {
         }       
     });
     formMensaje.reset()
-    console.log(response);
+    //console.log(response);
 })
 
 socket.on('messageLogs', data => {
@@ -61,8 +66,8 @@ socket.on('messageLogs', data => {
     })
     
     log.innerHTML = messages
-    console.log(`posB: ${out.scrollHeight} - ${out.clientHeight} = ${out.scrollHeight - out.clientHeight} <= ${out.scrollTop + 1}`);
-    console.log(`posB1: ${log.scrollHeight} - ${log.clientHeight} = ${log.scrollHeight - log.clientHeight} <= ${log.scrollTop + 1}`);
+    // console.log(`posB: ${out.scrollHeight} - ${out.clientHeight} = ${out.scrollHeight - out.clientHeight} <= ${out.scrollTop + 1}`);
+    // console.log(`posB1: ${log.scrollHeight} - ${log.clientHeight} = ${log.scrollHeight - log.clientHeight} <= ${log.scrollTop + 1}`);
 
     
     if(isScrolledToBottom) log.scrollTop = log.scrollHeight - log.clientHeight;

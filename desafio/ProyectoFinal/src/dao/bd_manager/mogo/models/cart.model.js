@@ -15,7 +15,9 @@ const cartSchema = new mongoose.Schema({
             }
         ],
         default:[]
-    }
+    },
+    totalProducts: Number,
+    totalPrice: Number
 })
 
 export const cartModel = mongoose.model(cartCollection, cartSchema)

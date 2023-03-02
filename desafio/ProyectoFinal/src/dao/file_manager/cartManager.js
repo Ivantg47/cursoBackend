@@ -2,8 +2,8 @@ import fs from 'fs'
 
 class CartManager {
 
-    constructor(path){
-        this.path = path
+    constructor(){
+        this.path = '../../json/carritos.json'
     }
 
     getCarts = async() => {
@@ -19,7 +19,7 @@ class CartManager {
             return []
 
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -32,7 +32,7 @@ class CartManager {
             return (cont > 0) ? carts[cont-1].id + 1 : 1
 
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
     
@@ -47,7 +47,7 @@ class CartManager {
             return cart
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         } 
     }
     
@@ -59,14 +59,13 @@ class CartManager {
                 id: await this.getId(),
                 products: []
             }
-            console.log(`arreglo: ${Array.isArray(cart.products)} valor: ${cart.products}`);
             carts.push(cart)
             await fs.promises.writeFile(this.path, JSON.stringify(carts))
 
             return "Carrito creado"
                     
         } catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
     
@@ -99,7 +98,6 @@ class CartManager {
             if (iP !== -1) {
                 carts[iC].products[iP].quantity++
             } else {
-                console.log('nuevo');
                 carts[iC].products.push({
                     id: pid,
                     quantity: 1
@@ -110,7 +108,7 @@ class CartManager {
             return 'Producto agregado'
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         } 
     }
 
@@ -121,14 +119,12 @@ class CartManager {
             const iC = carts.map(uCart => uCart.id).indexOf(cid)
             
             if(iC === -1){
-                console.log('cart');
                 return null
             }
             
             const iP = carts[iC].products.map(uProd => uProd.id).indexOf(pid)
             
             if (iP === -1) {
-                console.log('prod');
                 return null 
             } 
 
@@ -141,7 +137,7 @@ class CartManager {
             return 'Producto eliminado'
         
         } catch(error) {
-            console.log(error);
+            console.error(error);
         } 
     }
 
