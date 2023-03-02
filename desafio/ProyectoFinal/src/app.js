@@ -54,6 +54,7 @@ app.use(passport.session())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
+// app.use(cors({origin: , methods: ["PUT", "POST", "GET", "DELETE"]}))
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')

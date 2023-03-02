@@ -36,20 +36,22 @@
                 <div>
                     <a id="logbt" class="btn btn-outline-light" href="/session/login" style="border: 1px solid transparent;">Identificate</a>
                 </div>
+                <form id="cart" class="d-flex">
+                    <button class="btn btn-outline-light" type="submit" style="border: 1px solid transparent;">
+                        <i class="bi-cart-fill me-1"></i>
+                        Cart
+                        <span id="prods" class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    </button>
+                </form>
                 {{#if user}}
                 <script>
                     document.getElementById('user').innerHTML = "Hola, {{user.first_name}} {{user.last_name}} <br><small>Role: {{user.role}}</small>"
                     document.getElementById('logbt').href = "/session/logout"
                     document.getElementById('logbt').innerHTML = "Salir"
+                    document.getElementById('cart').action = "/carts/{{user.cart}}"
+                    //document.getElementById('prods').innerHTML = {{cart.totalProduct}} || 0
                 </script> 
                 {{/if}}
-                <form class="d-flex" action="/carts/63c1f48201b5a3071ad7e987">
-                    <button class="btn btn-outline-light" type="submit" style="border: 1px solid transparent;">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
             </div>
         </div>
     </nav>

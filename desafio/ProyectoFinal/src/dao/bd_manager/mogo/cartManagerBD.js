@@ -1,117 +1,104 @@
 import { cartModel } from "./models/cart.model.js"
+import { ticketModel } from "./models/ticket.model.js"
+import product from "./productManagerBD.js"
 
-
-class CartManager {
+class CartManager{
 
     constructor(){
     }
 
     getCarts = async() => {
+
         try{
 
             const cart = await cartModel.find().lean().exec()
+
             return cart
 
         } catch(error) {
 
-            console.error(error);
-            
+            throw error
+
         }
     }
 
     getCartById = async(id) => {
-        try{
-            
-            const cart = await cartModel.findOne({_id: id}).populate('products.product').lean().exec()
-            
-            if (!cart) {
-                return {status: 404, message: 'Not found'}
-            }
 
-            return {status: 200, message: cart}
+        try{
+
+            const cart = await cartModel.findOne({_id: id}).populate('products.product').lean().exec()
+
+            return cart
         
         } catch(error) {
 
-            if (error.name === 'CastError') {
-                return {status: 400, message: 'Id invalido'}
-            }
-            console.error(error);
+            throw error
 
         } 
     }
     
     addCart = async() => {
+
         try{
 
             const result = await cartModel.create({})
             
-            return {success: true, cart: result}
-                    
+            return result
+            
         } catch(error) {
 
-            console.error(error);
+            throw error
 
         }
     }
     
     deleteCart = async(id) => {
         try {
-        
-            const result = await cartModel.deleteOne(id)
             
-            if (result.deletedCount === 0) {
-                return {status: 404, message: 'Not found'}
-            }
-            return {status: 200, message: 'Carrito eliminado'}
+            const result = await cartModel.deleteOne({_id: id})
             
+            return result
+
         } catch(error) {
 
-            if (error.name === 'CastError') {
-                return {status: 400, message: 'Id invalido'}
-            }
-            console.error(error)
-            return error
+            throw error
 
         }
     }
 
     updateCart = async(cid, prods) => {
         try {
-            if (!await cartModel.findOne({_id: cid})) {
-                return {status: 404, message: 'Carrito no encontrado'}
-            }
+            
+            const result = await cartModel.findOneAndUpdate({_id: cid}, {'$set': { "products": prods}})
+            
+            return result
 
-            const result = await cartModel.updateOne({_id: cid}, {'$push': { products: prods}})
-
-            return {status: 200, message: 'Carrito modificado'}
         } catch (error) {
-            console.error(error)
-            return error
+            
+            throw error
         }
     }
     
-    addProdCart = async(cid, pid, body) => {
+    addProdCart = async(cid, pid, quantity) => {
         try{
-            
-            let quantity = Number(body.quantity) || 1
-            
-            if (!await cartModel.findOne({_id: cid})) {
-                return {status: 404, message: 'Carrito no encontrado'}
+
+            const prod = await product.getProductById(pid)
+            console.log(prod);
+            if (!prod) {
+                throw new Error('Product not Found')
             }
             const res = await cartModel.findOne({_id: cid, 'products.product': pid}, {"products.$": 1, "_id": 0}).lean().exec()
-            
             let result
             if (res) {
-                result = await cartModel.updateOne({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": res.products[0].quantity+quantity}})
+                return result = await cartModel.updateOne({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": res.products[0].quantity+quantity}})
             } else {
-                result = await cartModel.updateOne({_id: cid}, {'$push': { products: {product: pid}}})
+                return result = await cartModel.updateOne({_id: cid}, {'$push': { products: {product: pid, quantity: quantity}}})
             }
             
-            return {status: 200, message: 'Producto agregado'}
 
         } catch(error) {
 
-            console.error(error);
+            throw error
 
         } 
     }
@@ -119,21 +106,17 @@ class CartManager {
     deleteProdCart = async(cid, pid) => {
         try{
             
-            if (!await cartModel.findOne({_id: cid})) {
-                return {status: 404, message: 'Carrito no encontrado'}
-            }
+            // if (!await cartModel.findOne({_id: cid})) {
+            //     return {status: 404, message: 'Carrito no encontrado'}
+            // }
             const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$pull': {products: {product: pid}}}).lean().exec()
             
-            if (!result) {
-                return {status: 404, message: 'Producto no encontrado'}
-            } 
-
-            return {status: 200, message: 'Producto eliminado'}
+            return result
             
         
         } catch(error) {
 
-            console.error(error);
+            throw error
 
         }
     }
@@ -156,6 +139,14 @@ class CartManager {
             console.error(error)
             return error
         }
+    }
+
+    purchase = async(cid) => {
+        body.purchase_datetime = new Date()
+        console.log(body);
+        const result = await ticketModel.create(body)
+
+        return result
     }
 
 }

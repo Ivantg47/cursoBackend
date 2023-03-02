@@ -9,6 +9,7 @@ export let Products
 export let Carts
 export let Chat
 export let Session
+export let User
 
 switch (config.PERCISTRENCE) {
 
@@ -27,6 +28,7 @@ switch (config.PERCISTRENCE) {
         const { default: ProductsMongo } = await import('./bd_manager/mogo/productManagerBD.js')
         const { default: CartsMongo } = await import('./bd_manager/mogo/cartManagerBD.js')
         const { default: ChatMongo } = await import('./bd_manager/mogo/chatManagerBD.js')
+        const { default: UserMongo } = await import('./bd_manager/mogo/userManagerBD.js')
 
         Session = {
             secret: config.SESSION_SECRET,
@@ -44,6 +46,7 @@ switch (config.PERCISTRENCE) {
         Products = ProductsMongo
         Carts = CartsMongo
         Chat = ChatMongo
+        User = UserMongo
 
         break;
 

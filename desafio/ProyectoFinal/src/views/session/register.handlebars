@@ -26,12 +26,14 @@
                     
                     <div class="input-group mt-4">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" name="password" class="form-control" placeholder="contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                        <input id="password" type="password" name="password" class="form-control" placeholder="contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                        <button id="show_password" class="input-group-text" type="button" onclick="mostrarPassword('password')"> <span class="bi bi-eye-slash-fill password"></span> </button>
                     </div>
                     
                     <div class="input-group mt-4">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-key"></i></span>
-                        <input type="password" name="confirm_password" class="form-control" placeholder="confirmar contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                        <input id="confirm_password" type="password" name="confirm_password" class="form-control" placeholder="confirmar contraseña" aria-label="password" aria-describedby="basic-addon1" >
+                        <button id="show_password" class="input-group-text" type="button" onclick="mostrarPassword('confirm_password')"> <span class="bi bi-eye-slash-fill confirm_password"></span> </button>
                     </div>
                     
                     <button type="submit" class="form-button button-l margin-b mt-4">Registrar</button>
@@ -39,10 +41,24 @@
                 </form>
 
                 <p class="text-whitesmoke text-center">
-                    <small>¿Tener una cuenta?</small>
+                    <small>¿Ya tienes una cuenta?</small>
                     <a class="text-darkyellow" href="/session/login"><small>Acceder</small></a>
                 </p>
             </div>
     </div>
 </div>
 <script src="/js/validar.js"></script>
+<script type="text/javascript">
+function mostrarPassword(pass){
+    let cambio = document.getElementById(pass);
+    if(cambio.type == "password"){
+        cambio.type = "text";
+        $('.'+pass).removeClass('bi bi-eye-slash-fill').addClass('bi bi-eye-fill');
+    }else{
+        cambio.type = "password";
+        $('.'+pass).removeClass('bi bi-eye-fill').addClass('bi bi-eye-slash-fill');
+    }
+} 
+	
+
+</script>

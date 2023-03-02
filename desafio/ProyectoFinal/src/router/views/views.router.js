@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 import product from '../../dao/bd_manager/mogo/productManagerBD.js'
-import { ProductService } from '../../repositories/index.js'
+import { CartService, ProductService } from '../../repositories/index.js'
 import carrito from '../../dao/bd_manager/mogo/cartManagerBD.js'
 
 
@@ -73,7 +73,7 @@ router.get('/product', async (req, res) => {
     let prod = await ProductService.getProducts(query, pagination)
 
     const index = []
-    console.log('---',prod.isValid);
+    
     if (prod.isValid) {
         prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
         prod.nextLink = prod.hasNextPage ? `/product?page=${prod.nextPage}` : ''
@@ -87,7 +87,7 @@ router.get('/product', async (req, res) => {
             })
         }
     }
-    
+    console.log(req.session.user);
     let admin = req.session.user?.role == 'admin'
     
     res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
@@ -115,29 +115,32 @@ router.get('/products/register', async (req, res) => {
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/carts/:cid', async (req, res) => {
-    let data = await carrito.getCartById(req.params.cid)
+    let data = await CartService.getCartById(req.params.cid)
     
     let cart
-    if (data.status == 200) {
-        cart = data.message
+    if (data.code == 200) {
+        cart = data.result.payload
         cart.isValid = true
-        cart.total = 0
+        cart.totalPrice = 0
+        cart.totalProduct = 0
         //obtine el valor del subtotal de cada producto
-        cart.products.forEach(prod => prod.totalPrice = prod.product.price * prod.quantity)
+        cart.products.forEach(prod => prod.subTotal = prod.product.price * prod.quantity)
         //obtine el valor del total de los productos del carrito
-        cart.products.forEach(prod => cart.total = cart.total += prod.totalPrice)
-        
+        cart.products.forEach(prod => cart.totalPrice = cart.totalPrice += prod.subTotal)
+        //obtine la cantidad de los productos del carrito
+        cart.products.forEach(prod => cart.totalProduct = cart.totalProduct += prod.quantity)
+
         //se cambia de valor numerico una cadena en formato moneda MXN del precio, subtotal y total
         //precio
-        cart.products.forEach(prod => prod.totalPrice = Intl.NumberFormat('es-MX',
-            { style: 'currency', currency: 'MXN' }).format(prod.totalPrice))
+        cart.products.forEach(prod => prod.subTotal = Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(prod.subTotal))
         //subtotal
         cart.products.forEach(prod => prod.product.price = new Intl.NumberFormat('es-MX',
             { style: 'currency', currency: 'MXN' }).format(prod.product.price))
         //total
-        cart.total = new Intl.NumberFormat('es-MX',
-            { style: 'currency', currency: 'MXN' }).format(cart.total)
-        
+        cart.totalPrice = new Intl.NumberFormat('es-MX',
+            { style: 'currency', currency: 'MXN' }).format(cart.totalPrice)
+
     }
     
     res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session.user})

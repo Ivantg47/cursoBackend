@@ -5,6 +5,7 @@ import jwt from 'passport-jwt'
 import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
+import { UserService } from '../repositories/index.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -39,7 +40,7 @@ const initializePassport = () => {
             
             try {
                 
-                let user = await userModel.findOne({email: profile._json.email})
+                let user = await await UserService.getUserById(profile._json.email)
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name, 
@@ -48,8 +49,10 @@ const initializePassport = () => {
                         password: '',
                         method: 'GITHUB'
                     }
-                    let result = userModel.create(newUser)
+
+                    let result = await UserService.addUser(newUser)
                     return done(null, result)
+
                 } else {
                     return done(null, user)
                 }
@@ -68,7 +71,9 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-                const user = await userModel.findOne({email: username})
+
+                const user = await UserService.getUserById(username)
+                
                 if (user) {
                     
                     return done(null, false)
@@ -82,7 +87,8 @@ const initializePassport = () => {
                     method: 'LOCAL'
                 }
 
-                let result = await userModel.create(newUser)
+                let result = await UserService.addUser(newUser)
+
                 return done(null, result)
                 
             } catch (error) {
@@ -96,7 +102,7 @@ const initializePassport = () => {
         async (username, password, done) => {
             try {
                 
-                const user = await userModel.findOne({email: username}).lean().exec()
+                const user = await UserService.getUserById(username)
                 
                 if (!user) {
                     console.error('User no exite');
@@ -104,6 +110,7 @@ const initializePassport = () => {
                 }
                 
                 if(!isValidPassword(user, password)) return done(null,false)
+
                 delete user.password
                 user.token = generateToken(user)
                 

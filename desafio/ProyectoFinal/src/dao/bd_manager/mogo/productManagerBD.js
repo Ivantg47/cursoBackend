@@ -28,12 +28,14 @@ class ProductManagerBD{
             
             if (!prods.isValid) {
                 prods.status = 'error'
-            }
+            } 
             
             return prods
 
         } catch(error) {
-            console.error(error);
+            
+            throw error
+
         }
     }
 
@@ -43,17 +45,12 @@ class ProductManagerBD{
             
             const data = await productModel.findOne({_id: id}).lean().exec()
             
-            if (!data) {
-                return {status: 404, message: 'Not found'}
-            }
-            return {status: 200, message: data}
+            return data
         
         } catch(error) {
-            if (error.name === 'CastError') {
-                return {status: 400, message: 'Id invalido'}
-            }
-            console.error(error);
-            return error
+            
+            throw error
+
         }    
     }
 
@@ -61,17 +58,13 @@ class ProductManagerBD{
 
         try{
 
-            if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return 'Falta llenar campos'
-            }
-
             const result = await productModel.create(prod)
             
             return result
 
         } catch(error) {
-            console.error(error);
-            return error
+            
+            throw error
             
         }    
     }
@@ -80,12 +73,8 @@ class ProductManagerBD{
 
         try{
             const result = await productModel.deleteOne(id)
-            console.log(result);
-            if (result.deletedCount == 0) {
-                return {status: 404, error: 'Not found'}
-            }
             
-            return {status: 200, payload: 'Producto eliminado'}
+            return result
         
         } catch(error) {
             if (error.name === 'CastError') {
@@ -101,20 +90,12 @@ class ProductManagerBD{
         try{
             const result = await productModel.findOneAndUpdate(pid, newProd)
             
-            return !result ? {status: 404, error: 'Not Found' } : {status: 200, message: 'Producto actualizado' , payload: result}
+            return result
         
         } catch(error) {
-            if (error.name === 'CastError') {
-                return {status: 400, error: 'Id invalido' }
-            }
-            if (error.code === 66) {
-                return {status: 400, error: 'El id no se pude modificar' }
-            }
-            if (error.name === 'MongoServerError' && error.code === 11000) {
-                return {status: 400, error: 'Codigo en uso' }
-            }
-            console.error(error);
-            return error
+            
+            throw error
+
         }                        
     }
 
