@@ -9,7 +9,7 @@ export default class ProductRepository {
 
             const result = await this.dao.getProducts(query, pagination)
 
-            if (!result) {
+            if (!result.isValid) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 

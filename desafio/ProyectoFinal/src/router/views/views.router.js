@@ -70,8 +70,8 @@ router.get('/product', async (req, res) => {
     if(req.query.category) query = {category: req.query.category}
     if(req.query.status) query = {status: req.query.status}
     
-    let prod = await ProductService.getProducts(query, pagination)
-
+    let result = await ProductService.getProducts(query, pagination)
+    let prod = result.result.payload
     const index = []
     
     if (prod.isValid) {

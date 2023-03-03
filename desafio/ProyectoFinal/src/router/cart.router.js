@@ -108,7 +108,7 @@ export default class CartRouter extends MiRouter {
             try {
                 console.log('purchase');
                 const { cid } = req.params
-                const cart = await CartService.purchase(cid, req.body)
+                const cart = await CartService.purchase(cid)
                 
                 return res.status(cart.code).send(cart.result)
 

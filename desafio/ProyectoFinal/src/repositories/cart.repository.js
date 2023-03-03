@@ -161,7 +161,17 @@ export default class CartRepository {
 
     purchase = async(cid) => {
         
-        const result = await this.dao.purchase(cid)
+        const result = await this.dao.getCartById(cid)
+        console.log(result);
+        if (!result) {
+            return {code: 404, result: {status: "error", error: 'Not found'}}
+        }
+
+        result.product.forEach(prod => {
+
+            console.log(prod.product._id);
+            console.log(prod.quantity);
+        });
 
         return {code: 200, result: {status: "success", payload: result} }
         

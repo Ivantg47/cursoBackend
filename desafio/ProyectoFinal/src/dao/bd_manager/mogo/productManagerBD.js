@@ -15,7 +15,6 @@ class ProductManagerBD{
             const data = await productModel.paginate(query, pagination)
             
             const prods = {
-                status: 'success',
                 isValid: !(data.page <= 0 || data.page>data.totalPages || data.docs.length === 0),
                 payload: data.docs,
                 totalPages: data.totalPages,
@@ -25,10 +24,6 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
-            
-            if (!prods.isValid) {
-                prods.status = 'error'
-            } 
             
             return prods
 
