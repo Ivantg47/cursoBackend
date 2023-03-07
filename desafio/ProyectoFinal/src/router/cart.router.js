@@ -2,6 +2,7 @@ import { CartService } from "../repositories/index.js";
 import MiRouter from "./router.js";
 import nodemailer from 'nodemailer'
 import __dirname from "../utils.js";
+import config from "../config/config.js";
 
 export default class CartRouter extends MiRouter {
 
@@ -106,9 +107,10 @@ export default class CartRouter extends MiRouter {
 
         this.get('/:cid/purchase', ["PUBLIC"], async (req, res, next) => {
             try {
-                console.log('purchase');
+                
                 const { cid } = req.params
-                const cart = await CartService.purchase(cid)
+                console.log(req.session.user);
+                const cart = await CartService.purchase(cid, req.session.user.email)
                 
                 return res.status(cart.code).send(cart.result)
 
@@ -124,13 +126,13 @@ export default class CartRouter extends MiRouter {
                 service: 'gmail',
                 port: 587,
                 auth: {
-                    user: 'ivan.toga93@gmail.com',
-                    pass: 'hciuvvisniyyhtsr'
+                    user: config.USER_GMAIL,
+                    pass: config.PASS_GMAIL
                 }
             })
 
             const result = await transport.sendMail({
-                from: 'ivan.toga93@gmail.com',
+                from: config.USER_GMAIL,
                 to: 'ivan.toga93@gmail.com',
                 subject: 'Saludo',
                 html: `

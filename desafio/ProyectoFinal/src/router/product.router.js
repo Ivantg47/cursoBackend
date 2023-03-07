@@ -43,7 +43,7 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["ADMIN"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
                 let product = req.body
         

@@ -1,3 +1,4 @@
+import UserDTO from '../dao/DTO/user.dto.js'
 import { CartService } from "./index.js"
 
 export default class UserRepository {
@@ -24,7 +25,7 @@ export default class UserRepository {
         const cart = await CartService.addCart()
         
         user.cart = cart.result.payload._id
-        
+        const data = UserDTO(user)
         const result = this.dao.create(user)
 
         return result

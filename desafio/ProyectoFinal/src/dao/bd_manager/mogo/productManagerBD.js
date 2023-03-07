@@ -54,11 +54,11 @@ class ProductManagerBD{
         try{
 
             const result = await productModel.create(prod)
-            
+            //console.log(result);
             return result
 
         } catch(error) {
-            
+            //console.error(error);
             throw error
             
         }    
@@ -72,18 +72,16 @@ class ProductManagerBD{
             return result
         
         } catch(error) {
-            if (error.name === 'CastError') {
-                return {status: 400, error: 'Id invalido'}
-            }
-            console.error(error);
-            return error
+            
+            throw error
+
         }                            
     }
 
     updateProduct = async(pid, newProd) => {
 
         try{
-            const result = await productModel.findOneAndUpdate(pid, newProd)
+            const result = await productModel.findOneAndUpdate(pid, newProd, { upsert: true, returnOriginal: false })
             
             return result
         
@@ -92,6 +90,20 @@ class ProductManagerBD{
             throw error
 
         }                        
+    }
+
+    purchase = async(pid, quantity) => {
+        try {
+            
+            const result = await productModel.findOneAndUpdate(pid, {'$inc': {"stock": quantity}}, { upsert: true, returnOriginal: false })
+            
+            return result
+
+        } catch (error) {
+            
+            throw error
+
+        }
     }
 
 }

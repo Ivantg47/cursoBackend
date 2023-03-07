@@ -9,17 +9,19 @@ const productSchema = new mongoose.Schema({
     price:{ type: Number, required: true},
     thumbnail: [{type: String}],
     code: { type: String, required: true, trim: true, unique: true},
-    stock: { type: Number, required: true, min: 0},
+    stock: { type: Number, required: true},
     category: { type: String, required: true, trim: true},
     status: {type:Boolean, default: true}
 })
 
 productSchema.post('save', function(error, doc, next) {
+    
     if (error.name === 'MongoServerError' && error.code === 11000) {
-        next('Codigo en uso');
+        next({name: 'CastError', message: 'Codigo en uso'});
     } else {
         next();
     }
+
 });
 
 

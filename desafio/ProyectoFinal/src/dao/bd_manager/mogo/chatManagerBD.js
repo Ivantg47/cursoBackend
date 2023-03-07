@@ -7,30 +7,27 @@ class MessageManagerBD{
         try {
             
             const data = await messageModel.find().lean().exec()
+
             return data
 
         } catch (error) {
 
-            console.error(error);
-            return error
+            throw error
 
         }
     }
 
     addMessage = async (data) => {
         try {
-            if (!data.user || !data.message) {
-                return {status: 400, message: 'Falta llenar campos'}
-            }
             
             const result = await messageModel.create(data)
 
-            return {status: 200, message: 'Mensaje enviado', loadout: result}
+            return result
 
         } catch (error) {
 
-            console.error(error);
-            return error
+            throw error
+
         }
     }
 }

@@ -10,6 +10,7 @@ export let Carts
 export let Chat
 export let Session
 export let User
+export let Ticket
 
 switch (config.PERCISTRENCE) {
 
@@ -17,7 +18,8 @@ switch (config.PERCISTRENCE) {
         console.log('Mongo connect');
         
         mongoose.set('strictQuery', false)
-        mongoose.connect(config.MONGO_URL, {dbname: config.BD_NAME},  error => {
+        mongoose.connect(config.MONGO_URL, {dbname: config.BD_NAME,
+        autoIndex: true},  error => {
             if (error) {
                 console.error('No connect', error);
                 process.exit()
@@ -29,6 +31,7 @@ switch (config.PERCISTRENCE) {
         const { default: CartsMongo } = await import('./bd_manager/mogo/cartManagerBD.js')
         const { default: ChatMongo } = await import('./bd_manager/mogo/chatManagerBD.js')
         const { default: UserMongo } = await import('./bd_manager/mogo/userManagerBD.js')
+        const { default: TicketMongo } = await import('./bd_manager/mogo/ticketManagerBD.js')
 
         Session = {
             secret: config.SESSION_SECRET,
@@ -47,6 +50,7 @@ switch (config.PERCISTRENCE) {
         Carts = CartsMongo
         Chat = ChatMongo
         User = UserMongo
+        Ticket = TicketMongo
 
         break;
 

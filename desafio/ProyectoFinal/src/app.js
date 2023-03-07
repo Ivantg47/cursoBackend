@@ -81,6 +81,7 @@ io.on('connection', async socket => {
     })
 
     socket.on('authenticated', async user => {
+        console.log('hola', user);
         socket.broadcast.emit('allChat', user)
         socket.emit('messageLogs',await mensajes.getMessages())
     })

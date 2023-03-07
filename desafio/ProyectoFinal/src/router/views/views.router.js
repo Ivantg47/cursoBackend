@@ -1,9 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import product from '../../dao/bd_manager/mogo/productManagerBD.js'
 import { CartService, ProductService } from '../../repositories/index.js'
-import carrito from '../../dao/bd_manager/mogo/cartManagerBD.js'
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -87,7 +85,7 @@ router.get('/product', async (req, res) => {
             })
         }
     }
-    console.log(req.session.user);
+    //console.log(req.session.user);
     let admin = req.session.user?.role == 'admin'
     
     res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
@@ -149,7 +147,7 @@ router.get('/carts/:cid', async (req, res) => {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/chat', async (req, res) => {
     
-    res.render('chat', {})
+    res.render('chat', {title: "Chat", user: req.session.user})
 })
 
 export default router

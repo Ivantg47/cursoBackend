@@ -2,53 +2,53 @@ const socket = io()
 
 let user
 const formMensaje = document.getElementById('formMensaje')
+const username = document.getElementById('username').innerText
 
-Swal.fire({
-    title: 'Identificate',
-    input: 'email',
-    inputPlaceholder: 'Enter your email address',
-    allowOutsideClick: false,
-}).then(result => {
-    user = result.value
-    let TxtUserName = document.getElementById('username')
-    document.getElementById('user').value = user
+// Swal.fire({
+//     title: 'Identificate',
+//     input: 'email',
+//     inputPlaceholder: 'Enter your email address',
+//     allowOutsideClick: false,
+// }).then(result => {
+//     user = result.value
+//     let TxtUserName = document.getElementById('username')
+//     document.getElementById('user').value = user
     
-    TxtUserName.innerHTML = 'Bienvenido ' + user
-    socket.emit('authenticated', user)
+//     TxtUserName.innerHTML = 'Bienvenido ' + user
+//     socket.emit('authenticated', user)
 
-})
+// })
+console.log(username);
+window.onload = () => {socket.emit('authenticated',username)}
 
 formMensaje.addEventListener("submit", async (e) => {
     e.preventDefault()
     
     const formData = new FormData(formMensaje)
-    const mensaje = {
-        user: document.getElementById('user').value,
-        message: document.getElementById('message').value
-    };
     
-    // for (const field of formData.entries()) {
-    //     mensaje[field[0]] = field[1];
-    //     console.log('lll: ', field);
-    // }
-    //console.log('sss: ', mensaje);
+    let mensajes = {}
+    for (const field of formData.entries()) {
+        mensajes[field[0]] = field[1];
+        console.log('lll: ', field);
+    }
+    
     const response = await fetch("/api/chat", {
-        body: JSON.stringify(mensaje),
+        body: JSON.stringify(mensajes),
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
         }       
     });
     formMensaje.reset()
-    //console.log(response);
 })
 
 socket.on('messageLogs', data => {
     let log = document.getElementById('messageLogs')
-    const user = document.getElementById('user').value
+    const user = document.getElementById('email').value
+    
     let isScrolledToBottom = log.scrollHeight - log.clientHeight <= log.scrollTop + 1;
     let messages = '' 
-    //let cont = 0
+    
     data.forEach(message => {
         if(/*cont % 2 === 0*/user !== message.user){
             messages += `<div class="container container2">
@@ -83,19 +83,20 @@ socket.on('allChat', user => {
 
 socket.on('mensaje', data => {
     let log = document.getElementById('messageLogs')
-    const user = document.getElementById('user').value
+    const user = document.getElementById('email').value
+    
     let isScrolledToBottom = log.scrollHeight - log.clientHeight <= log.scrollTop + 1;
-    //console.log(log);
+    
     let messages = ''
     //let cont = 0
     data.forEach(message => {
         if(/*cont % 2 === 0*/user !== message.user){
-            messages += `<div class="container">
+            messages += `<div class="container container2">
                             <span><b>${message.user}</b></span>
                             <div>${message.message}</div>
                         </div>`
         } else {
-            messages += `<div class="container darker">
+            messages += `<div class="container container2 darker">
                             <span><b>${message.user}</b></span>
                             <div>${message.message}</div>
                         </div>`
