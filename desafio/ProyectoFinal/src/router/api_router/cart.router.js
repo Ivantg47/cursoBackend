@@ -33,7 +33,7 @@ export default class CartRouter extends MiRouter {
         this.post('/', ["PUBLIC"], async (req, res, next) => {
             try {
                 const cart = await CartService.addCart()
-                console.log(cart);
+                
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
                 console.error(error);
@@ -111,7 +111,7 @@ export default class CartRouter extends MiRouter {
                 
                 const { cid } = req.params
                 const email = req.session.user?.email
-                console.log(email);
+                
                 const cart = await CartService.purchase(cid, email)
                 
                 return res.status(cart.code).send(cart.result)
@@ -149,8 +149,6 @@ export default class CartRouter extends MiRouter {
                     cid: 'mundo'
                 }]
             })
-
-            console.log(result);
 
             res.send('envio')
         })

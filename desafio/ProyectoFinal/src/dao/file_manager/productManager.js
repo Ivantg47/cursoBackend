@@ -74,10 +74,10 @@ class ProductManager{
     getId = async() => {
 
         try{
-            console.log('id');
+            
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const cont = prods.length
-            console.log(cont);
+            
             return (cont > 0) ? prods[cont-1]._id + 1 : 1
 
         } catch(error) {

@@ -18,11 +18,11 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
     try {
-        console.log('chat');
+        
         let mensaje = req.body
-        console.log(mensaje);
+        
         const message = await mensajes.addMessage(mensaje)
-        console.log(message);
+        
         req.app.get('io')
             .sockets.emit('mensaje', await mensajes.getMessages())
 

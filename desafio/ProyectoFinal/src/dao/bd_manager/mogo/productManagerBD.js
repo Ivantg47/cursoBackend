@@ -20,7 +20,7 @@ class ProductManagerBD{
 
         }
     }
-    
+
     getPaginate = async (query, pagination) => {
 
         try{
@@ -68,11 +68,11 @@ class ProductManagerBD{
         try{
 
             const result = await productModel.create(prod)
-            //console.log(result);
+            
             return result
 
         } catch(error) {
-            //console.error(error);
+            
             throw error
             
         }    

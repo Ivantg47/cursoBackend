@@ -43,11 +43,11 @@ class TicketManagerBD{
         try{
 
             const result = await ticketModel.create(ticket)
-            //console.log(result);
+            
             return result
 
         } catch(error) {
-            //console.error(error);
+            
             throw error
             
         }    

@@ -27,7 +27,7 @@ export default class ProductRepository {
     getPaginate = async (query, pagination) => {
         try {
 
-            const result = await this.dao.getProducts(query, pagination)
+            const result = await this.dao.getPaginate(query, pagination)
 
             if (!result.isValid) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}

@@ -26,7 +26,6 @@ export default class ChatRepository {
         try {
             const message = ChatDTO(data)
 
-            console.log(data);
             if (!message.user || !message.message) {
                 return {status: 400, message: 'Falta llenar campos'}
             }

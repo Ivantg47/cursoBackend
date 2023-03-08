@@ -23,7 +23,7 @@ export default class UserRepository {
 
     getUserByEmail = async(username) => {
         
-        const result = await this.dao.getUserById(username)
+        const result = await this.dao.getUserByEmail(username)
 
         return result
     }

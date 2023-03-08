@@ -87,7 +87,7 @@ export default class SessionRouter extends MiRouter {
         
         this.get('/current', ["USER"], async (req, res, next) => {
             const user = req.session?.user || null
-            //console.log('user', user);
+            
             if (user) {
                 if(!user.cart) user.cart = 'No cart'
             }

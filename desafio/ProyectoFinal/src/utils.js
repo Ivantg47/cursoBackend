@@ -13,6 +13,7 @@ export const generateToken = (user) => {
 
     return token
 }
+
 export const authToken = (req, res, next) => {
     
     const authToken = req.cookies[config.COOKIE_NAME_JWT]

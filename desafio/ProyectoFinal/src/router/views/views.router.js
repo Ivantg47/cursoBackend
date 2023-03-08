@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
                     active: i == prod.page
                 })
             }
-            //console.log(pagination);
+            ;
         }
         
         res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user, pagination})
@@ -85,7 +85,7 @@ router.get('/product', async (req, res) => {
             })
         }
     }
-    //console.log(req.session.user);
+    
     let admin = req.session.user?.role == 'admin'
     
     res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})

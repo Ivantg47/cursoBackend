@@ -57,7 +57,8 @@ export default class MiRouter {
         if (policies.includes('PUBLIC')) return next()
 
         if (policies.includes('USER') || policies.includes('ADMIN')) {
-            const authHeaders = req.headers.authorization
+            const authHeaders = req.headers.authorization || req.cookies.coderCookieToken
+            
             if(!authHeaders) return res.sendNoAuthorizatedError('Unauthorized')
 
             const tokenArray = authHeaders.split(" ")
@@ -68,7 +69,7 @@ export default class MiRouter {
             if(!policies.includes(user.user.role.toUpperCase()) ) {
                 return res.sendNoAuthorizatedError("Unauthorizated")
             }
-
+            
             req.user = user
             return next()
         }

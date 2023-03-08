@@ -1,4 +1,5 @@
 import { CartService, ProductService } from "../repositories/index.js";
+import { authToken } from "../utils.js";
 import MiRouter from "./router.js";
 
 export default class ViewRouter extends MiRouter {
@@ -24,7 +25,7 @@ export default class ViewRouter extends MiRouter {
                 if(req.query.category) query = {category: {$regex: `(?i)${category}(?i)`}}
                 if(req.query.status) query = {status: req.query.status}
                 
-                let prod = await ProductService.getProducts(query, pagination)
+                let prod = await ProductService.getPaginate(query, pagination)
                 
                 if (prod.isValid) {
                     prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
@@ -40,7 +41,7 @@ export default class ViewRouter extends MiRouter {
                             active: i == prod.page
                         })
                     }
-                    //console.log(pagination);
+                    
                 }
                 
                 res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user, pagination})
@@ -65,7 +66,8 @@ export default class ViewRouter extends MiRouter {
             if(req.query.category) query = {category: req.query.category}
             if(req.query.status) query = {status: req.query.status}
             
-            let result = await ProductService.getProducts(query, pagination)
+            let result = await ProductService.getPaginate(query, pagination)
+            
             let prod = result.result.payload
             const index = []
             
@@ -82,7 +84,7 @@ export default class ViewRouter extends MiRouter {
                     })
                 }
             }
-            //console.log(req.session.user);
+            
             let admin = req.session.user?.role == 'admin'
             
             res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
