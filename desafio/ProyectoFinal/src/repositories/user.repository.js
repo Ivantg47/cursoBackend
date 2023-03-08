@@ -14,7 +14,14 @@ export default class UserRepository {
         return result
     }
 
-    getUserById = async(username) => {
+    getUserById = async(id) => {
+        
+        const result = await this.dao.getUserById(id)
+
+        return result
+    }
+
+    getUserByEmail = async(username) => {
         
         const result = await this.dao.getUserById(username)
 
@@ -26,7 +33,7 @@ export default class UserRepository {
         
         user.cart = cart.result.payload._id
         const data = UserDTO(user)
-        const result = this.dao.create(user)
+        const result = this.dao.create(data)
 
         return result
     }

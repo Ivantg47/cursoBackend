@@ -1,8 +1,8 @@
-import MiRouter from "./router.js";
+import MiRouter from "../router.js";
 import passport from 'passport'
-import config from "../config/config.js";
-import { createHash } from "../utils.js";
-import { UserService } from "../repositories/index.js";
+import config from "../../config/config.js";
+import { createHash } from "../../utils.js";
+import { UserService } from "../../repositories/index.js";
 
 export default class SessionRouter extends MiRouter {
     init () {

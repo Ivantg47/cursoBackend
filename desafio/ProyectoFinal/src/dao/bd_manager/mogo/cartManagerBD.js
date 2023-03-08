@@ -105,16 +105,13 @@ class CartManager{
     deleteProdCart = async(cid, pid) => {
         try{
             
-            // if (!await cartModel.findOne({_id: cid})) {
-            //     return {status: 404, message: 'Carrito no encontrado'}
-            // }
             const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$pull': {products: {product: pid}}}, { upsert: true, returnOriginal: false }).lean().exec()
             
             return result
             
         
         } catch(error) {
-
+            
             throw error
 
         }

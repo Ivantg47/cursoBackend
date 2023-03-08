@@ -20,7 +20,22 @@ class UserManager {
         }
     }
 
-    getUserById = async (username) => {
+    getUserById = async (id) => {
+
+        try {
+            
+            const result = await userModel.findById({_id: id}).lean().exec()
+
+            return result
+
+        } catch (error) {
+            
+            throw error
+
+        }
+    }
+
+    getUserByEmail = async (username) => {
 
         try {
             

@@ -7,7 +7,21 @@ class ProductManagerBD{
         
     }
 
-    getProducts = async (query, pagination) => {
+    getProducts = async () => {
+        try {
+            
+            const data = await productModel.find().lean().exec()
+
+            return data
+
+        } catch (error) {
+            
+            throw error
+
+        }
+    }
+    
+    getPaginate = async (query, pagination) => {
 
         try{
             pagination.lean = true

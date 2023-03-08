@@ -40,7 +40,7 @@ const initializePassport = () => {
             
             try {
                 
-                let user = await await UserService.getUserById(profile._json.email)
+                let user = await await UserService.getUserByEmail(profile._json.email)
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name, 
@@ -72,7 +72,7 @@ const initializePassport = () => {
             
             try {
 
-                const user = await UserService.getUserById(username)
+                const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
                     
@@ -102,10 +102,10 @@ const initializePassport = () => {
         async (username, password, done) => {
             try {
                 
-                const user = await UserService.getUserById(username)
+                const user = await UserService.getUserByEmail(username)
                 
                 if (!user) {
-                    console.error('User no exite');
+                    console.error('Usuario no existe');
                     return done(null,false)
                 }
                 
@@ -123,11 +123,12 @@ const initializePassport = () => {
     ))
 
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        const id = user._id || user.id
+        done(null, id)
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findById(id)
+        const user = await UserService.getUserById(id)
         return done(null,user)
     })
 

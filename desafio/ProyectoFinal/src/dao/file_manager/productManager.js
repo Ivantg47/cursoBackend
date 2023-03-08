@@ -17,11 +17,24 @@ class ProductManager{
             }
             return null
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
     getProducts = async(query, pagination) => {
+
+        try{
+            
+            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+
+            return data
+
+        } catch(error) {
+            throw error
+        }
+    }
+
+    getPaginate = async(query, pagination) => {
 
         try{
             
@@ -54,7 +67,7 @@ class ProductManager{
             return prods
 
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
@@ -68,7 +81,7 @@ class ProductManager{
             return (cont > 0) ? prods[cont-1]._id + 1 : 1
 
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
@@ -87,7 +100,7 @@ class ProductManager{
             return prod
         
         } catch(error) {
-            console.error(error);
+            throw error
         }    
     }
 
@@ -102,7 +115,7 @@ class ProductManager{
                 })) === "undefined" //false: en uso -- true: libre
         
         } catch(error) {
-            console.error(error);
+            throw error
         }        
     }
 
@@ -131,7 +144,7 @@ class ProductManager{
             return prod
                     
         } catch(error) {
-            console.error(error);
+            throw error
         }    
     }
 
@@ -153,7 +166,7 @@ class ProductManager{
             return {status: 200, payload: 'Producto eliminado'}
         
         } catch(error) {
-            console.error(error);
+            throw error
         }                            
     }
 
@@ -187,7 +200,7 @@ class ProductManager{
             }
 
         } catch(error) {
-            console.error(error);
+            throw error
         }                        
     }
 

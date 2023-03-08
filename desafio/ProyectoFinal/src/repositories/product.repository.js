@@ -6,7 +6,25 @@ export default class ProductRepository {
         this.dao = dao
     }
 
-    getProducts = async (query, pagination) => {
+    getProducts = async() => {
+        try {
+
+            const result = await this.dao.getProducts()
+
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            return {code: 200, result: {status: "success", payload: result} }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    }
+
+    getPaginate = async (query, pagination) => {
         try {
 
             const result = await this.dao.getProducts(query, pagination)

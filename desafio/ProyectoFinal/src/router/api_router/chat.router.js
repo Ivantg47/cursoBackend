@@ -1,5 +1,5 @@
-import { ChatService } from "../repositories/index.js";
-import MiRouter from "./router.js";
+import { ChatService } from "../../repositories/index.js";
+import MiRouter from "../router.js";
 
 export default class ChatRouter extends MiRouter {
 

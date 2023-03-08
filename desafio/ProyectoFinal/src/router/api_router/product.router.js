@@ -1,6 +1,6 @@
-import uploader from "../dao/multer.js";
-import { ProductService } from "../repositories/index.js";
-import MiRouter from "./router.js";
+import uploader from "../../dao/multer.js";
+import { ProductService } from "../../repositories/index.js";
+import MiRouter from "../router.js";
 
 
 export default class ProductRouter extends MiRouter {
