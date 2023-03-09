@@ -1,5 +1,5 @@
 import uploader from "../../dao/multer.js";
-import { ProductService } from "../../repositories/index.js";
+import { ProductService } from "../../repositories/index_repository.js";
 import MiRouter from "../router.js";
 
 
@@ -43,7 +43,7 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["ADMIN"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
                 let product = req.body
         

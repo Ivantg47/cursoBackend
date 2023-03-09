@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import { CartService, ProductService } from '../../repositories/index.js'
+import { CartService, ProductService } from '../../repositories/index_repository.js'
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>

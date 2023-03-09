@@ -2,7 +2,7 @@ import { count } from 'console'
 import fs from 'fs'
 import __dirname from '../../utils.js'
 
-class ProductManager{
+class ProductFileManager {
 
     constructor(){
         this.path = __dirname + '/json/producto.json'
@@ -21,7 +21,7 @@ class ProductManager{
         }
     }
 
-    getProducts = async(query, pagination) => {
+    getProducts = async() => {
 
         try{
             
@@ -206,6 +206,6 @@ class ProductManager{
 
 }
 
-const producto = new ProductManager('./src/json/producto.json')
+const producto = new ProductFileManager()
 
 export default producto

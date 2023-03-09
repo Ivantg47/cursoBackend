@@ -57,7 +57,7 @@ export default class MiRouter {
         if (policies.includes('PUBLIC')) return next()
 
         if (policies.includes('USER') || policies.includes('ADMIN')) {
-            const authHeaders = req.headers.authorization || req.cookies.coderCookieToken
+            const authHeaders = req.headers.authorization || req.cookies[config.COOKIE_NAME_JWT]
             
             if(!authHeaders) return res.sendNoAuthorizatedError('Unauthorized')
 

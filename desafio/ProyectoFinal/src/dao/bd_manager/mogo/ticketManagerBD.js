@@ -23,7 +23,7 @@ class TicketManagerBD{
         }
     }
 
-    getProductById = async(id) => {
+    getTicketById = async(id) => {
 
         try{
             
@@ -66,7 +66,7 @@ class TicketManagerBD{
         }                            
     }
 
-    update = async(pid, newTicket) => {
+    update = async(id, newTicket) => {
 
         try{
             const result = await ticketModel.findOneAndUpdate({_id: id}, newTicket)

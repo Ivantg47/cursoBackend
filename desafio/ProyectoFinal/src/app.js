@@ -18,7 +18,7 @@ import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 import cookieParser from "cookie-parser";
 import config from './config/config.js'
-import router from './router/index.js'
+import router from './router/index_router.js'
 
 const app = express()
 

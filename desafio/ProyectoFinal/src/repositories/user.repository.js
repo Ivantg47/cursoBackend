@@ -1,5 +1,5 @@
 import UserDTO from '../dao/DTO/user.dto.js'
-import { CartService } from "./index.js"
+import { CartService } from "./index_repository.js"
 
 export default class UserRepository {
 

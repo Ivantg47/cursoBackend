@@ -5,7 +5,7 @@ import jwt from 'passport-jwt'
 import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
-import { UserService } from '../repositories/index.js'
+import { UserService } from '../repositories/index_repository.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy

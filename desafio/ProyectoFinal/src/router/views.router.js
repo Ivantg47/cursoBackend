@@ -1,4 +1,4 @@
-import { CartService, ProductService } from "../repositories/index.js";
+import { CartService, ProductService } from "../repositories/index_repository.js";
 import { authToken } from "../utils.js";
 import MiRouter from "./router.js";
 

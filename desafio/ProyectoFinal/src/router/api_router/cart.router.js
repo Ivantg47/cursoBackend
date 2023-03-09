@@ -1,4 +1,4 @@
-import { CartService } from "../../repositories/index.js";
+import { CartService } from "../../repositories/index_repository.js";
 import MiRouter from "../router.js";
 import nodemailer from 'nodemailer'
 import __dirname from "../../utils.js";

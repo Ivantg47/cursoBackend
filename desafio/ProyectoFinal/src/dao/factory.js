@@ -57,21 +57,25 @@ switch (config.PERCISTRENCE) {
     case 'FILE':
         console.log('File percistance');
         const fileStore = FileStore(session)
-        const { default: ProductsFile } = await import('./file_manager/productManager.js')
-        const { default: CartsFile } = await import('./file_manager/cartManager.js')
-        //const { default: ChatFile } = await import('./file_manage/chatManager.js')
+        const { default: ProductsFile } = await import('./file_manager/product_fileManager.js')
+        const { default: CartsFile } = await import('./file_manager/cart_fileManager.js')
+        const { default: ChatFile } = await import('./file_manager/chat_fileManager.js')
+        const { default: UserFile } = await import('./file_manager/user_fileManage.js')
+        const { default: TicketFile } = await import('./file_manager/ticket_fileManager.js')
 
         Session = {
             secret: config.SESSION_SECRET,
-            store: new fileStore({path: __dirname + '/json/sessions', ttl:100, retries:0}),
+            store: new fileStore({path: __dirname + '/json/sessions.json', ttl:100, retries:0}),
             resave: false,
             saveUninitialized: false
         }
 
         Products = ProductsFile
         Carts = CartsFile
-        //Chat = ChatFile
-        
+        Chat = ChatFile
+        User = UserFile
+        Ticket = TicketFile
+
         break;
     default:
         console.log('Memory percistance');
