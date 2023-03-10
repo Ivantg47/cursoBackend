@@ -66,7 +66,7 @@ class ProductManagerBD{
     addProduct = async(prod) => {
 
         try{
-console.log('hola');
+
             const result = await productModel.create(prod)
             
             return result

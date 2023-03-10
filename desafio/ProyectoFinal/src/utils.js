@@ -52,7 +52,7 @@ export const extractCookie = req => {
 export const generateProduct = () => {
     return {
         title: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
+        description: faker.commerce.productDescription(title),
         price: faker.commerce.price(),
         thumbnail: faker.image.image(),
         code: faker.datatype.string(5),

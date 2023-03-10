@@ -66,9 +66,9 @@ export default class ProductRepository {
 
     addProduct = async(prod) => {
         try {
-            console.log(prod);
+            
             const data = new ProductDTO(prod)
-            console.log(prod);
+            
             if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
                 return {code: 400, result: {status: "error", error: 'Falta llenar campos'}}
             }
