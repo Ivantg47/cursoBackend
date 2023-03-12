@@ -92,11 +92,12 @@ export default class ViewRouter extends MiRouter {
         })
 
         this.get('/product/:pid', ["PUBLIC"], async (req, res) => {
+
             const data = await ProductService.getProductById(req.params.pid)
+            console.log(data);
+            if (data.code !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
             
-            if (data.status !== 200) return res.status(404).render('error/general', {error: 'Product not found'})
-            
-            let prod = data.message
+            let prod = data.result.payload
         
             prod.price = new Intl.NumberFormat('es-MX',
             { style: 'currency', currency: 'MXN' }).format(prod.price)
