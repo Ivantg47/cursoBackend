@@ -1,7 +1,7 @@
 import { productModel } from './models/product.model.js'
 
 
-class ProductManagerBD{
+class ProductMongoManager{
 
     constructor(){
         
@@ -30,6 +30,7 @@ class ProductManagerBD{
             
             const prods = {
                 isValid: !(data.page <= 0 || data.page>data.totalPages || data.docs.length === 0),
+                totalProds: data.totalDocs,
                 payload: data.docs,
                 totalPages: data.totalPages,
                 prevPage: data.prevPage,
@@ -81,9 +82,9 @@ class ProductManagerBD{
     deleteProduct = async(id) => {
 
         try{
-            const result = await productModel.deleteOne(id)
+            const result = await productModel.deleteOne({_id: id})
             
-            return result
+            return result.deletedCount !== 0
         
         } catch(error) {
             
@@ -95,7 +96,7 @@ class ProductManagerBD{
     updateProduct = async(pid, newProd) => {
 
         try{
-            const result = await productModel.findOneAndUpdate(pid, newProd, { upsert: true, returnOriginal: false })
+            const result = await productModel.findOneAndUpdate({_id: id}, newProd, { upsert: true, returnOriginal: false })
             
             return result
         
@@ -109,7 +110,7 @@ class ProductManagerBD{
     purchase = async(pid, quantity) => {
         try {
             
-            const result = await productModel.findOneAndUpdate(pid, {'$inc': {"stock": quantity}}, { upsert: true, returnOriginal: false })
+            const result = await productModel.findOneAndUpdate({_id: pid}, {'$inc': {"stock": quantity}}, { upsert: true, returnOriginal: false })
             
             return result
 
@@ -122,6 +123,6 @@ class ProductManagerBD{
 
 }
 
-const producto = new ProductManagerBD()
+const producto = new ProductMongoManager()
 
 export default producto

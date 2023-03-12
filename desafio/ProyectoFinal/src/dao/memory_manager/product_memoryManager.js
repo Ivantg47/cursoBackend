@@ -1,33 +1,14 @@
-import { count } from 'console'
-import fs from 'fs'
-import __dirname from '../../utils.js'
-
-class ProductFileManager {
+class ProductMemoryManager {
 
     constructor(){
-        this.path = __dirname + '/json/producto.json'
-        this.init()
-    }
-
-    init = () => {
-        try {
-            let file = fs.existsSync(this.path,'utf-8')
-            if (!file) {
-                fs.writeFileSync(this.path,JSON.stringify([]))
-            }
-            return null
-        } catch(error) {
-            throw error
-        }
+        this.products = []
     }
 
     getProducts = async() => {
 
         try{
             
-            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
-            return data
+            return this.products
 
         } catch(error) {
             throw error
@@ -37,8 +18,6 @@ class ProductFileManager {
     getPaginate = async(query, pagination) => {
 
         try{
-            
-            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             let index, limit
             if (pagination.page == 1) {
@@ -48,12 +27,12 @@ class ProductFileManager {
                 index = pagination.page * pagination.limit - pagination.limit
                 limit = index + pagination.limit
             }
-            let total = Math.ceil(data.length / pagination.limit)
+            let total = Math.ceil(this.products.length / pagination.limit)
 
             const prods = {
-                isValid: !(pagination.page <= 0 || pagination.page>total || data.length === 0),
-                totalProds: data.length,
-                payload: data.slice(index, limit),
+                isValid: !(pagination.page <= 0 || pagination.page>total || this.products.length === 0),
+                totalProds: this.products.length,
+                payload: this.products.slice(index, limit),
                 totalPages: total, 
                 page: pagination.page, 
                 hasPrevPage: pagination.page !== 1, 
@@ -70,11 +49,10 @@ class ProductFileManager {
     getId = async() => {
 
         try{
+
+            const cont = this.products.length
             
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-            const cont = prods.length
-            
-            return (cont > 0) ? prods[cont-1].id + 1 : 1
+            return (cont > 0) ? this.products[cont-1].id + 1 : 1
 
         } catch(error) {
             throw error
@@ -84,15 +62,15 @@ class ProductFileManager {
     getProductById = async(id) => {
 
         try{
-            console.log('id', id);
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-            const prod = prods.find(product => {
+            console.log('busca', id);
+            const prod = this.products.find(product => {
                 return product.id === Number(id)
             })
             
             if (!prod) {
                 return null
             }
+            console.log(prod);
             return prod
         
         } catch(error) {
@@ -104,9 +82,7 @@ class ProductFileManager {
 
         try{
             
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
-            return typeof(prods.find(product => {
+            return typeof(this.products.find(product => {
                 return product.code === code
                 })) === "undefined" //false: en uso -- true: libre
         
@@ -118,8 +94,6 @@ class ProductFileManager {
     addProduct = async(prod) => {
 
         try{
-            
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
                 return 'Falta llenar campos'
@@ -129,11 +103,8 @@ class ProductFileManager {
                 return 'Codigo en uso'
             }
             prod.id =  await this.getId()
-            
-            prods.push(prod)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(prods))
-            //await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
+            this.products.push(prod)
 
             return prod
                     
@@ -146,17 +117,12 @@ class ProductFileManager {
 
         try{
             
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
             if (!await this.getProductById(id)) {                
                 return null
             }
             
-            const filtro = prods.filter((prod) => prod.id != id)
+            this.products = this.products.filter((prod) => prod.id != id)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(filtro))
-            //await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
-            
             return 'Producto eliminado'
         
         } catch(error) {
@@ -166,24 +132,21 @@ class ProductFileManager {
 
     updateProduct = async(pid, newProd) => {
         try{
+            
             const prod = await this.getProductById(pid)
             
             if (JSON.stringify(newProd) === "{}") {
                 return {status: 400, error: 'No introdujeron datos para modificar' }
             }
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             
-            if(!newProd.id) {
+            if(!newProd.id || newProd.id == pid) {
                 if (await this.validateCode(newProd.code) || newProd.code == prod.code) {
                     for (let prop in newProd) {
                         prod[prop] = newProd[prop]
                     }
                     
-                    prods.map(_prod => _prod.id===pid ? prod : _prod )
-                                
-                    await fs.promises.writeFile(this.path, JSON.stringify(prods))
-                    // await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
-
+                    this.products.map(_prod => _prod.id===pid ? prod : _prod )
+                    
                     return prod
                 }
 
@@ -201,24 +164,19 @@ class ProductFileManager {
     purchase = async(pid, quantity) => {
         try {
             
-            let prod1 = await this.getProductById(pid)
-            
+            const prod1 = await this.getProductById(pid)
+
             if (!prod1) {
                 return null
             }
 
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
-            prods.map(prod =>{ 
-                if(prod.id == pid) {
+            this.products.map(prod =>{ 
+                if(prod.id===pid) {
                     prod.stock += quantity 
                     prod1 = prod
                 }
             })
 
-            //await fs.promises.writeFile(this.path, JSON.stringify(prods))
-            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
-            
             return prod1
 
         } catch (error) {
@@ -230,6 +188,6 @@ class ProductFileManager {
 
 }
 
-const producto = new ProductFileManager()
+const producto = new ProductMemoryManager()
 
 export default producto

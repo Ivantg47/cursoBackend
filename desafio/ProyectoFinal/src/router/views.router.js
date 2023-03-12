@@ -25,7 +25,8 @@ export default class ViewRouter extends MiRouter {
                 if(req.query.category) query = {category: {$regex: `(?i)${category}(?i)`}}
                 if(req.query.status) query = {status: req.query.status}
                 
-                let prod = await ProductService.getPaginate(query, pagination)
+                const result = await ProductService.getPaginate(query, pagination)
+                const prod = result.result.payload
                 
                 if (prod.isValid) {
                     prod.prevLink = prod.hasPrevPage ? `/?page=${prod.prevPage}` : ''
@@ -53,7 +54,7 @@ export default class ViewRouter extends MiRouter {
             res.render('product/realTimeProducts', {title: "Products List", user: req.session.user})
         })
 
-        this.get('/product', ["PUBLIC"], async (req, res) => {
+        this.get('/products', ["PUBLIC"], async (req, res) => {
             let query = {}
             let pagination = {
                 page: parseInt(req.query?.page) || 1,

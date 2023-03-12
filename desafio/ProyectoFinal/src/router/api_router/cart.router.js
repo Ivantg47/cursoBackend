@@ -17,10 +17,10 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid', ["USER"], async (req, res, next) => {
+        this.get('/:cid', ["PUBLIC"], async (req, res, next) => {
             try {
                 const { cid } = req.params
-                const cart = await CartService.getCartById({_id: cid})
+                const cart = await CartService.getCartById(cid)
                 
                 return res.status(cart.code).send(cart.result)
 
@@ -68,9 +68,10 @@ export default class CartRouter extends MiRouter {
 
         this.post('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
-                const cart = await CartService.addProdCart({_id: cid}, {_id: pid}, req.body)
+                const { cid, pid } = req.params
+                const { quantity } = req.body
+                
+                const cart = await CartService.addProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
@@ -81,9 +82,9 @@ export default class CartRouter extends MiRouter {
 
         this.delete('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
-                const cart = await CartService.deleteProdCart({_id: cid}, pid)
+                const { cid, pid } = req.params
+
+                const cart = await CartService.deleteProdCart(cid, pid)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
@@ -94,10 +95,10 @@ export default class CartRouter extends MiRouter {
 
         this.put('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
+                const { cid, pid } = req.params
+                const { quantity } = req.body
 
-                const cart = await CartService.updateProdCart({_id: cid}, pid, req.body)
+                const cart = await CartService.updateProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {

@@ -4,22 +4,16 @@ let user
 const formMensaje = document.getElementById('formMensaje')
 const username = document.getElementById('username').innerText
 
-// Swal.fire({
-//     title: 'Identificate',
-//     input: 'email',
-//     inputPlaceholder: 'Enter your email address',
-//     allowOutsideClick: false,
-// }).then(result => {
-//     user = result.value
-//     let TxtUserName = document.getElementById('username')
-//     document.getElementById('user').value = user
-    
-//     TxtUserName.innerHTML = 'Bienvenido ' + user
-//     socket.emit('authenticated', user)
+Swal.fire({
+    title: 'Bienvenido al chat' + username,
+    allowOutsideClick: false,
+}).then(result => {
+    socket.emit('authenticated', user)
 
-// })
-console.log(username);
-window.onload = () => {socket.emit('authenticated',username)}
+})
+
+// console.log(username);
+// window.onload = () => {socket.emit('authenticated',username)}
 
 formMensaje.addEventListener("submit", async (e) => {
     e.preventDefault()
@@ -49,21 +43,25 @@ socket.on('messageLogs', data => {
     let isScrolledToBottom = log.scrollHeight - log.clientHeight <= log.scrollTop + 1;
     let messages = '' 
     
-    data.forEach(message => {
-        if(/*cont % 2 === 0*/user !== message.user){
-            messages += `<div class="container container2">
-                            <span><b>${message.user}</b></span>
-                            <div>${message.message}</div>
-                        </div>`
-        } else {
-            messages += `<div class="container container2 darker">
-                            <span><b>${message.user}</b></span>
-                            <div>${message.message}</div>
-                        </div>`
-        }
-        //cont++
-        
-    })
+    if(data.code === 200){
+        const message = data.result.payload
+        message.forEach(message => {
+            if(/*cont % 2 === 0*/user !== message.user){
+                messages += `<div class="container container2">
+                                <span><b>${message.user}</b></span>
+                                <div>${message.message}</div>
+                            </div>`
+            } else {
+                messages += `<div class="container container2 darker">
+                                <span><b>${message.user}</b></span>
+                                <div>${message.message}</div>
+                            </div>`
+            }
+            //cont++
+        })
+    } else {
+        messages = 'No hay mensajes'
+    }
     
     log.innerHTML = messages
     // console.log(`posB: ${out.scrollHeight} - ${out.clientHeight} = ${out.scrollHeight - out.clientHeight} <= ${out.scrollTop + 1}`);

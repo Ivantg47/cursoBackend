@@ -67,13 +67,13 @@ export default class ProductRepository {
     addProduct = async(prod) => {
         try {
             
-            const data = new ProductDTO(prod)
-            
             if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
                 return {code: 400, result: {status: "error", error: 'Falta llenar campos'}}
             }
 
-            const result = await this.dao.addProduct(prod)
+            const data = new ProductDTO(prod)
+
+            const result = await this.dao.addProduct(data)
 
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
@@ -83,9 +83,6 @@ export default class ProductRepository {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            // console.error(error);
-            // console.error('--',error.name);
-            // console.error('--',error.message);
             return {code: 500, result: {status: "error", error: error.message}}
 
         }
@@ -96,7 +93,7 @@ export default class ProductRepository {
             
             const result = await this.dao.deleteProduct(id)
 
-            if (result.deletedCount === 0) {
+            if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 
@@ -117,6 +114,12 @@ export default class ProductRepository {
         try {
             
             const result = await this.dao.updateProduct(pid, newProd)
+
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            return {code: 200, result: {status: "success", message: 'Producto actualizado', payload: result} }
 
         } catch (error) {
             

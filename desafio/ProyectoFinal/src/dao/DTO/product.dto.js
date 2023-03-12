@@ -3,12 +3,12 @@ export default class ProductDTO {
     constructor(product) {
         this.title = product.title
         this.description = product.description
-        this.price = product.price
+        this.price = Number(product.price)
         this.thumbnail = product.thumbnail
         this.code = product.code
-        this.stock = product.stock
+        this.stock = Number(product.stock)
         this.category = product.category
-        this.status = product.status
+        this.status = product.status || true
     }
     
 }

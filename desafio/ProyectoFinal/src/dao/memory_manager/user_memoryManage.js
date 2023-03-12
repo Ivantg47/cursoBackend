@@ -1,32 +1,14 @@
-import fs from 'fs'
-import __dirname from '../../utils.js'
-
-class UserFileManager {
+class UserMemoryManager {
 
     constructor(){
-        this.path = __dirname + '/json/user.json'
-        this.init()
-    }
-
-    init = () => {
-        try {
-            let file = fs.existsSync(this.path,'utf-8')
-            if (!file) {
-                fs.writeFileSync(this.path,JSON.stringify([]))
-            }
-            return null
-        } catch(error) {
-            throw error
-        }
+        this.users = []
     }
 
     getUsers = async() => {
 
         try{
             
-            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
-            return data
+            return this.users
 
         } catch(error) {
             throw error
@@ -36,10 +18,9 @@ class UserFileManager {
     getId = async() => {
         try{
             
-            const users = await this.getUsers()
-            const cont = users.length
+            const cont = this.users.length
 
-            return (cont > 0) ? users[cont-1].id + 1 : 1
+            return (cont > 0) ? this.users[cont-1].id + 1 : 1
 
         } catch(error) {
             throw error
@@ -49,8 +30,7 @@ class UserFileManager {
     getUserById = async(id) => {
         try{
             
-            const users = await this.getUsers()
-            const user = users.find(u => {
+            const user = this.users.find(u => {
                 return u.id === Number(id)
             })
             
@@ -64,8 +44,7 @@ class UserFileManager {
     getUserByEmail = async(email) => {
         try{
             
-            const users = await this.getUsers()
-            const user = users.find(u => {
+            const user = this.users.find(u => {
                 return u.email === email
             })
             
@@ -79,12 +58,8 @@ class UserFileManager {
     create = async(user) => {
         try{
             
-            const users = await this.getUsers()
-
             user.id = await this.getId()
-            users.push(user)
-
-            await fs.promises.writeFile(this.path, JSON.stringify(users))
+            this.users.push(user)
 
             return user
                     
@@ -100,15 +75,12 @@ class UserFileManager {
                 return null
             }
 
-            const users = await this.getUsers()
+            this.users = this.users.filter((user) => user.email != email)
 
-            const filtro = users.filter((user) => user.email != email)
-
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
-            
             return 'Usuaio eliminado'
 
         } catch (error) {
+
             throw error
         }     
     }
@@ -125,12 +97,8 @@ class UserFileManager {
                 return 'No se puede modificar el correo'
             }
 
-            const users = await this.getUsers()
+            this.users.map(user => user.email === email ? user : newdata)
 
-            users.map(user => user.email === email ? user : newdata)
-
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
-            
             return 'Usuario modificado'
 
         } catch (error) {
@@ -139,6 +107,6 @@ class UserFileManager {
     }
 }
 
-const user = new UserFileManager()
+const user = new UserMemoryManager()
 
 export default user

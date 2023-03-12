@@ -2,7 +2,7 @@ import { ticketModel } from "./models/ticket.model.js"
 
 
 
-class TicketManagerBD{
+class TicketMongoManager{
 
     constructor(){
         
@@ -81,5 +81,5 @@ class TicketManagerBD{
     }
 }
 
-const ticket = new TicketManagerBD()
+const ticket = new TicketMongoManager()
 export default ticket

@@ -1,7 +1,7 @@
 import { cartModel } from "./models/cart.model.js"
-import product from "./productManagerBD.js"
+import product from "./product_mongoManager.js"
 
-class CartManager{
+class CartMongoManager{
 
     constructor(){
     }
@@ -117,10 +117,10 @@ class CartManager{
         }
     }
 
-    updateProdCart = async(cid, pid, prod) => {
+    updateProdCart = async(cid, pid, quantity) => {
         try {
             
-            const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": prod.quantity}}, { upsert: true, returnOriginal: false }).lean().exec()
+            const result = await cartModel.findOneAndUpdate({_id: cid, 'products.product': pid}, {'$set': {"products.$.quantity": quantity}}, { upsert: true, returnOriginal: false }).lean().exec()
 
             return result
 
@@ -132,6 +132,6 @@ class CartManager{
     }
 }
 
-const carrito = new CartManager()
+const carrito = new CartMongoManager()
 
 export default carrito

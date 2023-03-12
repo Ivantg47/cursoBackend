@@ -27,11 +27,11 @@ switch (config.PERCISTRENCE) {
         })
 
 
-        const { default: ProductsMongo } = await import('./bd_manager/mogo/productManagerBD.js')
-        const { default: CartsMongo } = await import('./bd_manager/mogo/cartManagerBD.js')
-        const { default: ChatMongo } = await import('./bd_manager/mogo/chatManagerBD.js')
-        const { default: UserMongo } = await import('./bd_manager/mogo/userManagerBD.js')
-        const { default: TicketMongo } = await import('./bd_manager/mogo/ticketManagerBD.js')
+        const { default: ProductsMongo } = await import('./bd_manager/mogo/product_mongoManager.js')
+        const { default: CartsMongo } = await import('./bd_manager/mogo/cart_mongoManager.js')
+        const { default: ChatMongo } = await import('./bd_manager/mogo/chat_mongoManager.js')
+        const { default: UserMongo } = await import('./bd_manager/mogo/user_mongoManager.js')
+        const { default: TicketMongo } = await import('./bd_manager/mogo/ticket_mongoManager.js')
 
         Session = {
             secret: config.SESSION_SECRET,
@@ -85,6 +85,18 @@ switch (config.PERCISTRENCE) {
             resave: true,
             saveUninitialized: true
         }
+
+        const { default: ProductsMemory } = await import('./memory_manager/product_memoryManager.js')
+        const { default: CartsMemory } = await import('./memory_manager/cart_memoryManager.js')
+        const { default: ChatMemory } = await import('./memory_manager/chat_memoryManager.js')
+        const { default: UserMemory } = await import('./memory_manager/user_memoryManage.js')
+        const { default: TicketMemory } = await import('./memory_manager/ticket_memoryManager.js')
+
+        Products = ProductsMemory
+        Carts = CartsMemory
+        Chat = ChatMemory
+        User = UserMemory
+        Ticket = TicketMemory
 
         break;
 }

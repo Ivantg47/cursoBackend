@@ -6,6 +6,17 @@ import { UserService } from "../../repositories/index_repository.js";
 
 export default class SessionRouter extends MiRouter {
     init () {
+
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<Crear usuario>>>>>>>>>>>>>>>>>>>>>>>>>>
+        this.get('/register', ["PUBLIC"], async (req, res) => {
+            
+            res.render('session/register', {title: 'Register'})
+        })
+
+        this.post('/register', ["PUBLIC"], passport.authenticate('register', {failureRedirect: '/session/failregister'}), async (req, res, next) => {
+            res.redirect('/session/login')
+        })
+
         this.get('/login', ["PUBLIC"], async (req, res) => {
     
             res.render('session/login', {title: 'Login'})
@@ -21,7 +32,7 @@ export default class SessionRouter extends MiRouter {
         
                 req.session.user = req.user
         
-                res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/product')
+                res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/products')
                     
             } catch (error) {
                 console.error(error);

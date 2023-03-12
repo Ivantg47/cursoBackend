@@ -39,12 +39,12 @@ export default class CartRepository {
             
 
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            return {code: 500, result: {status: "error", error: error}}
+            return {code: 500, result: {status: "error", error: error.message}}
 
         }
     }
@@ -98,19 +98,19 @@ export default class CartRepository {
             return {code: 200, result: {status: "success", payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            return {code: 500, result: {status: "error", error: error}}
+            return {code: 500, result: {status: "error", error: error.message}}
 
         }
     }
 
-    addProdCart = async(cid, pid, body) => {
+    addProdCart = async(cid, pid, quantity) => {
         try {
-            let quantity = Number(body.quantity) || 1
+            quantity = Number(quantity) || 1
 
             const result = await this.dao.addProdCart(cid, pid, quantity)
             
@@ -121,12 +121,12 @@ export default class CartRepository {
             return {code: 200, result: {status: "success", message: 'Producto agregado', payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
             
-            return {code: 500, result: {status: "error", error: error}}
+            return {code: 500, result: {status: "error", error: error.message}}
 
         }
     }
@@ -149,14 +149,14 @@ export default class CartRepository {
             if (error.name === 'MongoServerError' && error.code === 2) {
                 return {code: 400, result: {status: "error", error: 'El producto no se encuentra en el carrito'}}
             }
-            return {code: 500, result: {status: "error", error: error}}
+            return {code: 500, result: {status: "error", error: error.message}}
             
         }
     }
 
-    updateProdCart = async(cid, pid, prod) => {
+    updateProdCart = async(cid, pid, quantity) => {
         try {
-            const result = await this.dao.updateProdCart(cid, pid, prod)
+            const result = await this.dao.updateProdCart(cid, pid, quantity)
             
             if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
@@ -165,12 +165,12 @@ export default class CartRepository {
             return {code: 200, result: {status: "success",  message: 'Producto actualizado', payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
             
-            return {code: 500, result: {status: "error", error: error}}
+            return {code: 500, result: {status: "error", error: error.message}}
             
         }
     }
@@ -194,23 +194,41 @@ export default class CartRepository {
                 return {code: 500, result: {status: "error", error: 'Los artículos seleccionados ya no se encuentran disponibles'}}
             }
 
-            const ticket = await this.validateCart(data)
+            let ticket = {
+                amount:0,
+                purchaser: usernanme || 'no email'
+            }
+
+            const prods = []
+            const cart = []
+
+            data.products = data.products.filter((prod) => {
+
+                if (prod.product.stock >= prod.quantity) {
+                    ticket.amount += prod.product.price * prod.quantity
+                    prods.push({id: prod.product.id || prod.product._id, quantity: prod.quantity})
+                        
+                    return false
+
+                } else {
+                    cart.push({product: prod.product.id || prod.product._id, quantity: prod.quantity})
+                    return true
+                }
+            })
+            await Promise.all(prods.map(async prod => {return await ProductService.purchase(prod.id, prod.quantity)}))
             
-            if (ticket.success) {
+            await this.updateCart(data.id || data._id, cart)
 
-                ticket.payload.purchaser = usernanme
-
-                await this.updateCart(data._id, data.products)
-                
-                const generateTicket = await TicketService.create(ticket.payload)
-                
-                if (ticket.all) {
+            const generateTicket = await TicketService.create(ticket)
+            
+            if (generateTicket) {
+                if (data.products.length === 0) {
                     return {code: 200, result: {status: "success", message: 'Compra realizada', payload: generateTicket} }
                 }
-
+    
                 return {code: 200, result: {status: "partial", message: 'Algunos productos no pudieron ser procesados', payload: generateTicket, cart: data.products} }
+                
             }
-            
             return {code: 500, result: {status: "error", error: 'No se pudo procesar la compra'}}
 
         } catch (error) {
@@ -224,44 +242,4 @@ export default class CartRepository {
         
         
     }
-
-    validateCart = async (data) => {
-        try {
-
-            let ticket = {
-                amount:0
-            }
-            const prods = []
-
-            data.products = data.products.filter((prod) => {
-
-                    if (prod.product.stock >= prod.quantity) {
-
-                        ticket.amount = prod.product.price * prod.quantity
-                        prods.push({_id: prod.product._id, quantity: prod.quantity})
-                        
-                        return false
-
-                    } else {
-                        
-                        return true
-
-                    }
-            })
-
-            prods.forEach(async prod => {await ProductService.purchase(prod._id, prod.quantity)})
-
-            const all = data.products.length === 0
-
-            return {success: true, payload: ticket, all: all}
-
-        } catch (error) {
-            
-            throw error
-            
-        }
-    }
-
-
-
 }

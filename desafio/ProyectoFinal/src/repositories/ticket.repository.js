@@ -48,4 +48,32 @@ export default class TicketRepository {
             console.error(error);
         }
     }
+
+    delete = async (id) => {
+        try {
+            
+            const result = await this.dao.delete(id)
+
+            return result
+            
+        } catch (error) {
+            
+            console.error(error);
+        }
+    }
+
+    update = async(id, newTicket) => {
+
+        try{
+            
+            const result = await this.dao.update(id, newTicket)
+
+            return result
+        
+        } catch(error) {
+            
+            console.error(error);
+
+        }                        
+    }
 }

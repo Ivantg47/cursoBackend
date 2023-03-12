@@ -1,6 +1,6 @@
 import { userModel } from "./models/user.model.js"
 
-class UserManager {
+class UserMongoManager {
 
     constructor () {
     }
@@ -53,7 +53,7 @@ class UserManager {
     create = async (user) => {
 
         try {
-            
+            console.log('hola user mongo');
             const result = await userModel.create(user)
             
             return result
@@ -88,6 +88,6 @@ class UserManager {
     }
 }
 
-const user = new UserManager()
+const user = new UserMongoManager()
 
 export default user

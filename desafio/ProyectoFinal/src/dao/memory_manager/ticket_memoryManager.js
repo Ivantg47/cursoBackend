@@ -1,36 +1,14 @@
-import fs from 'fs'
-import __dirname from '../../utils.js'
-
-class TicketFileManager {
+class TicketMemoryManager {
 
     constructor(){
-        this.path = __dirname + '/json/ticket.json'
-        this.init()
-    }
-
-    init = () => {
-        try {
-
-            let file = fs.existsSync(this.path,'utf-8')
-
-            if (!file) {
-                fs.writeFileSync(this.path,JSON.stringify([]))
-            }
-
-            return null
-
-        } catch(error) {
-            throw error
-        }
+        this.tickets = []
     }
 
     get = async () => {
 
         try{
 
-            const data = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-            
-            return data
+            return this.tickets
 
         } catch(error) {
             
@@ -42,10 +20,9 @@ class TicketFileManager {
     getId = async() => {
         try{
             
-            const tickets = await this.get()
-            const cont = tickets.length
+            const cont = this.tickets.length
 
-            return (cont > 0) ? tickets[cont-1].id + 1 : 1
+            return (cont > 0) ? this.tickets[cont-1].id + 1 : 1
 
         } catch(error) {
             throw error
@@ -56,9 +33,7 @@ class TicketFileManager {
 
         try{
             
-            const tickets = await this.get()
-
-            const ticket = tickets.find(t => {
+            const ticket = this.tickets.find(t => {
                 return t.id === Number(id)
             })
             
@@ -75,14 +50,9 @@ class TicketFileManager {
 
         try{
 
-            const tickets = await this.get()
-            
             ticket.id = await this.getId()
+            this.tickets.push(ticket)
 
-            tickets.push(ticket)
-
-            await fs.promises.writeFile(this.path, JSON.stringify(tickets))
-            
             return ticket
 
         } catch(error) {
@@ -95,15 +65,13 @@ class TicketFileManager {
     delete = async(id) => {
 
         try{
+            
             if (!await this.getTicketById(id)) {                
                 return null
             }
-            const tickets = await this.get()
-
-            const filtro = tickets.filter((ticket) => ticket.id != id)
-
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
             
+            this.tickets = this.tickets.filter((ticket) => ticket.id != id)
+
             return 'Ticket eliminado'
         
         } catch(error) {
@@ -118,10 +86,8 @@ class TicketFileManager {
             if (!await this.getTicketById(id)) {                
                 return null
             }
-            const tickets = await this.get()
-            tickets.map(ticket => ticket.id === id ? ticket : newTicket)
             
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            this.tickets.map(ticket => ticket.id === id ? ticket : newTicket)
             
             return 'Ticket modificado'
         
@@ -133,6 +99,6 @@ class TicketFileManager {
     }
 }
 
-const ticket = new TicketFileManager()
+const ticket = new TicketMemoryManager()
 
 export default ticket

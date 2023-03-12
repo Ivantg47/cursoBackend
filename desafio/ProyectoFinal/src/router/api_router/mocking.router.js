@@ -13,7 +13,7 @@ export default class MockingRouter extends MiRouter {
         this.get('/mockingproducts', ["PUBLIC"], async (req, res, next) => {
             try {
                 
-                for (let i = 0; i < 2; i++) {
+                for (let i = 0; i < 100; i++) {
 
                     await ProductService.addProduct(generateProduct())
                     

@@ -71,7 +71,7 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-
+console.log('hola user pass');
                 const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
@@ -92,6 +92,7 @@ const initializePassport = () => {
                 return done(null, result)
                 
             } catch (error) {
+                console.error(error);
                 return done('[LOCAL] Error al registrar '+ error)
             }
         }
@@ -123,13 +124,21 @@ const initializePassport = () => {
     ))
 
     passport.serializeUser((user, done) => {
-        const id = user._id || user.id
-        done(null, id)
+        try {
+            const id = user._id || user.id
+            done(null, id)
+        } catch (error) {
+            console.error(error);
+        }
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await UserService.getUserById(id)
-        return done(null,user)
+        try {
+            const user = await UserService.getUserById(id)
+            return done(null,user)
+        } catch (error) {
+            console.error(error);
+        }
     })
 
 }

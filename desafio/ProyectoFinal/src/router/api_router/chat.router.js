@@ -28,7 +28,7 @@ export default class ChatRouter extends MiRouter {
                 const message = await ChatService.addMessage(mensaje)
                 
                 req.app.get('io')
-                    .sockets.emit('mensaje', await ChatService.getMessages())
+                    .sockets.emit('messageLogs', await ChatService.getMessages())
         
                 return res.status(message.status).send(message.message)
         

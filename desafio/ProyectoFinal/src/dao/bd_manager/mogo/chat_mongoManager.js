@@ -1,11 +1,11 @@
 import { messageModel } from "./models/chat.model.js"
 
-class MessageManagerBD{
+class MessageMongoManager{
 
     getMessages = async () => {
 
         try {
-            
+            console.log('mongo');
             const data = await messageModel.find().lean().exec()
 
             return data
@@ -32,4 +32,6 @@ class MessageManagerBD{
     }
 }
 
-export const mensajes = new MessageManagerBD()
+const mensajes = new MessageMongoManager()
+
+export default mensajes 

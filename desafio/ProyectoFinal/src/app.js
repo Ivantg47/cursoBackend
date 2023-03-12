@@ -5,13 +5,13 @@ import express from 'express'
 // import cartR from './router/BD_router/cart.routerBD.js'
 // import chatR from './router/BD_router/chat.router.js'
 // import sessionR from './router/BD_router/session.router.js'
+// import viewsRouter from './router/views/views.router.js'
+// import producto from './dao/bd_manager/mogo/productManagerBD.js'
+// import { mensajes } from './dao/bd_manager/mogo/chat_mongoManager.js'
 import __dirname, { passportCall } from './utils.js'
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
-import viewsRouter from './router/views/views.router.js'
 import mongoose from 'mongoose'
-import producto from './dao/bd_manager/mogo/productManagerBD.js'
-import { mensajes } from './dao/bd_manager/mogo/chatManagerBD.js'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import passport from 'passport'
@@ -19,6 +19,7 @@ import initializePassport from './config/passport.config.js'
 import cookieParser from "cookie-parser";
 import config from './config/config.js'
 import router from './router/index_router.js'
+import { ChatService, ProductService } from './repositories/index_repository.js'
 
 const app = express()
 
@@ -74,16 +75,16 @@ app.set("io", io);
 
 io.on('connection', async socket => {
     //console.log(`Nuevo cliente id: ${socket.id}`);
-    io.sockets.emit('lista', await producto.getProducts({},{}))
+    io.sockets.emit('lista', await ProductService.getProducts())
     
     socket.on('updateList', async prod => {
-        io.sockets.emit('lista', await producto.getProducts({},{}))
+        io.sockets.emit('lista', await ProductService.getProducts())
     })
 
     socket.on('authenticated', async user => {
         
         socket.broadcast.emit('allChat', user)
-        socket.emit('messageLogs',await mensajes.getMessages())
+        socket.emit('messageLogs',await ChatService.getMessages())
     })
 
 })
