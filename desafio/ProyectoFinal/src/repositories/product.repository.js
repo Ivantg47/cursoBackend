@@ -1,4 +1,7 @@
 import ProductDTO from '../dao/DTO/product.dto.js'
+import CustomError from '../services/errors/custom_error.js'
+import EErrors from '../services/errors/enums.js'
+import { generateProductErrorInfo } from '../services/errors/info.js'
 
 export default class ProductRepository {
 
@@ -68,19 +71,25 @@ export default class ProductRepository {
         try {
             
             if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return {code: 400, result: {status: "error", error: 'Falta llenar campos'}}
+                
+                CustomError.createError({
+                    name: "Error de creación de producto",
+                    cause: generateProductErrorInfo(prod),
+                    message: "Error en la creación del poducto, uno o mas campos se encuentran vacios",
+                    code: EErrors.INVALID_TYPES_ERROR
+                })
             }
-
+            
             const data = new ProductDTO(prod)
 
             const result = await this.dao.addProduct(data)
-
+            
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
         } catch (error) {
-            
+            console.error(error)
             if (error.name === 'CastError') {
-                return {code: 400, result: {status: "error", error: 'Id invalido'}}
+                return {code: 400, result: {status: "error", error: error.message}}
             }
 
             return {code: 500, result: {status: "error", error: error.message}}

@@ -67,7 +67,7 @@ class ProductMongoManager{
     addProduct = async(prod) => {
 
         try{
-
+            
             const result = await productModel.create(prod)
             
             return result

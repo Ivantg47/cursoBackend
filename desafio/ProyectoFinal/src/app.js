@@ -20,6 +20,7 @@ import cookieParser from "cookie-parser";
 import config from './config/config.js'
 import router from './router/index_router.js'
 import { ChatService, ProductService } from './repositories/index_repository.js'
+import errorHandler from './middlewares/errors/errorHandler.js'
 
 const app = express()
 
@@ -67,6 +68,7 @@ app.set('view engine', 'handlebars')
 // app.use('/api/chat', chatR)
 // app.use('/', viewsRouter)
 app.use('/', router)
+app.use(errorHandler)
 
 const httpServer = app.listen(config.PORT, () => console.log('Server running...'))
 const io = new Server(httpServer)
