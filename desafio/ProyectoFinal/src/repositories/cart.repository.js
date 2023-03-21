@@ -1,3 +1,6 @@
+import CartDTO from '../dao/DTO/cart.dto.js'
+import { ProductService, TicketService } from "./index_repository.js"
+
 export default class CartRepository {
 
     constructor (dao) {
@@ -7,6 +10,7 @@ export default class CartRepository {
     getCarts = async () => {
 
         try {
+
             const result = await this.dao.getCarts()
 
             if (!result) {
@@ -35,12 +39,12 @@ export default class CartRepository {
             
 
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            console.error(error);
+            return {code: 500, result: {status: "error", error: error.message}}
 
         }
     }
@@ -48,19 +52,21 @@ export default class CartRepository {
     addCart = async(cart) => {
         try {
 
-            const result = await this.dao.addCart(cart)
+            const data = new CartDTO(cart)
+            const result = await this.dao.addCart(data)
             
-            return result
+            return {code: 200, result: {status: "success", message: 'Carrito creado', payload: result} }
             
         } catch (error) {
             
-            console.error(error);
+            return {code: 500, result: {status: "error", error: error}}
 
         }
     }
 
     deleteCart = async(id) => {
         try {
+
             const result = await this.dao.deleteCart(id)
             
             if (result.deletedCount === 0) {
@@ -76,7 +82,7 @@ export default class CartRepository {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            console.error(error);
+            return {code: 500, result: {status: "error", error: error}}
 
         }
     }
@@ -92,17 +98,19 @@ export default class CartRepository {
             return {code: 200, result: {status: "success", payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-            console.error(error);
+
+            return {code: 500, result: {status: "error", error: error.message}}
+
         }
     }
 
-    addProdCart = async(cid, pid, body) => {
+    addProdCart = async(cid, pid, quantity) => {
         try {
-            let quantity = Number(body.quantity) || 1
+            quantity = Number(quantity) || 1
 
             const result = await this.dao.addProdCart(cid, pid, quantity)
             
@@ -110,14 +118,16 @@ export default class CartRepository {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 
-            return {code: 200, result: {status: "success", payload: result} }
+            return {code: 200, result: {status: "success", message: 'Producto agregado', payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-            console.error(error);
+            
+            return {code: 500, result: {status: "error", error: error.message}}
+
         }
     }
 
@@ -136,35 +146,100 @@ export default class CartRepository {
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-            console.error(error);
+            if (error.name === 'MongoServerError' && error.code === 2) {
+                return {code: 400, result: {status: "error", error: 'El producto no se encuentra en el carrito'}}
+            }
+            return {code: 500, result: {status: "error", error: error.message}}
+            
         }
     }
 
-    updateProdCart = async(cid, pid, prod) => {
+    updateProdCart = async(cid, pid, quantity) => {
         try {
-            const result = await this.dao.updateProdCart(cid, pid, prod)
+            const result = await this.dao.updateProdCart(cid, pid, quantity)
             
             if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 
-            return {code: 200, result: {status: "success", payload: result} }
+            return {code: 200, result: {status: "success",  message: 'Producto actualizado', payload: result} }
             
         } catch (error) {
-            
+            console.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-            console.error(error);
+            
+            return {code: 500, result: {status: "error", error: error.message}}
+            
         }
     }
 
-    purchase = async(cid) => {
-        
-        const result = await this.dao.purchase(cid)
+    purchase = async(cid, usernanme) => {
+        try {
 
-        return {code: 200, result: {status: "success", payload: result} }
+            let data = await this.dao.getCartById(cid)
+            
+            if (!data) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            const val = data.products.some(prod => {
+                if (prod.product.stock >= prod.quantity) {
+                    return true
+                } 
+            })
+
+            if (!val) {
+                return {code: 500, result: {status: "error", error: 'Los artículos seleccionados ya no se encuentran disponibles'}}
+            }
+
+            let ticket = {
+                amount:0,
+                purchaser: usernanme || 'no email'
+            }
+
+            const prods = []
+            const cart = []
+
+            data.products = data.products.filter((prod) => {
+
+                if (prod.product.stock >= prod.quantity) {
+                    ticket.amount += prod.product.price * prod.quantity
+                    prods.push({id: prod.product.id || prod.product._id, quantity: prod.quantity})
+                        
+                    return false
+
+                } else {
+                    cart.push({product: prod.product.id || prod.product._id, quantity: prod.quantity})
+                    return true
+                }
+            })
+            await Promise.all(prods.map(async prod => {return await ProductService.purchase(prod.id, prod.quantity)}))
+            
+            await this.updateCart(data.id || data._id, cart)
+
+            const generateTicket = await TicketService.create(ticket)
+            
+            if (generateTicket) {
+                if (data.products.length === 0) {
+                    return {code: 200, result: {status: "success", message: 'Compra realizada', payload: generateTicket} }
+                }
+    
+                return {code: 200, result: {status: "partial", message: 'Algunos productos no pudieron ser procesados', payload: generateTicket, cart: data.products} }
+                
+            }
+            return {code: 500, result: {status: "error", error: 'No se pudo procesar la compra'}}
+
+        } catch (error) {
+
+            console.error(error);
+            console.error(error.message);
+            return {code: 500, result: {status: "error", error: error.message}}
+            
+        }
+        
+        
         
     }
-
 }

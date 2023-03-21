@@ -1,13 +1,27 @@
 import { productModel } from './models/product.model.js'
 
 
-class ProductManagerBD{
+class ProductMongoManager{
 
     constructor(){
         
     }
 
-    getProducts = async (query, pagination) => {
+    getProducts = async () => {
+        try {
+            
+            const data = await productModel.find().lean().exec()
+
+            return data
+
+        } catch (error) {
+            
+            throw error
+
+        }
+    }
+
+    getPaginate = async (query, pagination) => {
 
         try{
             pagination.lean = true
@@ -15,8 +29,8 @@ class ProductManagerBD{
             const data = await productModel.paginate(query, pagination)
             
             const prods = {
-                status: 'success',
                 isValid: !(data.page <= 0 || data.page>data.totalPages || data.docs.length === 0),
+                totalProds: data.totalDocs,
                 payload: data.docs,
                 totalPages: data.totalPages,
                 prevPage: data.prevPage,
@@ -25,10 +39,6 @@ class ProductManagerBD{
                 hasPrevPage: data.hasPrevPage, 
                 hasNextPage: data.hasNextPage
             }
-            
-            if (!prods.isValid) {
-                prods.status = 'error'
-            } 
             
             return prods
 
@@ -57,7 +67,7 @@ class ProductManagerBD{
     addProduct = async(prod) => {
 
         try{
-
+            
             const result = await productModel.create(prod)
             
             return result
@@ -72,23 +82,21 @@ class ProductManagerBD{
     deleteProduct = async(id) => {
 
         try{
-            const result = await productModel.deleteOne(id)
+            const result = await productModel.deleteOne({_id: id})
             
-            return result
+            return result.deletedCount !== 0
         
         } catch(error) {
-            if (error.name === 'CastError') {
-                return {status: 400, error: 'Id invalido'}
-            }
-            console.error(error);
-            return error
+            
+            throw error
+
         }                            
     }
 
     updateProduct = async(pid, newProd) => {
 
         try{
-            const result = await productModel.findOneAndUpdate(pid, newProd)
+            const result = await productModel.findOneAndUpdate({_id: id}, newProd, { upsert: true, returnOriginal: false })
             
             return result
         
@@ -99,8 +107,22 @@ class ProductManagerBD{
         }                        
     }
 
+    purchase = async(pid, quantity) => {
+        try {
+            
+            const result = await productModel.findOneAndUpdate({_id: pid}, {'$inc': {"stock": quantity}}, { upsert: true, returnOriginal: false })
+            
+            return result
+
+        } catch (error) {
+            
+            throw error
+
+        }
+    }
+
 }
 
-const producto = new ProductManagerBD()
+const producto = new ProductMongoManager()
 
 export default producto

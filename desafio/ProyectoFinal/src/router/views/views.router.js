@@ -1,9 +1,7 @@
 import express from 'express'
 const router = express.Router()
 
-import product from '../../dao/bd_manager/mogo/productManagerBD.js'
-import { CartService, ProductService } from '../../repositories/index.js'
-import carrito from '../../dao/bd_manager/mogo/cartManagerBD.js'
+import { CartService, ProductService } from '../../repositories/index_repository.js'
 
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -42,7 +40,7 @@ router.get('/', async (req, res) => {
                     active: i == prod.page
                 })
             }
-            //console.log(pagination);
+            ;
         }
         
         res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user, pagination})
@@ -70,8 +68,8 @@ router.get('/product', async (req, res) => {
     if(req.query.category) query = {category: req.query.category}
     if(req.query.status) query = {status: req.query.status}
     
-    let prod = await ProductService.getProducts(query, pagination)
-
+    let result = await ProductService.getProducts(query, pagination)
+    let prod = result.result.payload
     const index = []
     
     if (prod.isValid) {
@@ -87,7 +85,7 @@ router.get('/product', async (req, res) => {
             })
         }
     }
-    console.log(req.session.user);
+    
     let admin = req.session.user?.role == 'admin'
     
     res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
@@ -149,7 +147,7 @@ router.get('/carts/:cid', async (req, res) => {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
 router.get('/chat', async (req, res) => {
     
-    res.render('chat', {})
+    res.render('chat', {title: "Chat", user: req.session.user})
 })
 
 export default router

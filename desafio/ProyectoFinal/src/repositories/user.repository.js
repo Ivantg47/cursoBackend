@@ -1,4 +1,5 @@
-import { CartService } from "./index.js"
+import UserDTO from '../dao/DTO/user.dto.js'
+import { CartService } from "./index_repository.js"
 
 export default class UserRepository {
 
@@ -13,19 +14,27 @@ export default class UserRepository {
         return result
     }
 
-    getUserById = async(username) => {
+    getUserById = async(id) => {
         
-        const result = await this.dao.getUserById(username)
+        const result = await this.dao.getUserById(id)
+
+        return result
+    }
+
+    getUserByEmail = async(username) => {
+        
+        const result = await this.dao.getUserByEmail(username)
 
         return result
     }
 
     addUser = async(user) => {
+        console.log('hola user rep');
         const cart = await CartService.addCart()
         
         user.cart = cart.result.payload._id
-        
-        const result = this.dao.create(user)
+        const data = new UserDTO(user)
+        const result = this.dao.create(data)
 
         return result
     }

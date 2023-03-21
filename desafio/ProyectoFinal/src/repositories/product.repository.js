@@ -1,15 +1,38 @@
+import ProductDTO from '../dao/DTO/product.dto.js'
+import CustomError from '../services/errors/custom_error.js'
+import EErrors from '../services/errors/enums.js'
+import { generateProductErrorInfo } from '../services/errors/info.js'
+
 export default class ProductRepository {
 
     constructor (dao) {
         this.dao = dao
     }
 
-    getProducts = async (query, pagination) => {
+    getProducts = async() => {
         try {
 
-            const result = await this.dao.getProducts(query, pagination)
+            const result = await this.dao.getProducts()
 
             if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            return {code: 200, result: {status: "success", payload: result} }
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    }
+
+    getPaginate = async (query, pagination) => {
+        try {
+
+            const result = await this.dao.getPaginate(query, pagination)
+
+            if (!result.isValid) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 
@@ -46,22 +69,30 @@ export default class ProductRepository {
 
     addProduct = async(prod) => {
         try {
-
+            
             if (!prod.title || !prod.description || !prod.price || !prod.thumbnail || !prod.code || !prod.stock || !prod.category) {
-                return {code: 400, result: {status: "error", error: 'Falta llenar campos'}}
+                
+                CustomError.createError({
+                    name: "Error de creación de producto",
+                    cause: generateProductErrorInfo(prod),
+                    message: "Error en la creación del poducto, uno o mas campos se encuentran vacios",
+                    code: EErrors.INVALID_TYPES_ERROR
+                })
             }
+            
+            const data = new ProductDTO(prod)
 
-            const result = this.dao.addProduct(prod)
-
+            const result = await this.dao.addProduct(data)
+            
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
         } catch (error) {
-            
+            console.error(error)
             if (error.name === 'CastError') {
-                return {code: 400, result: {status: "error", error: 'Id invalido'}}
+                return {code: 400, result: {status: "error", error: error.message}}
             }
 
-            console.error(error);
+            return {code: 500, result: {status: "error", error: error.message}}
 
         }
     }
@@ -69,9 +100,9 @@ export default class ProductRepository {
     deleteProduct = async(id) => {
         try {
             
-            const result = this.dao.deleteProduct(id)
+            const result = await this.dao.deleteProduct(id)
 
-            if (result.deletedCount === 0) {
+            if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
 
@@ -90,8 +121,14 @@ export default class ProductRepository {
 
     updateProduct = async(pid, newProd) => {
         try {
+            
+            const result = await this.dao.updateProduct(pid, newProd)
 
-            const result = this.dao.updateProduct(pid, newProd)
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            return {code: 200, result: {status: "success", message: 'Producto actualizado', payload: result} }
 
         } catch (error) {
             
@@ -107,6 +144,19 @@ export default class ProductRepository {
                 return {status: 400, error: 'Codigo en uso' }
             }
 
+            console.error(error);
+
+        }
+    }
+
+    purchase = async(pid, quantity) => {
+        try {
+            const result = await this.dao.purchase(pid, -quantity)
+            
+            return result
+
+        } catch (error) {
+            
             console.error(error);
 
         }

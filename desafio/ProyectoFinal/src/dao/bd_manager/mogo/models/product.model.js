@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import mongoosePaginate from 'mongoose-paginate-v2'
+import CustomError from "../../../../services/errors/custom_error.js";
+import EErrors from "../../../../services/errors/enums.js";
 
 const productCollection = 'products' //products
 
@@ -15,11 +17,18 @@ const productSchema = new mongoose.Schema({
 })
 
 productSchema.post('save', function(error, doc, next) {
+    
     if (error.name === 'MongoServerError' && error.code === 11000) {
-        next('Codigo en uso');
+        next(CustomError.createError({
+            name: "Error de creación de producto",
+            cause: `El codigo proporcionado "${error.keyValue.code}", ya se encuentra en uso`,
+            message: "Error en la creación del poducto, el codigo del producto ya se encuentra en uso",
+            code: EErrors.INVALID_TYPES_ERROR
+        }))
     } else {
         next();
     }
+
 });
 
 

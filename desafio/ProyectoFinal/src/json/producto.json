@@ -1,6 +1,6 @@
 [
   {
-    "_id": 2,
+    "id": 2,
     "title": "tableta",
     "description": "computador",
     "price": 5000,
@@ -13,7 +13,7 @@
     "status": true
   },
   {
-    "_id": 3,
+    "id": 3,
     "title": "PS4",
     "description": "juego",
     "price": 7500,
@@ -21,12 +21,12 @@
       "/img/noimage.jpg"
     ],
     "code": "003",
-    "stock": 5,
+    "stock": 14,
     "category": "electronico",
     "status": true
   },
   {
-    "_id": 4,
+    "id": 4,
     "title": "PS5",
     "description": "juego",
     "price": 14000,
@@ -39,7 +39,7 @@
     "status": true
   },
   {
-    "_id": 5,
+    "id": 5,
     "title": "PC",
     "description": "equipo",
     "price": 25000,
@@ -61,7 +61,7 @@
     "code": "006",
     "stock": 1,
     "category": "electronico",
-    "_id": 6,
+    "id": 6,
     "status": true
   },
   {
@@ -74,7 +74,7 @@
     "thumbnail": [
       "/img/noimage.jpg"
     ],
-    "_id": 7,
+    "id": 7,
     "status": true
   },
   {
@@ -89,7 +89,73 @@
       "\\img\\JzDLEevvAudBIFVXJGDWChkT2hoHMC.jpeg",
       "\\img\\Xo3IhWUmlWIIln8OevFXfalTPCrJCo.jpg"
     ],
-    "_id": 8,
+    "id": 8,
     "status": true
+  },
+  {
+    "title": "Rústico Hormigón Ratón",
+    "description": "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+    "price": 861,
+    "thumbnail": "https://loremflickr.com/640/480/animals",
+    "code": "*ftj`",
+    "stock": 40,
+    "category": "Industrial",
+    "status": true,
+    "id": 9
+  },
+  {
+    "title": "Gorgeous Soft Toallas",
+    "description": "New ABC 13 9370, 13.3, 5th Gen CoreA5-8250U, 8GB RAM, 256GB SSD, power UHD Graphics, OS 10 Home, OS Office A & J 2016",
+    "price": 570,
+    "thumbnail": "https://loremflickr.com/640/480/cats",
+    "code": "1Ro>:",
+    "stock": 100,
+    "category": "Música",
+    "status": true,
+    "id": 10
+  },
+  {
+    "title": "Increíble Metal Tocino",
+    "description": "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+    "price": 30,
+    "thumbnail": "https://loremflickr.com/640/480/sports",
+    "code": "=^aMR",
+    "stock": 94,
+    "category": "Zapatos",
+    "status": true,
+    "id": 11
+  },
+  {
+    "title": "Sin marca Soft Presidente",
+    "description": "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+    "price": "355.00",
+    "thumbnail": "https://loremflickr.com/640/480/abstract",
+    "code": "-.wK,",
+    "stock": 13,
+    "category": "Salud",
+    "status": true,
+    "id": 12
+  },
+  {
+    "title": "Hecho a mano Metal Guantes",
+    "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+    "price": "226.00",
+    "thumbnail": "https://loremflickr.com/640/480/nature",
+    "code": "Z[Zq<",
+    "stock": 10,
+    "category": "Ultramarinos",
+    "status": false,
+    "id": 13
+  },
+  {
+    "title": "Licencia Cotton Zapatos",
+    "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+    "price": "936.00",
+    "thumbnail": "https://loremflickr.com/640/480/animals",
+    "code": "pEy]h",
+    "stock": 70,
+    "category": "Baby",
+    "status": true,
+    "id": 14
   }
 ]

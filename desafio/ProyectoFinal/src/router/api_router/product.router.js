@@ -1,6 +1,7 @@
-import uploader from "../dao/multer.js";
-import { ProductService } from "../repositories/index.js";
-import MiRouter from "./router.js";
+import uploader from "../../dao/multer.js";
+import { ProductService } from "../../repositories/index_repository.js";
+import { generateProduct } from "../../utils.js";
+import MiRouter from "../router.js";
 
 
 export default class ProductRouter extends MiRouter {
@@ -22,8 +23,8 @@ export default class ProductRouter extends MiRouter {
                 if(req.query.category) query = {category: req.query.category}
                 if(req.query.status) query = {status: req.query.status}
                 
-                const prod = await ProductService.getProducts(query, pagination)
-                
+                const prod = await ProductService.getPaginate(query, pagination)
+                //const prod = await ProductService.getProducts()
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
@@ -34,7 +35,7 @@ export default class ProductRouter extends MiRouter {
         this.get('/:pid', ["PUBLIC"], async (req, res, next) => {
             try {
                 const { pid } = req.params
-                const prod = await ProductService.getProductById({_id: pid})
+                const prod = await ProductService.getProductById(pid)
                 
                 return res.status(prod.code).send(prod.result)
 
@@ -43,8 +44,9 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["ADMIN"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
+                
                 let product = req.body
         
                 if(req.files?.length === 0 || !req.files) {
@@ -68,7 +70,7 @@ export default class ProductRouter extends MiRouter {
                 const { pid } = req.params
                 const newProd = req.body
                 
-                const prod = await ProductService.updateProduct({_id: pid}, newProd)
+                const prod = await ProductService.updateProduct(pid, newProd)
 
                 return res.status(prod.code).send(prod.result)
         
@@ -81,7 +83,7 @@ export default class ProductRouter extends MiRouter {
         this.delete('/:pid', ["ADMIN"], async (req, res, next) => {
             try {
                 const { pid } = req.params
-                const prod = await ProductService.deleteProduct({_id: pid})
+                const prod = await ProductService.deleteProduct(pid)
                 
                 return res.status(prod.code).send(prod.result)
                 
@@ -90,7 +92,5 @@ export default class ProductRouter extends MiRouter {
                 //return next()
             }
         })
-
-        
     }
 }

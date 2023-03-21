@@ -1,7 +1,8 @@
-import { CartService } from "../repositories/index.js";
-import MiRouter from "./router.js";
+import { CartService } from "../../repositories/index_repository.js";
+import MiRouter from "../router.js";
 import nodemailer from 'nodemailer'
-import __dirname from "../utils.js";
+import __dirname from "../../utils.js";
+import config from "../../config/config.js";
 
 export default class CartRouter extends MiRouter {
 
@@ -19,7 +20,7 @@ export default class CartRouter extends MiRouter {
         this.get('/:cid', ["PUBLIC"], async (req, res, next) => {
             try {
                 const { cid } = req.params
-                const cart = await CartService.getCartById({_id: cid})
+                const cart = await CartService.getCartById(cid)
                 
                 return res.status(cart.code).send(cart.result)
 
@@ -32,6 +33,7 @@ export default class CartRouter extends MiRouter {
         this.post('/', ["PUBLIC"], async (req, res, next) => {
             try {
                 const cart = await CartService.addCart()
+                
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
                 console.error(error);
@@ -64,11 +66,12 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.post('/:cid/product/:pid', ["PUBLIC"], async (req, res, next) => {
+        this.post('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
-                const cart = await CartService.addProdCart({_id: cid}, {_id: pid}, req.body)
+                const { cid, pid } = req.params
+                const { quantity } = req.body
+                
+                const cart = await CartService.addProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
@@ -77,11 +80,11 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid/product/:pid', ["PUBLIC"], async (req, res, next) => {
+        this.delete('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
-                const cart = await CartService.deleteProdCart({_id: cid}, pid)
+                const { cid, pid } = req.params
+
+                const cart = await CartService.deleteProdCart(cid, pid)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
@@ -90,12 +93,12 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.put('/:cid/product/:pid', ["PUBLIC"], async (req, res, next) => {
+        this.put('/:cid/product/:pid', ["USER"], async (req, res, next) => {
             try {
-                const { cid } = req.params
-                const { pid } = req.params
+                const { cid, pid } = req.params
+                const { quantity } = req.body
 
-                const cart = await CartService.updateProdCart({_id: cid}, pid, req.body)
+                const cart = await CartService.updateProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
@@ -104,11 +107,13 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid/purchase', ["PUBLIC"], async (req, res, next) => {
+        this.get('/:cid/purchase', ["USER"], async (req, res, next) => {
             try {
-                console.log('purchase');
+                
                 const { cid } = req.params
-                const cart = await CartService.purchase(cid, req.body)
+                const email = req.session.user?.email
+                
+                const cart = await CartService.purchase(cid, email)
                 
                 return res.status(cart.code).send(cart.result)
 
@@ -124,13 +129,13 @@ export default class CartRouter extends MiRouter {
                 service: 'gmail',
                 port: 587,
                 auth: {
-                    user: 'ivan.toga93@gmail.com',
-                    pass: 'hciuvvisniyyhtsr'
+                    user: config.USER_GMAIL,
+                    pass: config.PASS_GMAIL
                 }
             })
 
             const result = await transport.sendMail({
-                from: 'ivan.toga93@gmail.com',
+                from: config.USER_GMAIL,
                 to: 'ivan.toga93@gmail.com',
                 subject: 'Saludo',
                 html: `
@@ -145,8 +150,6 @@ export default class CartRouter extends MiRouter {
                     cid: 'mundo'
                 }]
             })
-
-            console.log(result);
 
             res.send('envio')
         })

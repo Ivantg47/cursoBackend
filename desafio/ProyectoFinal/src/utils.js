@@ -4,6 +4,9 @@ import bcrypt from 'bcrypt'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import config from './config/config.js'
+import {faker} from "@faker-js/faker"
+
+faker.locale = 'es'
 
 export const createHash = password => bcrypt.hashSync(password, bcrypt.genSaltSync(10))
 export const isValidPassword = (user, password) => bcrypt.compareSync(password, user.password)
@@ -13,6 +16,7 @@ export const generateToken = (user) => {
 
     return token
 }
+
 export const authToken = (req, res, next) => {
     
     const authToken = req.cookies[config.COOKIE_NAME_JWT]
@@ -44,6 +48,20 @@ export const passportCall = (strategy) => {
 export const extractCookie = req => {
     return (req && req.cookies) ? req.cookies[config.COOKIE_NAME_JWT] : null
 }
+
+export const generateProduct = () => {
+    return {
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        thumbnail: faker.image.image(),
+        code: faker.datatype.string(5),
+        stock: faker.datatype.number(100),
+        category: faker.commerce.department(),
+        status: faker.datatype.boolean()
+    }
+}
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)

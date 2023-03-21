@@ -6,8 +6,9 @@ const formProd = document.getElementById('formProd')
 socket.on('lista', lista => {
     
     let lProducts 
-    if (lista.isValid) {
-        lProducts = lista.payload.map(prod => 
+    
+    if (lista.code === 200) {
+        lProducts = lista.result.payload.map(prod => 
             `<tr>
                 <td style="display:none">${prod._id}</td>
                 <td><img src="${prod.thumbnail[0]}" alt="No image" width="72" height="72" style="vertical-align:middle; object-fit: contain;"></td>

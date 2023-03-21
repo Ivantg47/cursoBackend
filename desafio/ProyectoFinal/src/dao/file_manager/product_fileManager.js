@@ -2,7 +2,7 @@ import { count } from 'console'
 import fs from 'fs'
 import __dirname from '../../utils.js'
 
-class ProductManager{
+class ProductFileManager {
 
     constructor(){
         this.path = __dirname + '/json/producto.json'
@@ -17,11 +17,24 @@ class ProductManager{
             }
             return null
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
-    getProducts = async(query, pagination) => {
+    getProducts = async() => {
+
+        try{
+            
+            const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+
+            return data
+
+        } catch(error) {
+            throw error
+        }
+    }
+
+    getPaginate = async(query, pagination) => {
 
         try{
             
@@ -38,47 +51,43 @@ class ProductManager{
             let total = Math.ceil(data.length / pagination.limit)
 
             const prods = {
-                status: 'success',
                 isValid: !(pagination.page <= 0 || pagination.page>total || data.length === 0),
+                totalProds: data.length,
                 payload: data.slice(index, limit),
                 totalPages: total, 
                 page: pagination.page, 
                 hasPrevPage: pagination.page !== 1, 
                 hasNextPage:  pagination.page < total
             }
-            
-            if (!prods.isValid) {
-                prods.status = 'error'
-            }
 
             return prods
 
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
     getId = async() => {
 
         try{
-            console.log('id');
+            
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const cont = prods.length
-            console.log(cont);
-            return (cont > 0) ? prods[cont-1]._id + 1 : 1
+            
+            return (cont > 0) ? prods[cont-1].id + 1 : 1
 
         } catch(error) {
-            console.error(error);
+            throw error
         }
     }
 
     getProductById = async(id) => {
 
         try{
-            
+            console.log('id', id);
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const prod = prods.find(product => {
-                return product._id === Number(id._id)
+                return product.id === Number(id)
             })
             
             if (!prod) {
@@ -87,7 +96,7 @@ class ProductManager{
             return prod
         
         } catch(error) {
-            console.error(error);
+            throw error
         }    
     }
 
@@ -102,7 +111,7 @@ class ProductManager{
                 })) === "undefined" //false: en uso -- true: libre
         
         } catch(error) {
-            console.error(error);
+            throw error
         }        
     }
 
@@ -119,10 +128,8 @@ class ProductManager{
             if (!await this.validateCode(prod.code)) {
                 return 'Codigo en uso'
             }
-            prod._id =  await this.getId()
-            prod.status = true
-            prod.price = Number(prod.price)
-            prod.stock = Number(prod.stock)
+            prod.id =  await this.getId()
+            
             prods.push(prod)
 
             await fs.promises.writeFile(this.path, JSON.stringify(prods))
@@ -131,7 +138,7 @@ class ProductManager{
             return prod
                     
         } catch(error) {
-            console.error(error);
+            throw error
         }    
     }
 
@@ -142,18 +149,18 @@ class ProductManager{
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
 
             if (!await this.getProductById(id)) {                
-                return {status: 404, error: 'Not found'}
+                return null
             }
             
-            const filtro = prods.filter((prod) => prod._id != id._id)
+            const filtro = prods.filter((prod) => prod.id != id)
 
             await fs.promises.writeFile(this.path, JSON.stringify(filtro))
             //await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
-            return {status: 200, payload: 'Producto eliminado'}
+            return 'Producto eliminado'
         
         } catch(error) {
-            console.error(error);
+            throw error
         }                            
     }
 
@@ -166,18 +173,18 @@ class ProductManager{
             }
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             
-            if(!newProd._id) {
+            if(!newProd.id) {
                 if (await this.validateCode(newProd.code) || newProd.code == prod.code) {
                     for (let prop in newProd) {
                         prod[prop] = newProd[prop]
                     }
                     
-                    prods.map(_prod => _prod._id===pid._id ? prod : _prod )
+                    prods.map(_prod => _prod.id===pid ? prod : _prod )
                                 
                     await fs.promises.writeFile(this.path, JSON.stringify(prods))
                     // await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
 
-                    return {status: 200, message: 'Producto actualizado', payload: prod }
+                    return prod
                 }
 
                 return {status: 400, error: 'Codigo en uso' }
@@ -187,12 +194,42 @@ class ProductManager{
             }
 
         } catch(error) {
-            console.error(error);
+            throw error
         }                        
+    }
+
+    purchase = async(pid, quantity) => {
+        try {
+            
+            let prod1 = await this.getProductById(pid)
+            
+            if (!prod1) {
+                return null
+            }
+
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+
+            prods.map(prod =>{ 
+                if(prod.id == pid) {
+                    prod.stock += quantity 
+                    prod1 = prod
+                }
+            })
+
+            //await fs.promises.writeFile(this.path, JSON.stringify(prods))
+            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
+            
+            return prod1
+
+        } catch (error) {
+            
+            throw error
+
+        }
     }
 
 }
 
-const producto = new ProductManager('./src/json/producto.json')
+const producto = new ProductFileManager()
 
 export default producto

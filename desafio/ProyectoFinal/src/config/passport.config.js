@@ -5,7 +5,7 @@ import jwt from 'passport-jwt'
 import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
-import { UserService } from '../repositories/index.js'
+import { UserService } from '../repositories/index_repository.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -40,7 +40,7 @@ const initializePassport = () => {
             
             try {
                 
-                let user = await await UserService.getUserById(profile._json.email)
+                let user = await await UserService.getUserByEmail(profile._json.email)
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name, 
@@ -71,8 +71,8 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-
-                const user = await UserService.getUserById(username)
+console.log('hola user pass');
+                const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
                     
@@ -92,6 +92,7 @@ const initializePassport = () => {
                 return done(null, result)
                 
             } catch (error) {
+                console.error(error);
                 return done('[LOCAL] Error al registrar '+ error)
             }
         }
@@ -102,10 +103,10 @@ const initializePassport = () => {
         async (username, password, done) => {
             try {
                 
-                const user = await UserService.getUserById(username)
+                const user = await UserService.getUserByEmail(username)
                 
                 if (!user) {
-                    console.error('User no exite');
+                    console.error('Usuario no existe');
                     return done(null,false)
                 }
                 
@@ -123,12 +124,21 @@ const initializePassport = () => {
     ))
 
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        try {
+            const id = user._id || user.id
+            done(null, id)
+        } catch (error) {
+            console.error(error);
+        }
     })
 
     passport.deserializeUser(async (id, done) => {
-        const user = await userModel.findById(id)
-        return done(null,user)
+        try {
+            const user = await UserService.getUserById(id)
+            return done(null,user)
+        } catch (error) {
+            console.error(error);
+        }
     })
 
 }
