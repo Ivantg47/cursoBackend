@@ -35,7 +35,7 @@ export default class SessionRouter extends MiRouter {
                 res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/products')
                     
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 return next()
             }
         })
@@ -65,7 +65,7 @@ export default class SessionRouter extends MiRouter {
                 res.clearCookie(config.COOKIE_NAME_JWT).redirect("/session/login");
         
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 return next()
             }
         })
@@ -91,7 +91,7 @@ export default class SessionRouter extends MiRouter {
                 }
         
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 return next()
             }
         })

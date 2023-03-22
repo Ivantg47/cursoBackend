@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })
@@ -41,7 +41,7 @@ router.get('/:pid', async (req, res, next) => {
 
         return res.status(prod.status).send(prod.message)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })
@@ -66,7 +66,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         }
         
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })
@@ -81,7 +81,7 @@ router.put('/:pid', async (req, res, next) => {
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })
@@ -94,7 +94,7 @@ router.delete('/:pid', async (req, res, next) => {
         return res.status(prod.status).send(prod)
         
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })

@@ -6,6 +6,7 @@ import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
 import { UserService } from '../repositories/index_repository.js'
+import logger from '../utils/logger.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -92,7 +93,7 @@ console.log('hola user pass');
                 return done(null, result)
                 
             } catch (error) {
-                console.error(error);
+                logger.error(error);
                 return done('[LOCAL] Error al registrar '+ error)
             }
         }
@@ -128,7 +129,7 @@ console.log('hola user pass');
             const id = user._id || user.id
             done(null, id)
         } catch (error) {
-            console.error(error);
+            logger.error(error);
         }
     })
 
@@ -137,7 +138,7 @@ console.log('hola user pass');
             const user = await UserService.getUserById(id)
             return done(null,user)
         } catch (error) {
-            console.error(error);
+            logger.error(error);
         }
     })
 

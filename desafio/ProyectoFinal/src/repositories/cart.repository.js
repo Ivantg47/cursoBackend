@@ -1,5 +1,6 @@
 import CartDTO from '../dao/DTO/cart.dto.js'
 import { ProductService, TicketService } from "./index_repository.js"
+import logger from '../utils/logger.js'
 
 export default class CartRepository {
 
@@ -21,7 +22,7 @@ export default class CartRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
 
         }
     }
@@ -39,7 +40,7 @@ export default class CartRepository {
             
 
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
@@ -98,7 +99,7 @@ export default class CartRepository {
             return {code: 200, result: {status: "success", payload: result} }
             
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
@@ -121,7 +122,7 @@ export default class CartRepository {
             return {code: 200, result: {status: "success", message: 'Producto agregado', payload: result} }
             
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
@@ -165,7 +166,7 @@ export default class CartRepository {
             return {code: 200, result: {status: "success",  message: 'Producto actualizado', payload: result} }
             
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
@@ -233,7 +234,7 @@ export default class CartRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
             console.error(error.message);
             return {code: 500, result: {status: "error", error: error.message}}
             

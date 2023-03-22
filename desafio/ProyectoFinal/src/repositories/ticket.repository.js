@@ -1,4 +1,5 @@
 import TicketDTO from '../dao/DTO/ticket.dto.js'
+import logger from '../utils/logger.js'
 
 export default class TicketRepository {
 
@@ -15,7 +16,7 @@ export default class TicketRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
 
         }
     }
@@ -29,7 +30,7 @@ export default class TicketRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
 
         }
     }
@@ -45,7 +46,7 @@ export default class TicketRepository {
             
         } catch (error) {
             
-            console.error(error);
+            logger.error(error);
         }
     }
 
@@ -58,7 +59,7 @@ export default class TicketRepository {
             
         } catch (error) {
             
-            console.error(error);
+            logger.error(error);
         }
     }
 
@@ -72,7 +73,7 @@ export default class TicketRepository {
         
         } catch(error) {
             
-            console.error(error);
+            logger.error(error);
 
         }                        
     }

@@ -11,7 +11,7 @@ router.get('/', async (req, res, next) => {
         }
         return res.status(200).send(messages)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })
@@ -29,7 +29,7 @@ router.post('/', async (req, res, next) => {
         return res.status(message.status).send(message.message)
 
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
         return next()
     }
 })

@@ -28,7 +28,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
             }
         })
 
@@ -40,7 +40,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
             }
         })
 
@@ -60,7 +60,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)     
                 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 //return next()
             }
         })
@@ -75,7 +75,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
         
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 //return next()
             }
         })
@@ -88,7 +88,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
                 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error);
                 //return next()
             }
         })

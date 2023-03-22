@@ -21,9 +21,11 @@ import config from './config/config.js'
 import router from './router/index_router.js'
 import { ChatService, ProductService } from './repositories/index_repository.js'
 import errorHandler from './middlewares/errors/errorHandler.js'
+import { addLogger } from './utils/logger.js'
 
 const app = express()
 
+app.use(addLogger)
 app.use(cookieParser(config.COOKIE_SECRET))
 
 mongoose.set('strictQuery', false)
@@ -89,6 +91,17 @@ io.on('connection', async socket => {
         socket.emit('messageLogs',await ChatService.getMessages())
     })
 
+})
+
+app.get('/loggerTest', (req, res) => {
+    req.logger.fatal('FATAL ERROR')
+    req.logger.error('error on DB')
+    req.logger.warning('Dont worry, it\'s just warning')
+    req.logger.info('Se llamo a la pagian principal')
+    req.logger.http('Http message')
+    req.logger.debug('1 + 1 === 2 ???')
+
+    res.send({message: 'Logger testing!!'})
 })
 
 

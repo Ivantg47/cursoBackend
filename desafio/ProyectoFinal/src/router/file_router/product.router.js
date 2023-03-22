@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
             return res.status(200).send(prod)
         }
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
     }
 
 })
@@ -29,7 +29,7 @@ router.get('/:pid', async (req, res) => {
         }
         return res.status(200).send(prod)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
     }
 })
 
@@ -46,7 +46,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res) => {
         const prod = await producto.addProduct(product)
         return res.status(200).send(prod)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
     }
 })
 
@@ -59,7 +59,7 @@ router.put('/:id', async (req, res) => {
         }
         return res.status(200).send(prod)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
     }
 })
 
@@ -73,7 +73,7 @@ router.delete('/:id', async (req, res) => {
         
         return res.status(200).send(prod)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error);
     }
 })
 

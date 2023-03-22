@@ -1,4 +1,5 @@
 import ChatDTO from '../dao/DTO/chat.dto.js'
+import logger from '../utils/logger.js'
 
 export default class ChatRepository {
 
@@ -20,7 +21,7 @@ export default class ChatRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
             return error
 
         }
@@ -40,7 +41,7 @@ export default class ChatRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error);
             return error
         }
     }
