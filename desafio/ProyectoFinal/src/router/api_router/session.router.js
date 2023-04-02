@@ -77,17 +77,22 @@ export default class SessionRouter extends MiRouter {
             res.render('session/restaurar', {title: 'Recuperar Contrasseña'})
         })
         
-        this.post('/restorPass', ["PUBLIC"], async (req, res, next) => {
+        this.get('/forgot', ["PUBLIC"], async (req, res) => {
+            
+            res.render('session/olvido', {title: 'Recuperar Contrasseña'})
+        })
+
+        this.post('/verificar', ["PUBLIC"], async (req, res, next) => {
             try {
-                const {email, password} = req.body
+                const {email} = req.body
                 
-                const result = await UserService.updateUser(email, createHash(password))
+                const result = await UserService.getUserByEmail(email)
                 //const result = await userModel.findOneAndUpdate({email: email, method: 'local'}, {'$set': {password: createHash(password)}})
         
                 if (!result) {
-                    res.status(404).redirect('/session/restor')
+                    res.status(404).redirect('/session/forgot?error=1')
                 } else {
-                    res.status(200).redirect('/session/login')
+                    res.status(200).redirect('/session/restor')
                 }
         
             } catch (error) {
@@ -96,6 +101,25 @@ export default class SessionRouter extends MiRouter {
             }
         })
         
+        this.post('/restorPass', ["PUBLIC"], async (req, res, next) => {
+            try {
+                const {email} = req.body
+                
+                const result = await UserService.getUserByEmail(email)
+                //const result = await userModel.findOneAndUpdate({email: email, method: 'local'}, {'$set': {password: createHash(password)}})
+        
+                if (!result) {
+                    res.status(404).redirect('/session/forgot')
+                } else {
+                    res.status(200).redirect('/session/restor')
+                }
+        
+            } catch (error) {
+                req.logger.error(error);
+                return next()
+            }
+        })
+
         this.get('/current', ["USER"], async (req, res, next) => {
             const user = req.session?.user || null
             

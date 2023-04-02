@@ -9,12 +9,12 @@
             <div class="container-content">
                 <form id="recuperar" class="margin-t" action="/session/restorPass" method="POST">
                     <div class="input-group mt-4">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span>
-                        <input type="text" name="email" class="form-control" placeholder="correo" aria-label="email" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group mt-4">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span>
                         <input type="password" name="password" class="form-control" placeholder="nueva contraseña" aria-label="password" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mt-4">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-key"></i></span>
+                        <input type="password" name="password" class="form-control" placeholder="confirmar contraseña" aria-label="password" aria-describedby="basic-addon1">
                     </div>
                     
                     <button type="submit" class="form-button button-l margin-b mt-4">Restaurar</button>
@@ -25,6 +25,7 @@
                     <small>¿No tiene una cuenta?</small>
                     <a class="text-darkyellow" href="/session/register"><small>Regístrate</small></a>
                 </p>
+                <a class="text-darkyellow" href="/session/restor"><small>Acceder</small></a>
             </div>
     </div>
 </div>
