@@ -1,6 +1,7 @@
 import UserDTO from '../dao/DTO/user.dto.js'
 import { CartService } from "./index_repository.js"
 import Mail from '../modules/mail.js'
+import logger from '../utils/logger.js'
 
 export default class UserRepository {
 
@@ -49,8 +50,19 @@ export default class UserRepository {
     }
 
     updateUser = async(username, newUser) => {
+        try {
+            const result = this.dao.update(username, newUser)
 
-        const result = this.dao.update(username, newUser)
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+            
+            return {code: 200, result: {status: "success", message: 'Usuario actualizado', payload: result} }
+
+        } catch (error) {
+            logger.error(error)
+        }
+        
 
         return result
     }
@@ -62,6 +74,30 @@ export default class UserRepository {
             this.mail.send(user, subject, html)
         }
         
+    }
+
+    setUserRole = async(username) => {
+        
+        try {
+            const user = await this.dao.getUserById(username)
+
+            if (!user) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+
+            user.role = user.role == 'user' ? 'premium' : 'user'
+
+            const result = await this.dao.update(username, user)
+
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+            logger.debug(result)
+            return {code: 200, result: {status: "success", message: 'Role actualizado', payload: result} }
+
+        } catch (error) {
+            logger.error(error.message)
+        }
     }
 
 }

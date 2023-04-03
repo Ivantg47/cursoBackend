@@ -39,3 +39,7 @@ error: undefined
 error: userModel is not defined
 error: userModel is not defined
 error: isValidPassword is not defined
+error: undefined
+error: undefined
+error: this.dao.updateUser is not a function
+error: undefined

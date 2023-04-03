@@ -6,6 +6,7 @@ import ChatRouter from './api_router/chat.router.js'
 import MockingRouter from './api_router/mocking.router.js'
 import ProductRouter from './api_router/product.router.js'
 import SessionRouter from './api_router/session.router.js'
+import UserRouter from './api_router/user.router.js'
 import ViewRouter from './views.router.js'
 
 const router = Router()
@@ -15,10 +16,12 @@ const view = new ViewRouter()
 const session = new SessionRouter()
 const chat = new ChatRouter()
 const mocking = new MockingRouter()
+const user = new UserRouter()
 
 router.use('/api/products', product.getRouter())
 router.use('/api/carts', cart.getRouter())
 router.use('/api/chat', chat.getRouter())
+router.use('/api/users', user.getRouter())
 router.use('/', /*passportCall('jwt'),*/ view.getRouter())
 router.use('/session', session.getRouter())
 router.use('/api/mocking', mocking.getRouter())

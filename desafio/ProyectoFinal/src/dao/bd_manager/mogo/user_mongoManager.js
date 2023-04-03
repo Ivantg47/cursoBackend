@@ -1,3 +1,4 @@
+import logger from "../../../utils/logger.js"
 import { userModel } from "./models/user.model.js"
 
 class UserMongoManager {
@@ -71,6 +72,7 @@ class UserMongoManager {
             const result = await userModel.findOneAndUpdate({_id: id}, newUser, { upsert: true, returnOriginal: false })
             
             return result
+
         } catch (error) {
             
             throw error
