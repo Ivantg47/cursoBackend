@@ -15,7 +15,7 @@ export default class ChatRouter extends MiRouter {
                 }
                 return res.status(200).send(messages)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -33,7 +33,7 @@ export default class ChatRouter extends MiRouter {
                 return res.status(message.status).send(message.message)
         
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })

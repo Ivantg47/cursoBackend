@@ -27,7 +27,7 @@ $().ready(function () {
                 email: "Introduzca un correo valido"
             },
             password: {
-                required: "Favor de introducir contraseña",
+                required: "Favor de introducir una contraseña",
                 minlength: "La contraseña debe ser mayor a 8 caracteres"
             },
             confirm_password: {
@@ -75,7 +75,12 @@ $().ready(function () {
             },
             password: {
                 required: true
-            }
+            },
+            confirm_password: {
+                required: true,
+                minlength: 8,
+                equalTo: "#password"
+            },
         },
         messages:  {
             email: {
@@ -83,7 +88,13 @@ $().ready(function () {
                 email: "Introduzca un correo valido"
             },
             password: {
-                required: "Favor de introducir contraseña"
+                required: "Favor de introducir una contraseña",
+                minlength: "La contraseña debe ser mayor a 8 caracteres"
+            },
+            confirm_password: {
+                required: "Favor de introducir contraseña",
+                minlength: "La contraseña debe ser mayor a 8 caracteres",
+                equalTo: "La contraseña debe ser igual a la anterior"
             }
         },
         errorPlacement: function (error, element) {               

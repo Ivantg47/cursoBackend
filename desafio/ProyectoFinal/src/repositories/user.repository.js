@@ -1,10 +1,12 @@
 import UserDTO from '../dao/DTO/user.dto.js'
 import { CartService } from "./index_repository.js"
+import Mail from '../modules/mail.js'
 
 export default class UserRepository {
 
     constructor (dao) {
         this.dao = dao
+        this.mail = new Mail()
     }
 
     getUsers = async () => {
@@ -51,6 +53,15 @@ export default class UserRepository {
         const result = this.dao.update(username, newUser)
 
         return result
+    }
+
+    sendMail = async (username, html, subject) => {
+        const user = await this.dao.getUserByEmail(username)
+
+        if (user) {
+            this.mail.send(user, subject, html)
+        }
+        
     }
 
 }

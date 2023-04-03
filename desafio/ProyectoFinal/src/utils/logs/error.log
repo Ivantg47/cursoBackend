@@ -1,2 +1,41 @@
 fatal: FATAL ERROR
 error: error on DB
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_INVALID_STATUS_CODE"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: jwt malformed {"name":"JsonWebTokenError"}
+error: invalid signature {"name":"JsonWebTokenError"}
+error: undefined
+error: invalid signature {"name":"JsonWebTokenError"}
+error: invalid signature {"name":"JsonWebTokenError"}
+error: undefined
+error: undefined
+error: undefined
+error: TypeError
+error: Assignment to constant variable.
+error: Assignment to constant variable.
+error: token
+error: Assignment to constant variable.
+error: undefined
+error: userModel is not defined
+error: userModel is not defined
+error: isValidPassword is not defined

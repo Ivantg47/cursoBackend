@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
         }
         return res.status(200).send(cart)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
     }
 })
 
@@ -21,7 +21,7 @@ router.get('/:cid', async (req, res, next) => {
         
         return res.status(cart.status).send(cart.message)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -31,7 +31,7 @@ router.post('/', async (req, res, next) => {
         const cart = await carrito.addCart()
         return res.status(200).send(cart)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -44,7 +44,7 @@ router.post('/:cid/product/:pid', async (req, res, next) => {
     
         return res.status(cart.status).send(cart.message)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -57,7 +57,7 @@ router.delete('/:cid', async (req, res, next) => {
         return res.status(cart.status).send(cart.message)
 
     } catch(error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -70,7 +70,7 @@ router.delete('/:cid/product/:pid', async (req, res, next) => {
     
         return res.status(cart.status).send(cart.message)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -82,7 +82,7 @@ router.put('/:cid', async (req, res, next) => {
     
         return res.status(cart.status).send(cart.message)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -96,7 +96,7 @@ router.put('/:cid/product/:pid', async (req, res, next) => {
     
         return res.status(cart.status).send(cart.message)
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })

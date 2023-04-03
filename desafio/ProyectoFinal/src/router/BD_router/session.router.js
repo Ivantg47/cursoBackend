@@ -35,7 +35,7 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/session
         res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/product')
             
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -65,7 +65,7 @@ router.get('/logout', async (req, res, next) => {
         res.clearCookie(config.COOKIE_NAME_JWT).redirect("/session/login");
 
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -90,7 +90,7 @@ router.post('/restorPass', async (req, res, next) => {
         }
 
     } catch (error) {
-        req.logger.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })

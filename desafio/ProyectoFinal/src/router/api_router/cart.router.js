@@ -13,7 +13,7 @@ export default class CartRouter extends MiRouter {
 
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
             }
         })
 
@@ -25,7 +25,7 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -36,7 +36,7 @@ export default class CartRouter extends MiRouter {
                 
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -49,7 +49,7 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch(error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -61,7 +61,7 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -75,7 +75,7 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -88,7 +88,7 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -102,7 +102,7 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -118,7 +118,7 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch (error) {
-                req.logger.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
