@@ -41,7 +41,7 @@ const initializePassport = () => {
             
             try {
                 
-                let user = await await UserService.getUserByEmail(profile._json.email)
+                let user = await UserService.getUserByEmail(profile._json.email)
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name, 

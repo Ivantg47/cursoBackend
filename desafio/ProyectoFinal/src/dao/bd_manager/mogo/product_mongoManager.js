@@ -1,5 +1,6 @@
+import logger from '../../../utils/logger.js'
 import { productModel } from './models/product.model.js'
-
+import mongoose from 'mongoose'
 
 class ProductMongoManager{
 
@@ -53,7 +54,7 @@ class ProductMongoManager{
 
         try{
             
-            const data = await productModel.findOne({_id: id}).lean().exec()
+            const data = await productModel.findOne({_id: mongoose.Types.ObjectId(id)}).lean().exec()
             
             return data
         

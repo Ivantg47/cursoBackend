@@ -62,7 +62,7 @@ export default class ProductRepository {
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-
+            console.error(error);
             logger.error(error)
 
         }       

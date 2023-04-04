@@ -106,7 +106,7 @@ export default class ViewRouter extends MiRouter {
             
         })
 
-        this.get('/products/register', ["ADMIN", "PREMIUN"], async (req, res) => {
+        this.get('/products/register', ["ADMIN", "PREMIUM"], async (req, res) => {
 
             res.render('product/registerProd', {title: 'Registrar nuevo producto', user: req.session.user})
             

@@ -43,3 +43,21 @@ error: undefined
 error: undefined
 error: this.dao.updateUser is not a function
 error: undefined
+error: req.logger.debbug is not a function
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: undefined
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
