@@ -71,11 +71,18 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.put('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.put('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const newProd = req.body
                 
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.owner != req.session.user.email) {
+                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    }
+                }
+
                 const prod = await ProductService.updateProduct(pid, newProd)
 
                 return res.status(prod.code).send(prod.result)
@@ -86,9 +93,17 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.delete('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.delete('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { pid } = req.params
+
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.owner != req.session.user.email) {
+                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    }
+                }
+                
                 const prod = await ProductService.deleteProduct(pid)
                 
                 return res.status(prod.code).send(prod.result)
