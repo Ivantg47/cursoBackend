@@ -26,11 +26,11 @@ export default class SessionRouter extends MiRouter {
         
         this.post('/login', ["PUBLIC"], passport.authenticate('login', {failureRedirect: '/session/faillogin'}), (req, res) => {
             try {
-                
+                req.logger.debug('hola sesion')
                 if (!req.user) {
                     return res.status(401).render('error/general', {error: 'Correo incorrecto'})
                 }
-        
+        req.logger.debug('hola sesion')
                 req.session.user = req.user
         
                 res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/products')

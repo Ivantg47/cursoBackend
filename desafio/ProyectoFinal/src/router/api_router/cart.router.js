@@ -1,4 +1,4 @@
-import { CartService } from "../../repositories/index_repository.js";
+import { CartService, ProductService } from "../../repositories/index_repository.js";
 import MiRouter from "../router.js";
 import nodemailer from 'nodemailer'
 import __dirname from "../../utils.js";
@@ -41,7 +41,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid', ["USER"], async (req, res, next) => {
+        this.delete('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.deleteCart(cid)
@@ -54,7 +54,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.put('/:cid', ["USER"], async (req, res, next) => {
+        this.put('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.updateCart(cid, req.body)
@@ -66,15 +66,16 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.post('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.post('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
-
+                
                 if (req.session.user.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
-                    if (p.owner == req.session.user.email) {
-                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    if (p.result.payload.owner == req.session.user.email) {
+                        req.logger.debug('El producto no puede ser adquirido por el propietario')
+                        return res.status(400).send({status: "error", message: 'El producto no puede ser adquirido por el propietario'})
                     }
                 }
                 const cart = await CartService.addProdCart(cid, pid, quantity)
@@ -86,7 +87,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.delete('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
 
@@ -99,7 +100,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.put('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.put('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
@@ -113,7 +114,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid/purchase', ["USER"], async (req, res, next) => {
+        this.get('/:cid/purchase', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 
                 const { cid } = req.params

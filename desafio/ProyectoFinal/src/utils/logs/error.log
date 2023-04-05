@@ -61,3 +61,10 @@ error: undefined
 error: Cannot read properties of undefined (reading 'code')
 error: undefined
 error: Cannot read properties of undefined (reading 'code')
+error: logger is not defined
+error: undefined
+error: filtro is not defined
+error: undefined
+error: filtro is not defined
+error: undefined
+error: ProductService is not defined

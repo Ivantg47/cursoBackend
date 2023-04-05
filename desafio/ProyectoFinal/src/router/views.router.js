@@ -73,8 +73,8 @@ export default class ViewRouter extends MiRouter {
             const index = []
             
             if (prod.isValid) {
-                prod.prevLink = prod.hasPrevPage ? `/product?page=${prod.prevPage}` : ''
-                prod.nextLink = prod.hasNextPage ? `/product?page=${prod.nextPage}` : ''
+                prod.prevLink = prod.hasPrevPage ? `/products?page=${prod.prevPage}` : ''
+                prod.nextLink = prod.hasNextPage ? `/products?page=${prod.nextPage}` : ''
                 prod.payload.forEach(prod => prod.price = new Intl.NumberFormat('es-MX',
                 { style: 'currency', currency: 'MXN' }).format(prod.price))
         
@@ -113,7 +113,7 @@ export default class ViewRouter extends MiRouter {
         })
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Carrito>>>>>>>>>>>>>>>>>>>>>>>>>>
-        this.get('/carts/:cid', ["USER"], async (req, res) => {
+        this.get('/carts/:cid', ["USER", "PREMIUM"], async (req, res) => {
             let data = await CartService.getCartById(req.params.cid)
             
             let cart

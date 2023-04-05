@@ -48,12 +48,11 @@ export default class ProductRouter extends MiRouter {
             try {
                 
                 let product = req.body
-                console.dir(product);
                 
                 if (req.session.user.role == 'premium') {
                     product.owner = req.session.user.email    
                 }
-                console.dir(product);
+                
                 if(req.files?.length === 0 || !req.files) {
                     product.thumbnail = ['/img/noimage.jpg']
                 } else {

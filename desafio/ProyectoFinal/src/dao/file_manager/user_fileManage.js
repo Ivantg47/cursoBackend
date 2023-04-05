@@ -1,5 +1,6 @@
 import fs from 'fs'
 import __dirname from '../../utils.js'
+import logger from '../../utils/logger.js'
 
 class UserFileManager {
 
@@ -63,12 +64,13 @@ class UserFileManager {
 
     getUserByEmail = async(email) => {
         try{
-            
+            logger.debug(email)
             const users = await this.getUsers()
+            console.log(users);
             const user = users.find(u => {
                 return u.email === email
             })
-            
+            logger.debug(user)
             return user
         
         } catch(error) {
@@ -113,23 +115,23 @@ class UserFileManager {
         }     
     }
 
-    update = async(email, newdata) => {
+    update = async(id, newdata) => {
 
         try {
 
-            if (!await this.getUserByEmail(email)) {                
+            if (!await this.getUserById(id)) {                
                 return null
             }
-
-            if (email !== newdata.email) {
-                return 'No se puede modificar el correo'
-            }
+            logger.debug(`user: ${JSON.stringify(newdata)}`)
+            // if (email !== newdata.email) {
+            //     return 'No se puede modificar el correo'
+            // }
 
             const users = await this.getUsers()
 
-            users.map(user => user.email === email ? user : newdata)
+            users.map(user => user.id === id ? user : newdata)
 
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            fs.promises.writeFile(this.path, JSON.stringify(newdata))
             
             return 'Usuario modificado'
 

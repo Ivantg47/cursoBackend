@@ -28,7 +28,7 @@ const devLog = winston.createLogger({
             level: "debug",
             format: winston.format.combine(
                 winston.format.colorize({colors: customeLevelOptions.colors}),
-                winston.format.simple()
+                winston.format.simple(),
             )
         }),
         new winston.transports.File({
@@ -46,7 +46,7 @@ const prodLog = winston.createLogger({
             level: "info",
             format: winston.format.combine(
                 winston.format.colorize({colors: customeLevelOptions.colors}),
-                winston.format.simple()
+                winston.format.simple(),
             )
         }),
         new winston.transports.File({

@@ -35,7 +35,7 @@ export default class UserRepository {
         console.log('hola user rep');
         const cart = await CartService.addCart()
         
-        user.cart = cart.result.payload._id
+        user.cart = cart.result.payload._id || cart.result.payload.id
         const data = new UserDTO(user)
         const result = this.dao.create(data)
 
@@ -84,9 +84,9 @@ export default class UserRepository {
             if (!user) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
-
+            
             user.role = user.role == 'user' ? 'premium' : 'user'
-
+            
             const result = await this.dao.update(username, user)
 
             if (!result) {

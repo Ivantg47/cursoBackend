@@ -72,7 +72,7 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-console.log('hola user pass');
+
                 const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
@@ -103,9 +103,9 @@ console.log('hola user pass');
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                
+                console.log('hola sesion');
                 const user = await UserService.getUserByEmail(username)
-                
+                console.log(user);
                 if (!user) {
                     console.error('Usuario no existe');
                     return done(null,false)
