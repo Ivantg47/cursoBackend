@@ -70,7 +70,13 @@ export default class CartRouter extends MiRouter {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
-                
+
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.owner == req.session.user.email) {
+                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    }
+                }
                 const cart = await CartService.addProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
@@ -123,35 +129,5 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid/mail',  ["PUBLIC"],async (req, res, next) => {
-
-            const transport = nodemailer.createTransport({
-                service: 'gmail',
-                port: 587,
-                auth: {
-                    user: config.USER_GMAIL,
-                    pass: config.PASS_GMAIL
-                }
-            })
-
-            const result = await transport.sendMail({
-                from: config.USER_GMAIL,
-                to: 'ivan.toga93@gmail.com',
-                subject: 'Saludo',
-                html: `
-                    <div>
-                        <h1>Hola mundo!!</h1>
-                        <img src:"cid:" />
-                    </div>
-                    `,
-                attachments: [{
-                    filename: 'mundo.jpg',
-                    path: './public/img/mundo.jpg',
-                    cid: 'mundo'
-                }]
-            })
-
-            res.send('envio')
-        })
     }
 }
