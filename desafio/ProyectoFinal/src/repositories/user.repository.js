@@ -60,7 +60,7 @@ export default class UserRepository {
             return {code: 200, result: {status: "success", message: 'Usuario actualizado', payload: result} }
 
         } catch (error) {
-            logger.error(error)
+            logger.error(error.message)
         }
         
 
@@ -92,7 +92,7 @@ export default class UserRepository {
             if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
-            logger.debug(result)
+            logger.debug(JSON.stringify(result))
             return {code: 200, result: {status: "success", message: 'Role actualizado', payload: result} }
 
         } catch (error) {

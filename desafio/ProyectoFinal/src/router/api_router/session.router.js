@@ -84,7 +84,7 @@ export default class SessionRouter extends MiRouter {
                 
                 const result = await UserService.getUserByEmail(email)
                 //const result = await userModel.findOneAndUpdate({email: email, method: 'local'}, {'$set': {password: createHash(password)}})
-                logger.debug(result)
+                logger.debug(JSON.stringify(result))
                 if (!result) {
                     res.render('session/olvido', {title: 'Recuperar Contrasseña', error: true})
                 } else {
@@ -97,7 +97,6 @@ export default class SessionRouter extends MiRouter {
 
                     const token = generateTokenUser(payload, secret)
                     const link = `http://127.0.0.1:8080/session/restor-password/${payload.id}/${token}`
-                    req.logger.debug(link)
 
                     let html = `<h1>Recuperación de contraseña</h1>
                     <p>Apreciado cliente,

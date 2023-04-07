@@ -93,7 +93,7 @@ const initializePassport = () => {
                 return done(null, result)
                 
             } catch (error) {
-                logger.error(error);
+                logger.error(error.message);
                 return done('[LOCAL] Error al registrar '+ error)
             }
         }
@@ -129,7 +129,7 @@ const initializePassport = () => {
             const id = user._id || user.id
             done(null, id)
         } catch (error) {
-            logger.error(error);
+            logger.error(error.message);
         }
     })
 
@@ -138,7 +138,7 @@ const initializePassport = () => {
             const user = await UserService.getUserById(id)
             return done(null,user)
         } catch (error) {
-            logger.error(error);
+            logger.error(error.message);
         }
     })
 

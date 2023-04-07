@@ -37,7 +37,7 @@ export default class MiRouter {
             try {
                 await callback.apply(this, params)
             } catch (error) {
-                logger.error(error);
+                logger.error(error.message);
                 params[1].status(500).send(error)//params[1] = res
             }
         })

@@ -1,7 +1,6 @@
 
 import express from 'express'
-import { ProductService } from '../../repositories/index.js'
-import producto from '../../dao/bd_manager/mogo/productManagerBD.js'
+import { ProductService } from '../../repositories/index_repository.js'
 import uploader from '../../dao/multer.js'
 
 const router = express.Router()
