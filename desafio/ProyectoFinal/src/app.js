@@ -24,6 +24,7 @@ import errorHandler from './middlewares/errors/errorHandler.js'
 import logger, { addLogger } from './utils/logger.js'
 import swaggerJSDoc from 'swagger-jsdoc'
 import  swaggerUiExpress from 'swagger-ui-express'
+import { Session } from './dao/factory.js'
 
 const app = express()
 
@@ -40,32 +41,11 @@ const  swaggerOptions = {
     },
     apis: [`${__dirname}/docs/**/*.yaml`]
 }
-console.log(`${__dirname}/docs/**/*.yaml`);
+
 const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
-// mongoose.set('strictQuery', false)
-// mongoose.connect(config.MONGO_URL, {dbname: config.BD_NAME},  error => {
-//     if (error) {
-//         console.error('No connect', error);
-//         process.exit()
-//     }
-// })
-
-// app.use(session({
-//     secret: config.SESSION_SECRET,
-//     store: MongoStore.create({
-//         mongoUrl: config.MONGO_URL,
-//         dbName: config.BD_NAME,
-//         mongoOptions: {
-//             useNewUrlParser: true,
-//             useUnifiedTopology: true
-//         },
-//         ttl: 100
-//     }),
-//     resave: true,
-//     saveUninitialized: true
-// }))
+app.use(session(Session))
 
 initializePassport()
 app.use(passport.initialize())
@@ -88,7 +68,7 @@ app.set('view engine', 'handlebars')
 app.use('/', router)
 app.use(errorHandler)
 
-const httpServer = app.listen(config.PORT, () => console.log('Server running...'))
+const httpServer = app.listen(config.PORT, () => logger.info('Server running...'))
 const io = new Server(httpServer)
 
 app.set("io", io);
