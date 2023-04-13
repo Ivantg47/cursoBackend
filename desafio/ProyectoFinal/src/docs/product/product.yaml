@@ -38,7 +38,6 @@ paths:
      description: Error en el tipo de dato o falta de llenar campos
     "500":
      description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
-
  /api/products/{pid}:
   get:
    summary: Obtine un producto mediante su id
@@ -108,7 +107,6 @@ paths:
      description: Producto no encontrado
     "500":
      description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
-
 
 components: 
  schemas:

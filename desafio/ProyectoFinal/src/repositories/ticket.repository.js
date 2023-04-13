@@ -16,7 +16,7 @@ export default class TicketRepository {
 
         } catch (error) {
 
-            logger.error(error);
+            logger.error(error.message);
 
         }
     }
@@ -30,7 +30,7 @@ export default class TicketRepository {
 
         } catch (error) {
 
-            logger.error(error);
+            logger.error(error.message);
 
         }
     }
@@ -46,7 +46,7 @@ export default class TicketRepository {
             
         } catch (error) {
             
-            logger.error(error);
+            logger.error(error.message);
         }
     }
 
@@ -59,7 +59,7 @@ export default class TicketRepository {
             
         } catch (error) {
             
-            logger.error(error);
+            logger.error(error.message);
         }
     }
 
@@ -73,7 +73,7 @@ export default class TicketRepository {
         
         } catch(error) {
             
-            logger.error(error);
+            logger.error(error.message);
 
         }                        
     }

@@ -54,7 +54,7 @@ switch (config.PERCISTRENCE) {
         Chat = ChatMongo
         User = UserMongo
         Ticket = TicketMongo
-
+        
         break;
 
     case 'FILE':
