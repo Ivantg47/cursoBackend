@@ -23,7 +23,7 @@ export default class ProductRepository {
 
         } catch (error) {
 
-            logger.error(error)
+            logger.error(error.message)
 
         }
     }
@@ -41,7 +41,7 @@ export default class ProductRepository {
 
         } catch (error) {
             
-            logger.error(error)
+            logger.error(error.message)
             
         }
     }
@@ -63,7 +63,7 @@ export default class ProductRepository {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
             console.error(error);
-            logger.error(error)
+            logger.error(error.message)
 
         }       
     }
@@ -88,7 +88,7 @@ export default class ProductRepository {
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
         } catch (error) {
-            logger.error(error)
+            logger.error(error.message)
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: error.message}}
             }
@@ -115,7 +115,7 @@ export default class ProductRepository {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            logger.error(error)
+            logger.error(error.message)
 
         }
     }
@@ -145,7 +145,7 @@ export default class ProductRepository {
                 return {status: 400, error: 'Codigo en uso' }
             }
 
-            logger.error(error)
+            logger.error(error.message)
 
         }
     }
@@ -158,7 +158,7 @@ export default class ProductRepository {
 
         } catch (error) {
             
-            logger.error(error)
+            logger.error(error.message)
 
         }
     }

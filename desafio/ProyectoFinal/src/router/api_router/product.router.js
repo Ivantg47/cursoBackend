@@ -10,6 +10,7 @@ export default class ProductRouter extends MiRouter {
 
         this.get('/', ["PUBLIC"], async (req, res) => {
             try {
+                req.logger.debug('llama get')
                 let pagination = {
                     page: parseInt(req.query?.page) || 1,
                     limit: parseInt(req.query?.limit) || 10
@@ -28,6 +29,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
+                console.error(error);
                 req.logger.error(error.message);
             }
         })

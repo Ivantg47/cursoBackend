@@ -21,7 +21,7 @@ export default class ChatRepository {
 
         } catch (error) {
 
-            logger.error(error);
+            logger.error(error.message);
             return error
 
         }
@@ -41,7 +41,7 @@ export default class ChatRepository {
 
         } catch (error) {
 
-            logger.error(error);
+            logger.error(error.message);
             return error
         }
     }
