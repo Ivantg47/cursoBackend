@@ -64,13 +64,13 @@ class UserFileManager {
 
     getUserByEmail = async(email) => {
         try{
-            logger.debug(email)
+            
             const users = await this.getUsers()
-            console.log(users);
+            
             const user = users.find(u => {
                 return u.email === email
             })
-            logger.debug(user)
+            
             return user
         
         } catch(error) {
@@ -86,7 +86,7 @@ class UserFileManager {
             user.id = await this.getId()
             users.push(user)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(users))
+            await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2))
 
             return user
                     

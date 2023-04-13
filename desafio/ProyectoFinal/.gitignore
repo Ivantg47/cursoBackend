@@ -3,3 +3,4 @@ img
 .env
 production.env
 kuberapi.yaml
+sessions.json

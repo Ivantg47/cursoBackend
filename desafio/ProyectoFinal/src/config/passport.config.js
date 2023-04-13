@@ -72,7 +72,7 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-
+                
                 const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
@@ -87,9 +87,9 @@ const initializePassport = () => {
                     password: createHash(password),
                     method: 'LOCAL'
                 }
-
+                
                 let result = await UserService.addUser(newUser)
-
+                
                 return done(null, result)
                 
             } catch (error) {
@@ -103,9 +103,9 @@ const initializePassport = () => {
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                console.log('hola sesion');
+                
                 const user = await UserService.getUserByEmail(username)
-                console.log(user);
+                
                 if (!user) {
                     console.error('Usuario no existe');
                     return done(null,false)
