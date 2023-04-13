@@ -12,7 +12,7 @@ program.parse()
 const enviroment = program.opts().mode
 
 dotenv.config({
-    path: enviroment=="PRODUCTION" ? "./.env.production" : './.env'
+    path: enviroment=="PRODUCTION" ? "./production.env" : './.env'
 })
 
 export default {
@@ -28,5 +28,8 @@ export default {
     CALL_BACK_URL: process.env.CALL_BACK_URL,
     PORT: program.opts().p || process.env.PORT,
     PERCISTRENCE: program.opts().store || process.env.PERCISTRENCE,
-    SESSION_SECRET: process.env.SESSION_SECRET
+    SESSION_SECRET: process.env.SESSION_SECRET,
+    MODE: program.opts().mode,
+    USER_GMAIL: process.env.USER_GMAIL,
+    PASS_GMAIL: process.env.PASS_GMAIL
 }

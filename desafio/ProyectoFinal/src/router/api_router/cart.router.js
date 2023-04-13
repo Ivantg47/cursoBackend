@@ -1,4 +1,4 @@
-import { CartService } from "../../repositories/index_repository.js";
+import { CartService, ProductService } from "../../repositories/index_repository.js";
 import MiRouter from "../router.js";
 import nodemailer from 'nodemailer'
 import __dirname from "../../utils.js";
@@ -13,7 +13,7 @@ export default class CartRouter extends MiRouter {
 
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
             }
         })
 
@@ -25,7 +25,7 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
@@ -36,12 +36,12 @@ export default class CartRouter extends MiRouter {
                 
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.delete('/:cid', ["USER"], async (req, res, next) => {
+        this.delete('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.deleteCart(cid)
@@ -49,38 +49,45 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch(error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.put('/:cid', ["USER"], async (req, res, next) => {
+        this.put('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.updateCart(cid, req.body)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.post('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.post('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
                 
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.result.payload.owner == req.session.user.email) {
+                        req.logger.debug('El producto no puede ser adquirido por el propietario')
+                        return res.status(400).send({status: "error", message: 'El producto no puede ser adquirido por el propietario'})
+                    }
+                }
                 const cart = await CartService.addProdCart(cid, pid, quantity)
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.delete('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.delete('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
 
@@ -88,12 +95,12 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.put('/:cid/product/:pid', ["USER"], async (req, res, next) => {
+        this.put('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
@@ -102,12 +109,12 @@ export default class CartRouter extends MiRouter {
             
                 return res.status(cart.code).send(cart.result)
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.get('/:cid/purchase', ["USER"], async (req, res, next) => {
+        this.get('/:cid/purchase', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 
                 const { cid } = req.params
@@ -118,40 +125,10 @@ export default class CartRouter extends MiRouter {
                 return res.status(cart.code).send(cart.result)
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.get('/:cid/mail',  ["PUBLIC"],async (req, res, next) => {
-
-            const transport = nodemailer.createTransport({
-                service: 'gmail',
-                port: 587,
-                auth: {
-                    user: config.USER_GMAIL,
-                    pass: config.PASS_GMAIL
-                }
-            })
-
-            const result = await transport.sendMail({
-                from: config.USER_GMAIL,
-                to: 'ivan.toga93@gmail.com',
-                subject: 'Saludo',
-                html: `
-                    <div>
-                        <h1>Hola mundo!!</h1>
-                        <img src:"cid:" />
-                    </div>
-                    `,
-                attachments: [{
-                    filename: 'mundo.jpg',
-                    path: './public/img/mundo.jpg',
-                    cid: 'mundo'
-                }]
-            })
-
-            res.send('envio')
-        })
     }
 }

@@ -4,6 +4,7 @@ import FileStore from "session-file-store"
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import __dirname from "../utils.js";
+import logger from "../utils/logger.js";
 
 export let Products
 export let Carts
@@ -15,7 +16,8 @@ export let Ticket
 switch (config.PERCISTRENCE) {
 
     case 'MONGO':
-        console.log('Mongo connect');
+        logger.info('Mongo connect')
+        //console.log('Mongo connect');
         
         mongoose.set('strictQuery', false)
         mongoose.connect(config.MONGO_URL, {dbname: config.BD_NAME,
@@ -51,11 +53,11 @@ switch (config.PERCISTRENCE) {
         Chat = ChatMongo
         User = UserMongo
         Ticket = TicketMongo
-
+        
         break;
 
     case 'FILE':
-        console.log('File percistance');
+        logger.info('File percistance')
         const fileStore = FileStore(session)
         const { default: ProductsFile } = await import('./file_manager/product_fileManager.js')
         const { default: CartsFile } = await import('./file_manager/cart_fileManager.js')
@@ -78,7 +80,7 @@ switch (config.PERCISTRENCE) {
 
         break;
     default:
-        console.log('Memory percistance');
+        logger.info('Memory percistance')
 
         Session = {
             secret: config.SESSION_SECRET,

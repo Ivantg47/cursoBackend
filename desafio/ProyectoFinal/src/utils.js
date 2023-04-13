@@ -17,6 +17,18 @@ export const generateToken = (user) => {
     return token
 }
 
+export const generateTokenUser = (user, secret) => {
+    const token = jwt.sign({user}, secret, {expiresIn: '1h'})
+
+    return token
+}
+
+export const authTokenUser = (token, secret) => {
+    //const payload = jwt.verify(token, secret)
+    jwt.verify(token, secret)
+
+}
+
 export const authToken = (req, res, next) => {
     
     const authToken = req.cookies[config.COOKIE_NAME_JWT]

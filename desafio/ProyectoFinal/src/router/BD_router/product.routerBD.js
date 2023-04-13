@@ -1,7 +1,6 @@
 
 import express from 'express'
-import { ProductService } from '../../repositories/index.js'
-import producto from '../../dao/bd_manager/mogo/productManagerBD.js'
+import { ProductService } from '../../repositories/index_repository.js'
 import uploader from '../../dao/multer.js'
 
 const router = express.Router()
@@ -29,7 +28,7 @@ router.get('/', async (req, res, next) => {
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -41,7 +40,7 @@ router.get('/:pid', async (req, res, next) => {
 
         return res.status(prod.status).send(prod.message)
     } catch (error) {
-        console.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -66,7 +65,7 @@ router.post('/', uploader.array('thumbnail'), async (req, res, next) => {
         }
         
     } catch (error) {
-        console.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -81,7 +80,7 @@ router.put('/:pid', async (req, res, next) => {
         return res.status(200).send(prod)
 
     } catch (error) {
-        console.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })
@@ -94,7 +93,7 @@ router.delete('/:pid', async (req, res, next) => {
         return res.status(prod.status).send(prod)
         
     } catch (error) {
-        console.error(error);
+        req.logger.error(error.message);
         return next()
     }
 })

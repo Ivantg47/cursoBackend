@@ -22,7 +22,7 @@ export default class MockingRouter extends MiRouter {
                 return res.status(200).send({status: 'success', message: 'Productos generados'})
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 return res.status(500).send({status: 'error', message: error.message})
             }
         })

@@ -1,0 +1,70 @@
+fatal: FATAL ERROR
+error: error on DB
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_INVALID_STATUS_CODE"}
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: undefined
+error: jwt malformed {"name":"JsonWebTokenError"}
+error: invalid signature {"name":"JsonWebTokenError"}
+error: undefined
+error: invalid signature {"name":"JsonWebTokenError"}
+error: invalid signature {"name":"JsonWebTokenError"}
+error: undefined
+error: undefined
+error: undefined
+error: TypeError
+error: Assignment to constant variable.
+error: Assignment to constant variable.
+error: token
+error: Assignment to constant variable.
+error: undefined
+error: userModel is not defined
+error: userModel is not defined
+error: isValidPassword is not defined
+error: undefined
+error: undefined
+error: this.dao.updateUser is not a function
+error: undefined
+error: req.logger.debbug is not a function
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: undefined
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot convert object to primitive value
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: undefined
+error: Cannot read properties of undefined (reading 'code')
+error: logger is not defined
+error: undefined
+error: filtro is not defined
+error: undefined
+error: filtro is not defined
+error: undefined
+error: ProductService is not defined

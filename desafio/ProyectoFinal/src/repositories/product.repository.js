@@ -2,6 +2,7 @@ import ProductDTO from '../dao/DTO/product.dto.js'
 import CustomError from '../services/errors/custom_error.js'
 import EErrors from '../services/errors/enums.js'
 import { generateProductErrorInfo } from '../services/errors/info.js'
+import logger from '../utils/logger.js'
 
 export default class ProductRepository {
 
@@ -22,7 +23,7 @@ export default class ProductRepository {
 
         } catch (error) {
 
-            console.error(error);
+            logger.error(error.message)
 
         }
     }
@@ -40,7 +41,7 @@ export default class ProductRepository {
 
         } catch (error) {
             
-            console.error(error);
+            logger.error(error.message)
             
         }
     }
@@ -61,8 +62,8 @@ export default class ProductRepository {
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
-
             console.error(error);
+            logger.error(error.message)
 
         }       
     }
@@ -87,7 +88,7 @@ export default class ProductRepository {
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
         } catch (error) {
-            console.error(error)
+            logger.error(error.message)
             if (error.name === 'CastError') {
                 return {code: 400, result: {status: "error", error: error.message}}
             }
@@ -114,7 +115,7 @@ export default class ProductRepository {
                 return {code: 400, result: {status: "error", error: 'Id invalido'}}
             }
 
-            console.error(error);
+            logger.error(error.message)
 
         }
     }
@@ -144,7 +145,7 @@ export default class ProductRepository {
                 return {status: 400, error: 'Codigo en uso' }
             }
 
-            console.error(error);
+            logger.error(error.message)
 
         }
     }
@@ -157,7 +158,7 @@ export default class ProductRepository {
 
         } catch (error) {
             
-            console.error(error);
+            logger.error(error.message)
 
         }
     }

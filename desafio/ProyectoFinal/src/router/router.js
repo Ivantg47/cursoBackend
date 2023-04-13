@@ -1,6 +1,7 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken'
 import config from "../config/config.js";
+import logger from "../utils/logger.js";
 
 export default class MiRouter {
 
@@ -36,7 +37,7 @@ export default class MiRouter {
             try {
                 await callback.apply(this, params)
             } catch (error) {
-                console.error(error);
+                logger.error(error.message);
                 params[1].status(500).send(error)//params[1] = res
             }
         })
@@ -56,7 +57,7 @@ export default class MiRouter {
     handlePolicies = policies => (req, res, next) => {
         if (policies.includes('PUBLIC')) return next()
 
-        if (policies.includes('USER') || policies.includes('ADMIN')) {
+        if (policies.includes('USER') || policies.includes('ADMIN') || policies.includes('PREMIUM')) {
             const authHeaders = req.headers.authorization || req.cookies[config.COOKIE_NAME_JWT]
             
             if(!authHeaders) return res.sendNoAuthorizatedError('Unauthorized')

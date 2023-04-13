@@ -6,6 +6,7 @@ import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
 import { UserService } from '../repositories/index_repository.js'
+import logger from '../utils/logger.js'
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = jwt.Strategy
@@ -40,7 +41,7 @@ const initializePassport = () => {
             
             try {
                 
-                let user = await await UserService.getUserByEmail(profile._json.email)
+                let user = await UserService.getUserByEmail(profile._json.email)
                 if (!user) {
                     let newUser = {
                         first_name: profile._json.name, 
@@ -71,7 +72,7 @@ const initializePassport = () => {
             const {first_name, last_name, email} =  req.body //req.query
             
             try {
-console.log('hola user pass');
+
                 const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
@@ -92,7 +93,7 @@ console.log('hola user pass');
                 return done(null, result)
                 
             } catch (error) {
-                console.error(error);
+                logger.error(error.message);
                 return done('[LOCAL] Error al registrar '+ error)
             }
         }
@@ -102,9 +103,9 @@ console.log('hola user pass');
         {usernameField: 'email'},
         async (username, password, done) => {
             try {
-                
+                console.log('hola sesion');
                 const user = await UserService.getUserByEmail(username)
-                
+                console.log(user);
                 if (!user) {
                     console.error('Usuario no existe');
                     return done(null,false)
@@ -128,7 +129,7 @@ console.log('hola user pass');
             const id = user._id || user.id
             done(null, id)
         } catch (error) {
-            console.error(error);
+            logger.error(error.message);
         }
     })
 
@@ -137,7 +138,7 @@ console.log('hola user pass');
             const user = await UserService.getUserById(id)
             return done(null,user)
         } catch (error) {
-            console.error(error);
+            logger.error(error.message);
         }
     })
 

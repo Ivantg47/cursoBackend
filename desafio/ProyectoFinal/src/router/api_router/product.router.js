@@ -10,6 +10,7 @@ export default class ProductRouter extends MiRouter {
 
         this.get('/', ["PUBLIC"], async (req, res) => {
             try {
+                req.logger.debug('llama get')
                 let pagination = {
                     page: parseInt(req.query?.page) || 1,
                     limit: parseInt(req.query?.limit) || 10
@@ -29,6 +30,7 @@ export default class ProductRouter extends MiRouter {
 
             } catch (error) {
                 console.error(error);
+                req.logger.error(error.message);
             }
         })
 
@@ -40,15 +42,19 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
             }
         })
 
-        this.post('/', ["PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["ADMIN", "PREMIUM"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
                 
                 let product = req.body
-        
+                
+                if (req.session.user.role == 'premium') {
+                    product.owner = req.session.user.email    
+                }
+                
                 if(req.files?.length === 0 || !req.files) {
                     product.thumbnail = ['/img/noimage.jpg']
                 } else {
@@ -60,35 +66,51 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)     
                 
             } catch (error) {
+                req.logger.error(error.message);
                 console.error(error);
                 //return next()
             }
         })
         
-        this.put('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.put('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const newProd = req.body
                 
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.owner != req.session.user.email) {
+                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    }
+                }
+
                 const prod = await ProductService.updateProduct(pid, newProd)
 
                 return res.status(prod.code).send(prod.result)
         
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 //return next()
             }
         })
         
-        this.delete('/:pid', ["ADMIN"], async (req, res, next) => {
+        this.delete('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { pid } = req.params
+
+                if (req.session.user.role == 'premium') {
+                    const p = await ProductService.getProductById(pid)
+                    if (p.owner != req.session.user.email) {
+                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                    }
+                }
+                
                 const prod = await ProductService.deleteProduct(pid)
                 
                 return res.status(prod.code).send(prod.result)
                 
             } catch (error) {
-                console.error(error);
+                req.logger.error(error.message);
                 //return next()
             }
         })

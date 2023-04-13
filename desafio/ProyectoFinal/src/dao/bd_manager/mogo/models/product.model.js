@@ -13,7 +13,8 @@ const productSchema = new mongoose.Schema({
     code: { type: String, required: true, trim: true, unique: true},
     stock: { type: Number, required: true},
     category: { type: String, required: true, trim: true},
-    status: {type:Boolean, default: true}
+    status: {type:Boolean, default: true},
+    owner: { type: String, trim: true}
 })
 
 productSchema.post('save', function(error, doc, next) {

@@ -1,3 +1,4 @@
+import logger from "../../../utils/logger.js"
 import { userModel } from "./models/user.model.js"
 
 class UserMongoManager {
@@ -53,7 +54,7 @@ class UserMongoManager {
     create = async (user) => {
 
         try {
-            console.log('hola user mongo');
+            
             const result = await userModel.create(user)
             
             return result
@@ -65,10 +66,13 @@ class UserMongoManager {
         }
     }
 
-    update = async () => {
+    update = async (id, newUser) => {
 
         try {
+            const result = await userModel.findOneAndUpdate({_id: id}, newUser, { upsert: true, returnOriginal: false })
             
+            return result
+
         } catch (error) {
             
             throw error
