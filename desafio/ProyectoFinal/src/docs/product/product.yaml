@@ -3,7 +3,7 @@ paths:
   get:
    summary: Obtener todos los productos
    tags:
-    - Products
+    - Productos
    responses:
     "200":
      description: Los productos fueron devueltos satisfactoriamente
@@ -18,20 +18,31 @@ paths:
   post:
    summary: Añade un nuevo producto
    tags:
-    - Products
-   parameters:
-   - name: pid
-     in: path
-     required: true
-     description: Id del producto a buscar
-     schema:
-      $type: String
-
+    - Productos
+   requestBody:
+    required: true
+    content:
+     application/json:
+      schema:
+       $ref: '#components/requestBodies/updateProduct'
+   responses:
+    "200":
+     description: Producto creado
+     content:
+      application/json:
+       schema:
+        type: array
+        items:
+         $ref: "#components/schemas/Product"
+    "400":
+     description: Error en el tipo de dato o falta de llenar campos
+    "500":
+     description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
  /api/products/{pid}:
   get:
    summary: Obtine un producto mediante su id
    tags:
-    - Products
+    - Productos
    parameters:
    - name: pid
      in: path
@@ -51,7 +62,7 @@ paths:
   put:
    summary: Actualiza un producto mediante su id
    tags:
-    - Products
+    - Productos
    parameters:
    - name: pid
      in: path
@@ -68,6 +79,10 @@ paths:
    responses:
     "200":
      description: Producto actualizado
+     content:
+      application/json:
+       schema:
+        $ref: "#components/schemas/Product"
     "404":
      description: Producto no encontrado
     "400":
@@ -77,7 +92,7 @@ paths:
   delete:
    summary: Elimina un producto mediante su id
    tags:
-    - Products
+    - Productos
    parameters:
    - name: pid
      in: path
@@ -85,7 +100,13 @@ paths:
      description: Id del producto a eliminar
      schema:
       $type: String
-
+   responses:
+    "200":
+     description: Producto eliminado
+    "404":
+     description: Producto no encontrado
+    "500":
+     description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
 
 components: 
  schemas:
@@ -127,7 +148,7 @@ components:
     title: Pelota
     description: pelota de goma de multiples colores
     price: 50.00
-    thumbnail: "/img/pelota.jpg"
+    thumbnail: ["/img/pelota.jpg"]
     code: P001
     stock: 100
     category: Jugetes
@@ -168,7 +189,7 @@ components:
     title: Pelota
     description: pelota de goma de multiples colores
     price: 50.00
-    thumbnail: "/img/pelota.jpg"
+    thumbnail: ["/img/pelota.jpg"]
     code: P001
     stock: 100
     category: Jugetes

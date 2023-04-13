@@ -20,15 +20,24 @@ const customeLevelOptions = {
         debug: "grey",
     }
 }
+const myFormat = winston.format.printf( ({ level, message}) => {
+    if(typeof message == 'object') {
+        message = JSON.stringify(message, null, 3)
+    }
+    let msg = `${level} : ${message} ` 
+    return msg
+});
 
 const devLog = winston.createLogger({
     levels: customeLevelOptions.levels,
+    
     transports: [
         new winston.transports.Console({
             level: "debug",
             format: winston.format.combine(
                 winston.format.colorize({colors: customeLevelOptions.colors}),
-                winston.format.simple(),
+                winston.format.splat(),
+                myFormat,
             )
         }),
         new winston.transports.File({
@@ -67,3 +76,33 @@ export const addLogger = (req, res, next) => {
 }
 
 export default logger
+
+// const logFormat = format.printf(info => `${info.timestamp} ${info.level} [${info.label}]: ${info.message}`)
+
+// const logger = winston.createLogger({
+//   level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+//   format: format.combine(
+//     format.label({ label: path.basename(process.mainModule.filename) }),
+//     format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+//     // Format the metadata object
+//     format.metadata({ fillExcept: ['message', 'level', 'timestamp', 'label'] })
+//   ),
+//   transports: [
+//     new transports.Console({
+//       format: format.combine(
+//         format.colorize(),
+//         logFormat
+//       )
+//     }),
+//     new transports.File({
+//       filename: 'logs/combined.log',
+//       format: format.combine(
+//         // Render in one line in your log file.
+//         // If you use prettyPrint() here it will be really
+//         // difficult to exploit your logs files afterwards.
+//         format.json()
+//       )
+//     })
+//   ],
+//   exitOnError: false
+// })

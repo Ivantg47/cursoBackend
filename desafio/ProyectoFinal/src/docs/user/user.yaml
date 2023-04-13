@@ -105,7 +105,7 @@ paths:
   get:
    summary: Obtener todos los usuarios
    tags:
-    - Users
+    - Usuarios
    responses:
     "200":
      description: Los usuatrios fueron devueltos satisfactoriamente
@@ -115,6 +115,16 @@ paths:
         type: array
         items:
          $ref: "#components/schemas/User"
+    "500":
+     description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
+ /premium/{uid}:
+  get:
+   summary: Cambia el rol de un usuario de user a premium y de premium a user
+   tags:
+    - Usuarios
+   response:
+    "200":
+     description: El rol del usuario se cambio con exito
     "500":
      description: Error interno del servidor. Consulta defectuoso o imposibididad de conectarse ala BD
  /api/users/{uid}:
@@ -181,5 +191,5 @@ components:
     cart: ObjectId('63fe811db3271366223f030c')
     role: user
     method: LOCAL
-
+    
 tags: []

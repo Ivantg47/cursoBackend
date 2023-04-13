@@ -16,8 +16,7 @@ export let Ticket
 switch (config.PERCISTRENCE) {
 
     case 'MONGO':
-        logger.info('Mongo connect')
-        //console.log('Mongo connect');
+        logger.info('Mongo connect');
         
         mongoose.set('strictQuery', false)
         mongoose.connect(config.MONGO_URL, {dbname: config.BD_NAME,
@@ -45,7 +44,9 @@ switch (config.PERCISTRENCE) {
                     useUnifiedTopology: true
                 },
                 ttl: 100
-            })
+            }),
+            resave: false,
+            saveUninitialized: false
         }
 
         Products = ProductsMongo
@@ -57,7 +58,7 @@ switch (config.PERCISTRENCE) {
         break;
 
     case 'FILE':
-        logger.info('File percistance')
+        logger.info('File percistance');
         const fileStore = FileStore(session)
         const { default: ProductsFile } = await import('./file_manager/product_fileManager.js')
         const { default: CartsFile } = await import('./file_manager/cart_fileManager.js')
@@ -80,7 +81,7 @@ switch (config.PERCISTRENCE) {
 
         break;
     default:
-        logger.info('Memory percistance')
+        logger.info('Memory percistance');
 
         Session = {
             secret: config.SESSION_SECRET,
