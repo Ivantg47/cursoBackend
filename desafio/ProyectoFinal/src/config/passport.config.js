@@ -69,10 +69,10 @@ const initializePassport = () => {
             passReqToCallback: true, usernameField: 'email'
         },
         async (req, username, password, done) => {
-            const {first_name, last_name, email} =  req.body //req.query
+            const {first_name, last_name, email, role} =  req.body //req.query
             
             try {
-                
+            
                 const user = await UserService.getUserByEmail(username)
                 
                 if (user) {
@@ -85,6 +85,7 @@ const initializePassport = () => {
                     last_name, 
                     email,
                     password: createHash(password),
+                    role,
                     method: 'LOCAL'
                 }
                 

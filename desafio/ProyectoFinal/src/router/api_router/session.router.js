@@ -221,12 +221,17 @@ export default class SessionRouter extends MiRouter {
 
         this.get('/current', ["USER"], authToken, async (req, res, next) => {
             try {
-                logger.debug(req.user)                
+                logger.debug(req.user)
+                //console.log('user: ',req.user);                
                 if(req.user) {
                     const user = req.user
                     if(!user.cart) user.cart = 'No cart'
-                    return res.status(200).render('session/profile', {title: "Perfil", user})
+                    //return res.status(200).render('session/profile', {title: "Perfil", user})
+                    return res.status(200).send({status: "succes", payload: user})
                 }    
+
+                return res.status(404).send("Not found")
+
             } catch (error) {
                 req.logger.error(error.message);
                 return next()               
