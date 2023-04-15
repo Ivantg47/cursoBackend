@@ -219,9 +219,9 @@ export default class SessionRouter extends MiRouter {
             }
         })
 
-        this.get('/current', ["USER"], authToken, async (req, res, next) => {
+        this.get('/current', ["USER", "PREMIUM", "ADMIN"], authToken, async (req, res, next) => {
             try {
-                logger.debug(req.user)
+                //logger.debug(req.user)
                 //console.log('user: ',req.user);                
                 if(req.user) {
                     const user = req.user

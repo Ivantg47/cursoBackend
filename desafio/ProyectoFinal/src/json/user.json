@@ -5,7 +5,7 @@
     "last_name": "admin",
     "email": "adminCoder@coder.com",
     "password": "$2b$10$BOKVY2n10hnQMdmYHXFjeeIMgizgvmIF4fi3D8X0RTXpkAQxjaBHC",
-    "role": "premium",
+    "role": "admin",
     "method": "LOCAL",
     "cart": 4
   },
@@ -57,56 +57,6 @@
     "password": "$2b$10$WtkI4/YvQ5Tn2kSQhvjJn.Q0BXXJLE6/mNhl90FsSm2MOnsHICWcq",
     "cart": 9,
     "role": "user",
-    "method": "LOCAL"
-  },
-  {
-    "id": 7,
-    "first_name": "Alejandro",
-    "last_name": "Espinal",
-    "email": "Mara94@hotmail.com",
-    "password": "$2b$10$i.G4Ag9UdUyykkbxL6LsRusEV2JzoeVUfMLfuEIpjhxeHLXc1Kq0K",
-    "cart": 10,
-    "role": "user",
-    "method": "LOCAL"
-  },
-  {
-    "id": 8,
-    "first_name": "Sonia",
-    "last_name": "Nazario",
-    "email": "Rebeca_valos@gmail.com",
-    "password": "$2b$10$wojwDwXrSiBEIT17DZKsXu0tqie/sbHbuF.3KlDsZ3Xz7nmtJQ1xi",
-    "cart": 11,
-    "role": "user",
-    "method": "LOCAL"
-  },
-  {
-    "id": 9,
-    "first_name": "Ramiro",
-    "last_name": "Portillo",
-    "email": "Guillermo81@gmail.com",
-    "password": "$2b$10$NlAYRZI8mzbqXbYUa.7kBei09DhIg5VM.dcSV.qWvCccBiez0TfVW",
-    "cart": 12,
-    "role": "user",
-    "method": "LOCAL"
-  },
-  {
-    "id": 10,
-    "first_name": "Antonio",
-    "last_name": "Ortiz",
-    "email": "LuisMiguel_Curiel7@hotmail.com",
-    "password": "$2b$10$QSFAXgIzt30cdsgKfqNY4uABSjiVtkEOjO9TC8mljEZ/QLqUFWL66",
-    "cart": 13,
-    "role": "user",
-    "method": "LOCAL"
-  },
-  {
-    "id": 11,
-    "first_name": "Adán",
-    "last_name": "Baeza",
-    "email": "Emilio_Olmos@yahoo.com",
-    "password": "$2b$10$uV/WvP9mZiyNC2x9.7QmAOgeXesHmPFp4wireViffWKups1BuN35.",
-    "cart": 14,
-    "role": "admin",
     "method": "LOCAL"
   }
 ]

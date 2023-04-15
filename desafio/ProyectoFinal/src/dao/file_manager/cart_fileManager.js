@@ -60,11 +60,11 @@ class CartFileManager {
         try{
             
             const carts = await this.getCarts()
-            
+              
             const cart = carts.find(c => {
                 return c.id === Number(id)
             })
-
+            
             if (cart.products) {
 
                 await Promise.all(cart.products.map(async prod => {
@@ -94,8 +94,8 @@ class CartFileManager {
 
             carts.push(cart)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(carts))
-            // await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
+            // await fs.promises.writeFile(this.path, JSON.stringify(carts))
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
 
             return cart
                     
@@ -117,8 +117,8 @@ class CartFileManager {
 
             const filtro = carts.filter((cart) => cart.id != id)
             
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
-            //fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
+            // fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
 
             return 'Carrito eliminado'
 
@@ -131,7 +131,7 @@ class CartFileManager {
 
     updateCart = async(cid, prods) => {
         try {
-console.log(prods);
+            
             const cart = await this.getCartById(cid)
 
             if (!cart) {                
@@ -139,15 +139,15 @@ console.log(prods);
             }
             
             const carts = await this.getCarts()
-
+            
             carts.map(cart => {
-                console.log('hola');
                 if (cart.id === Number(cid)){
-                    console.log('cambio');
                     cart.products = prods
                 }
             })
-
+            
+            cart.products = prods
+            
             //await fs.promises.writeFile(this.path, JSON.stringify(carts))
             await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
 
@@ -195,7 +195,7 @@ console.log(prods);
 
     deleteProdCart = async(cid, pid) => {
         try{
-            console.log(cid, pid);
+            
             cid = Number(cid)
             pid = Number(pid)
 
@@ -203,21 +203,21 @@ console.log(prods);
 
             const iC = carts.map(uCart => uCart.id).indexOf(cid)
 
-            console.log(iC);
+            
             if(iC === -1){
                 return null
             }
             
             const iP = carts[iC].products.map(uProd => uProd.product).indexOf(pid)
-            console.log(iP);
+            
             if (iP === -1) {
                 return null 
             } 
 
             carts[iC].products = carts[iC].products.filter((prod) => prod.product != pid)
             
-            await fs.promises.writeFile(this.path, JSON.stringify(carts))
-            // await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
+            // await fs.promises.writeFile(this.path, JSON.stringify(carts))
+            await fs.promises.writeFile(this.path, JSON.stringify(carts, null, 2))
 
             return 'Producto eliminado'
         

@@ -22,7 +22,7 @@ const customeLevelOptions = {
 }
 const myFormat = winston.format.printf( (info) => {
     
-    console.log('hola mes', typeof info.message, 'info: ', typeof info, 'err', info instanceof Error);
+    //console.log('hola mes', typeof info.message, 'info: ', typeof info, 'err', info instanceof Error);
     
     if(info instanceof Error) {
        console.log("err");
@@ -33,7 +33,7 @@ const myFormat = winston.format.printf( (info) => {
         
         info.message = JSON.stringify(info.message, null, 3)
     }
-    //console.log("hola");
+    
     let msg = `${info.level} : ${info.message} ` 
     return msg
 });
