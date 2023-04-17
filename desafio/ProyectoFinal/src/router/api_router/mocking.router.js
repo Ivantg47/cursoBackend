@@ -5,12 +5,8 @@ import MiRouter from "../router.js";
 export default class MockingRouter extends MiRouter {
 
     init(){
-        this.get('/', ["PUBLIC"], (req, res) => {
-            
-            return res.send('hola')
-        })
 
-        this.get('/mockingproducts', ["PUBLIC"], async (req, res, next) => {
+        this.get('/mockingproducts', ["ADMIN"], async (req, res, next) => {
             try {
                 
                 for (let i = 0; i < 100; i++) {

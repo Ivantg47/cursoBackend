@@ -3,7 +3,7 @@ import MiRouter from "../router.js";
 
 export default class UserRouter extends MiRouter {
     init () {
-        this.get('/premium/:uid', ["PUBLIC"], async (req, res) => {
+        this.get('/premium/:uid', ["ADMIN"], async (req, res) => {
 
             const { uid } = req.params
 

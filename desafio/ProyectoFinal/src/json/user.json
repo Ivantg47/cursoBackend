@@ -3,8 +3,8 @@
     "id": 1,
     "first_name": "admin",
     "last_name": "admin",
-    "email": "adminCoder@coder.com",
-    "password": "$2b$10$BOKVY2n10hnQMdmYHXFjeeIMgizgvmIF4fi3D8X0RTXpkAQxjaBHC",
+    "email": "admin@admin.com",
+    "password": "$2b$10$GCpLu8ocYnxcCK34DsfSpOXtRYOq7xTJPkiEOm1Yuob9L/GVSqqzu",
     "role": "admin",
     "method": "LOCAL",
     "cart": 4
@@ -15,7 +15,7 @@
     "last_name": "Pecas",
     "email": "pepe@pecas.com",
     "password": "$2b$10$CfowUYtvqvtzhHVmy/tieO9PPl1DNWaAWWEZBJQ5y7jymz5OFKspi",
-    "role": "user",
+    "role": "premium",
     "method": "LOCAL",
     "cart": 5
   },
@@ -56,6 +56,16 @@
     "email": "Graciela.Trrez@gmail.com",
     "password": "$2b$10$WtkI4/YvQ5Tn2kSQhvjJn.Q0BXXJLE6/mNhl90FsSm2MOnsHICWcq",
     "cart": 9,
+    "role": "user",
+    "method": "LOCAL"
+  },
+  {
+    "id": 7,
+    "first_name": "admin",
+    "last_name": "admin",
+    "email": "admin@admin.com.mx",
+    "password": "$2b$10$GCpLu8ocYnxcCK34DsfSpOXtRYOq7xTJPkiEOm1Yuob9L/GVSqqzu",
+    "cart": 10,
     "role": "user",
     "method": "LOCAL"
   }
