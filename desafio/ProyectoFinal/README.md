@@ -40,7 +40,7 @@ Para poder probar las distintas funciones de la aplicación se puede ingresar co
 
  - Privilegio de administrador
    - usuario: <i>admin@admin.com</i>
-   - contraseña: <i>12345678</i>
+   - contraseña: <i>"12345678"</i>
  - Privilegio de usuario premium
    - usuario: <i>pepe@pecas.com</i>
-   - contraseña: <i>12345678</i>
+   - contraseña: <i>"12345678"</i>
