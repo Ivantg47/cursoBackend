@@ -12,20 +12,20 @@ El almacenamiento por defecto se inicia con una conexión a mongo Atlas, en caso
 Los siguientes endpoint utilizados para entrar a las diferentes vistas en el navegador:
 
  - Sesiones
-  - session/login - ventana de inicio de sesión
-  - session/register - ventana para registrar usuario.
-  - session/forgot - ventana de recuperación de contraseña.
-  - restor-password/:id/:token - solo se puede acceder mediante enlace enviado por correo.
-  - /current - muestra os datos del usuario actualmente conectado.
+   - session/login - ventana de inicio de sesión
+   - session/register - ventana para registrar usuario.
+   - session/forgot - ventana de recuperación de contraseña.
+   - restor-password/:id/:token - solo se puede acceder mediante enlace enviado por correo.
+   - /current - muestra os datos del usuario actualmente conectado.
  - Productos
-  - /products - muestra una galería de los productos.
-  - /realtimeproducts - muestra listado de los productos y permite agregar o eliminar productos en tiempo real, únicamente para usuario administrador.
-  - /product/:pid - muestra una vista detallada del producto. 
-  - /products/register - muestra formulario para agregar nuevos productos, únicamente disponible para administrador o usuario premium.
+   - /products - muestra una galería de los productos.
+   - /realtimeproducts - muestra listado de los productos y permite agregar o eliminar productos en tiempo real, únicamente para usuario administrador.
+   - /product/:pid - muestra una vista detallada del producto. 
+   - /products/register - muestra formulario para agregar nuevos productos, únicamente disponible para administrador o usuario premium.
  - carritos
-  - /carts/:cid - muestra una descripción del contenido del carrito cantidad de productos y precio a pagar, únicamente disponible para usuario o usuario premium
+   - /carts/:cid - muestra una descripción del contenido del carrito cantidad de productos y precio a pagar, únicamente disponible para usuario o usuario premium
  - Chat
-  - /chat - muestra la vista del chat, únicamente disponible para usuario o usuario premium.
+   - /chat - muestra la vista del chat, únicamente disponible para usuario o usuario premium.
 
 Endpoint de api son los siguientes:
 
@@ -39,8 +39,8 @@ Endpoint de api son los siguientes:
 Para poder probar las distintas funciones de la aplicación se puede ingresar con los siguientes usuarios:
 
  - Privilegio de administrador
-  - usuario: <i>admin@admin.com</i>
-  - contraseña: <i>12345678</i>
+   - usuario: <i>admin@admin.com</i>
+   - contraseña: <i>12345678</i>
  - Privilegio de usuario premium
-  - usuario: <i>pepe@pecas.com</i>
-  - contraseña: <i>12345678</i>
+   - usuario: <i>pepe@pecas.com</i>
+   - contraseña: <i>12345678</i>
