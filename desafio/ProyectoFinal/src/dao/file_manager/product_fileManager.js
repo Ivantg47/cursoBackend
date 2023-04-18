@@ -1,4 +1,3 @@
-import { count } from 'console'
 import fs from 'fs'
 import __dirname from '../../utils.js'
 
@@ -84,7 +83,7 @@ class ProductFileManager {
     getProductById = async(id) => {
 
         try{
-            console.log('id', id);
+            
             const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             const prod = prods.find(product => {
                 return product.id === Number(id)
@@ -132,8 +131,8 @@ class ProductFileManager {
             
             prods.push(prod)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(prods))
-            //await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
+            // await fs.promises.writeFile(this.path, JSON.stringify(prods))
+            await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
 
             return prod
                     
@@ -154,8 +153,8 @@ class ProductFileManager {
             
             const filtro = prods.filter((prod) => prod.id != id)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(filtro))
-            //await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
+            //await fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
             return 'Producto eliminado'
         
@@ -181,8 +180,8 @@ class ProductFileManager {
                     
                     prods.map(_prod => _prod.id===pid ? prod : _prod )
                                 
-                    await fs.promises.writeFile(this.path, JSON.stringify(prods))
-                    // await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
+                    // await fs.promises.writeFile(this.path, JSON.stringify(prods))
+                    await fs.promises.writeFile(this.path, JSON.stringify(prods, null, 2))
 
                     return prod
                 }

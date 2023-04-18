@@ -35,7 +35,7 @@ export const authToken = (req, res, next) => {
     
     if(!authToken) return res.status(401).render('error/general', {error: "Not Auth"})
 
-    jwt.verify(token, config.JWT_PRIVATE_KEY, (error, config) => {
+    jwt.verify(authToken, config.JWT_PRIVATE_KEY, (error, config) => {
         if(error) return res.status(403).render('error/general', {error: 'Not authorized'})
         req.user = config.user
         next()

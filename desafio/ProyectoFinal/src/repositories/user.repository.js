@@ -32,13 +32,13 @@ export default class UserRepository {
     }
 
     addUser = async(user) => {
-        console.log('hola user rep');
+        
         const cart = await CartService.addCart()
         
         user.cart = cart.result.payload._id || cart.result.payload.id
         const data = new UserDTO(user)
-        const result = this.dao.create(data)
-
+        const result = await this.dao.create(data)
+        
         return result
     }
 

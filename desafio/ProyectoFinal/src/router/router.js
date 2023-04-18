@@ -71,7 +71,7 @@ export default class MiRouter {
                 return res.sendNoAuthorizatedError("Unauthorizated")
             }
             
-            req.user = user
+            req.user = user.user
             return next()
         }
 

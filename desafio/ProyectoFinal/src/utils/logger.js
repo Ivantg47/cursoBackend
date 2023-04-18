@@ -20,11 +20,21 @@ const customeLevelOptions = {
         debug: "grey",
     }
 }
-const myFormat = winston.format.printf( ({ level, message}) => {
-    if(typeof message == 'object') {
-        message = JSON.stringify(message, null, 3)
+const myFormat = winston.format.printf( (info) => {
+    
+    //console.log('hola mes', typeof info.message, 'info: ', typeof info, 'err', info instanceof Error);
+    
+    if(info instanceof Error) {
+       console.log("err");
+        return `${info.level}: ${info.message}`;
     }
-    let msg = `${level} : ${message} ` 
+
+    if(typeof info.message == 'object') {
+        
+        info.message = JSON.stringify(info.message, null, 3)
+    }
+    
+    let msg = `${info.level} : ${info.message} ` 
     return msg
 });
 
@@ -37,6 +47,7 @@ const devLog = winston.createLogger({
             format: winston.format.combine(
                 winston.format.colorize({colors: customeLevelOptions.colors}),
                 winston.format.splat(),
+                //winston.format.errors({ stack: true }),
                 myFormat,
             )
         }),
@@ -55,7 +66,9 @@ const prodLog = winston.createLogger({
             level: "info",
             format: winston.format.combine(
                 winston.format.colorize({colors: customeLevelOptions.colors}),
-                winston.format.simple(),
+                winston.format.splat(),
+                //winston.format.errors({ stack: true }),
+                myFormat,
             )
         }),
         new winston.transports.File({

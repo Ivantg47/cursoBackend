@@ -1,7 +1,7 @@
 import MiRouter from "../router.js";
 import passport from 'passport'
 import config from "../../config/config.js";
-import { authTokenUser, createHash, generateTokenUser, isValidPassword } from "../../utils.js";
+import { authToken, authTokenUser, createHash, generateTokenUser, isValidPassword } from "../../utils.js";
 import { UserService } from "../../repositories/index_repository.js";
 import logger from "../../utils/logger.js";
 
@@ -15,6 +15,7 @@ export default class SessionRouter extends MiRouter {
         })
 
         this.post('/register', ["PUBLIC"], passport.authenticate('register', {failureRedirect: '/session/failregister'}), async (req, res, next) => {
+            
             res.redirect('/session/login')
         })
 
@@ -26,11 +27,11 @@ export default class SessionRouter extends MiRouter {
         
         this.post('/login', ["PUBLIC"], passport.authenticate('login', {failureRedirect: '/session/faillogin'}), (req, res) => {
             try {
-                req.logger.debug('hola sesion')
+                
                 if (!req.user) {
                     return res.status(401).render('error/general', {error: 'Correo incorrecto'})
                 }
-        req.logger.debug('hola sesion')
+        
                 req.session.user = req.user
         
                 res.cookie(config.COOKIE_NAME_JWT, req.user.token).redirect('/products')
@@ -218,14 +219,25 @@ export default class SessionRouter extends MiRouter {
             }
         })
 
-        this.get('/current', ["USER"], async (req, res, next) => {
-            const user = req.session?.user || null
-            
-            if (user) {
-                if(!user.cart) user.cart = 'No cart'
+        this.get('/current', ["USER", "PREMIUM", "ADMIN"], authToken, async (req, res, next) => {
+            try {
+                //logger.debug(req.user)
+                //console.log('user: ',req.user);                
+                if(req.user) {
+                    const user = req.user
+                    if(!user.cart) user.cart = 'No cart'
+                    //return res.status(200).render('session/profile', {title: "Perfil", user})
+                    return res.status(200).send({status: "succes", payload: user})
+                }    
+
+                return res.status(404).send("Not found")
+
+            } catch (error) {
+                req.logger.error(error.message);
+                return next()               
             }
             
-            res.status(200).render('session/profile', {title: "Perfil", user})
+            
         })
     }
 }

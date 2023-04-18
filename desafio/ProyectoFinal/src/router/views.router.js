@@ -45,13 +45,13 @@ export default class ViewRouter extends MiRouter {
                     
                 }
                 
-                res.render('product/home', {title: "Products List", prod, query: filter, user: req.session.user, pagination})
+                res.render('product/home', {title: "Products List", prod, query: filter, user: req.session?.user || req.user, pagination})
             }
         })
 
         this.get('/realtimeproducts', ["PUBLIC"], async (req, res) => {
     
-            res.render('product/realTimeProducts', {title: "Products List", user: req.session.user})
+            res.render('product/realTimeProducts', {title: "Products List", user: req.session?.user || req.user})
         })
 
         this.get('/products', ["PUBLIC"], async (req, res) => {
@@ -86,9 +86,7 @@ export default class ViewRouter extends MiRouter {
                 }
             }
             
-            let admin = req.session.user?.role == 'admin'
-            
-            res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session.user, admin, pagination: index})
+            res.render('product/product', {title: 'Catalogo', prod, query: filter, user: req.session?.user || req.user, pagination: index})
         })
 
         this.get('/product/:pid', ["PUBLIC"], async (req, res) => {
@@ -108,7 +106,7 @@ export default class ViewRouter extends MiRouter {
 
         this.get('/products/register', ["ADMIN", "PREMIUM"], async (req, res) => {
 
-            res.render('product/registerProd', {title: 'Registrar nuevo producto', user: req.session.user})
+            res.render('product/registerProd', {title: 'Registrar nuevo producto', user: req.session?.user || req.user})
             
         })
 
@@ -142,13 +140,13 @@ export default class ViewRouter extends MiRouter {
         
             }
             
-            res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session.user})
+            res.render('cart/cart', {title: "Mi carrito", cart: cart, user: req.session?.user || req.user})
         })
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<Vista Chat>>>>>>>>>>>>>>>>>>>>>>>>>>
-        this.get('/chat', ["USER"], async (req, res) => {
+        this.get('/chat', ["USER", "PREMIUM"], async (req, res) => {
             
-            res.render('chat', {title: "Chat", user: req.session.user})
+            res.render('chat', {title: "Chat", user: req.session?.user || req.user})
         })
     }
 }

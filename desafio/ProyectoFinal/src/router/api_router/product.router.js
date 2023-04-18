@@ -10,7 +10,7 @@ export default class ProductRouter extends MiRouter {
 
         this.get('/', ["PUBLIC"], async (req, res) => {
             try {
-                req.logger.debug('llama get')
+                // req.logger.debug('llama get')
                 let pagination = {
                     page: parseInt(req.query?.page) || 1,
                     limit: parseInt(req.query?.limit) || 10
@@ -51,8 +51,8 @@ export default class ProductRouter extends MiRouter {
                 
                 let product = req.body
                 
-                if (req.session.user.role == 'premium') {
-                    product.owner = req.session.user.email    
+                if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
+                    product.owner = req.session.user?.email || req.user?.email    
                 }
                 
                 if(req.files?.length === 0 || !req.files) {
@@ -77,7 +77,7 @@ export default class ProductRouter extends MiRouter {
                 const { pid } = req.params
                 const newProd = req.body
                 
-                if (req.session.user.role == 'premium') {
+                if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
                     if (p.owner != req.session.user.email) {
                         return res.status(401).send({status: "error", message: 'Sin autorización'})
@@ -98,7 +98,7 @@ export default class ProductRouter extends MiRouter {
             try {
                 const { pid } = req.params
 
-                if (req.session.user.role == 'premium') {
+                if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
                     if (p.owner != req.session.user.email) {
                         return res.status(401).send({status: "error", message: 'Sin autorización'})

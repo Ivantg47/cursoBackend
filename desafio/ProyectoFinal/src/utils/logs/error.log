@@ -68,3 +68,63 @@ error: undefined
 error: filtro is not defined
 error: undefined
 error: ProductService is not defined
+error: undefined
+error: undefined
+error: undefined
+error: jwt is not defined
+error: jwt is not defined
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: undefined {"code":"ERR_HTTP_HEADERS_SENT"}
+error: jwt is not defined
+error: jwt is not defined
+error: jwt is not defined
+error: jwt is not defined
+error: token is not defined
+error: token is not defined
+error: token is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: message is not defined
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of undefined (reading 'role')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')
+error: Cannot read properties of null (reading 'stock')

@@ -180,17 +180,17 @@ export default class CartRepository {
         try {
 
             let data = await this.dao.getCartById(cid)
-            
+
             if (!data) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
-
+           
             const val = data.products.some(prod => {
                 if (prod.product.stock >= prod.quantity) {
                     return true
                 } 
             })
-
+            
             if (!val) {
                 return {code: 500, result: {status: "error", error: 'Los artículos seleccionados ya no se encuentran disponibles'}}
             }
@@ -202,7 +202,7 @@ export default class CartRepository {
 
             const prods = []
             const cart = []
-
+            
             data.products = data.products.filter((prod) => {
 
                 if (prod.product.stock >= prod.quantity) {
@@ -216,10 +216,11 @@ export default class CartRepository {
                     return true
                 }
             })
+            
             await Promise.all(prods.map(async prod => {return await ProductService.purchase(prod.id, prod.quantity)}))
             
             await this.updateCart(data.id || data._id, cart)
-
+            
             const generateTicket = await TicketService.create(ticket)
             
             if (generateTicket) {
@@ -230,12 +231,13 @@ export default class CartRepository {
                 return {code: 200, result: {status: "partial", message: 'Algunos productos no pudieron ser procesados', payload: generateTicket, cart: data.products} }
                 
             }
+
             return {code: 500, result: {status: "error", error: 'No se pudo procesar la compra'}}
 
         } catch (error) {
 
             logger.error(error.message);
-            console.error(error.message);
+            
             return {code: 500, result: {status: "error", error: error.message}}
             
         }

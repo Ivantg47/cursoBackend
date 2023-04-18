@@ -7,7 +7,7 @@ import config from "../../config/config.js";
 export default class CartRouter extends MiRouter {
 
     init () {
-        this.get('/', ["PUBLIC"], async (req, res, next) => {
+        this.get('/', ["ADMIN"], async (req, res, next) => {
             try {
                 const cart = await CartService.getCarts()
 
@@ -17,7 +17,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid', ["PUBLIC"], async (req, res, next) => {
+        this.get('/:cid', ["USER", "ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.getCartById(cid)
@@ -41,7 +41,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.delete('/:cid', ["ADMIN"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.deleteCart(cid)
@@ -54,7 +54,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.put('/:cid', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.put('/:cid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
             try {
                 const { cid } = req.params
                 const cart = await CartService.updateCart(cid, req.body)
@@ -66,16 +66,17 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.post('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.post('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
                 
-                if (req.session.user.role == 'premium') {
+                if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
-                    if (p.result.payload.owner == req.session.user.email) {
+                    const email = req.session.user?.email || req.user?.email
+                    if (p.result.payload.owner == email) {
                         req.logger.debug('El producto no puede ser adquirido por el propietario')
-                        return res.status(400).send({status: "error", message: 'El producto no puede ser adquirido por el propietario'})
+                        return res.status(403).send({status: "error", message: 'El producto no puede ser adquirido por el propietario'})
                     }
                 }
                 const cart = await CartService.addProdCart(cid, pid, quantity)
@@ -87,10 +88,10 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.delete('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
-
+                
                 const cart = await CartService.deleteProdCart(cid, pid)
             
                 return res.status(cart.code).send(cart.result)
@@ -100,7 +101,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.put('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.put('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
@@ -114,11 +115,11 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid/purchase', ["USER", "PREMIUM"], async (req, res, next) => {
+        this.get('/:cid/purchase', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
             try {
                 
                 const { cid } = req.params
-                const email = req.session.user?.email
+                const email = req.session.user?.email || req.user?.email
                 
                 const cart = await CartService.purchase(cid, email)
                 
