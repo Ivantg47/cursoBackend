@@ -58,15 +58,5 @@
     "cart": 9,
     "role": "user",
     "method": "LOCAL"
-  },
-  {
-    "id": 7,
-    "first_name": "admin",
-    "last_name": "admin",
-    "email": "admin@admin.com.mx",
-    "password": "$2b$10$GCpLu8ocYnxcCK34DsfSpOXtRYOq7xTJPkiEOm1Yuob9L/GVSqqzu",
-    "cart": 10,
-    "role": "user",
-    "method": "LOCAL"
   }
 ]
