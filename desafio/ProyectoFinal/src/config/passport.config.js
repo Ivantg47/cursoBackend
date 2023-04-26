@@ -2,7 +2,6 @@ import passport, { Passport } from 'passport'
 import local from 'passport-local'
 import GitHubStrategy from 'passport-github2'
 import jwt from 'passport-jwt'
-import { userModel } from '../dao/bd_manager/mogo/models/user.model.js'
 import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import config from './config.js'
 import { UserService } from '../repositories/index_repository.js'
@@ -115,6 +114,11 @@ const initializePassport = () => {
                 if(!isValidPassword(user, password)) return done(null,false)
 
                 delete user.password
+                const date = new Date()
+                user.last_connection = date.toString()
+
+                await UserService.updateUser(user?._id || user?.id, user)
+
                 user.token = generateToken(user)
                 
                 return done(null,user)

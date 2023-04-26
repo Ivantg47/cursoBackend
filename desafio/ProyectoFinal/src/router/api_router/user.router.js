@@ -1,3 +1,4 @@
+import uploader from "../../dao/multer.js";
 import { UserService } from "../../repositories/index_repository.js";
 import MiRouter from "../router.js";
 
@@ -12,5 +13,12 @@ export default class UserRouter extends MiRouter {
             return res.status(result.code).send(result.result)
             
         })
+
+        this.post('/:uid/documents', ["USER", "PREMIUM"], uploader.any(), async (req, res) => {
+
+            req.user
+        })
+
+        
     }
 }

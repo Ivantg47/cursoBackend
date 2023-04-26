@@ -1,4 +1,4 @@
-import TicketDTO from '../dao/DTO/ticket.dto.js'
+import TicketDTO from '../DTO/ticket.dto.js'
 import logger from '../utils/logger.js'
 
 export default class TicketRepository {

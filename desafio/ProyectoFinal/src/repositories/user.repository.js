@@ -1,4 +1,4 @@
-import UserDTO from '../dao/DTO/user.dto.js'
+import UserDTO from '../DTO/user.dto.js'
 import { CartService } from "./index_repository.js"
 import Mail from '../modules/mail.js'
 import logger from '../utils/logger.js'
@@ -44,19 +44,19 @@ export default class UserRepository {
 
     deleteUser = async(username) => {
 
-        const result = this.dao.delete(username)
+        const result = await this.dao.delete(username)
 
         return result
     }
 
     updateUser = async(username, newUser) => {
         try {
-            const result = this.dao.update(username, newUser)
+            const result = await this.dao.update(username, newUser)
 
             if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
-            
+            delete result.password
             return {code: 200, result: {status: "success", message: 'Usuario actualizado', payload: result} }
 
         } catch (error) {
@@ -92,7 +92,8 @@ export default class UserRepository {
             if (!result) {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
-            logger.debug(JSON.stringify(result))
+            //logger.debug(JSON.stringify(result))
+            delete result.password
             return {code: 200, result: {status: "success", message: 'Role actualizado', payload: result} }
 
         } catch (error) {

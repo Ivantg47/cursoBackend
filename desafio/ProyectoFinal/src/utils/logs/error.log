@@ -128,3 +128,12 @@ error: Cannot read properties of null (reading 'stock')
 error: Cannot read properties of null (reading 'stock')
 error: Cannot read properties of null (reading 'stock')
 error: Cannot read properties of null (reading 'stock')
+error: wait is not defined
+error: wait is not defined
+error: Cannot set headers after they are sent to the client
+error: ENOENT: no such file or directory, open 'D:\Codigo\cursoBackend\desafio\ProyectoFinal\src\json\user.json'
+error: ENOENT: no such file or directory, open 'D:\Codigo\cursoBackend\desafio\ProyectoFinal\src\json\user.json'
+error: Error en la creación del poducto, uno o mas campos se encuentran vacios
+error: Error en la creación del poducto, uno o mas campos se encuentran vacios
+error: undefined {"code":2,"name":"Error de creación de producto"}
+error: undefined {"code":2,"name":"Error de creación de producto"}

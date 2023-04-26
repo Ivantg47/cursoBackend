@@ -1,4 +1,4 @@
-import ChatDTO from '../dao/DTO/chat.dto.js'
+import ChatDTO from '../DTO/chat.dto.js'
 import logger from '../utils/logger.js'
 
 export default class ChatRepository {

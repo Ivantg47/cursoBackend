@@ -1,4 +1,4 @@
-import ProductDTO from '../dao/DTO/product.dto.js'
+import ProductDTO from '../DTO/product.dto.js'
 import CustomError from '../services/errors/custom_error.js'
 import EErrors from '../services/errors/enums.js'
 import { generateProductErrorInfo } from '../services/errors/info.js'
@@ -88,12 +88,12 @@ export default class ProductRepository {
             return {code: 200, result: {status: "success", message: 'Producto creado', payload: result} }
 
         } catch (error) {
-            logger.error(error.message)
+            //console.error(error)
             if (error.name === 'CastError') {
-                return {code: 400, result: {status: "error", error: error.message}}
+                return {code: 400, result: {status: "error", message: error.message, error: error}}
             }
 
-            return {code: 500, result: {status: "error", error: error.message}}
+            return {code: 500, result: {status: "error", message: error.message, error: error}}
 
         }
     }

@@ -58,12 +58,17 @@ export default class SessionRouter extends MiRouter {
         })
         
         //<<<<<<<<<<<<<<<<<<<<<<<<<<cerrar usuario>>>>>>>>>>>>>>>>>>>>>>>>>>
-        this.get('/logout', ["PUBLIC"], async (req, res, next) => {
+        this.get('/logout', ["PUBLIC"], authToken, async (req, res, next) => {
             try {
                 req.session.destroy(err => {
                     if(err) return res.status(500).render('error/general', {error: err})
                 })
                 //return res.status(200).send('Logout success')
+                const date = new Date()
+                req.user.last_connection = date.toString()
+                
+                await UserService.updateUser(req.user?.id || req.user?._id, req.user)
+
                 res.clearCookie(config.COOKIE_NAME_JWT).redirect("/session/login");
         
             } catch (error) {
@@ -148,6 +153,7 @@ export default class SessionRouter extends MiRouter {
                     UserService.sendMail(email, html, subject)
                     
                     res.send('Correo enviado...')
+                    //setTimeout(res.redirect("/session/login"), 5000)
                 }
         
             } catch (error) {

@@ -106,7 +106,7 @@ class UserFileManager {
 
             const filtro = users.filter((user) => user.email != email)
 
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
             return 'Usuaio eliminado'
 
@@ -122,18 +122,14 @@ class UserFileManager {
             if (!await this.getUserById(id)) {                
                 return null
             }
-            logger.debug(`user: ${JSON.stringify(newdata)}`)
-            // if (email !== newdata.email) {
-            //     return 'No se puede modificar el correo'
-            // }
-
-            const users = await this.getUsers()
-
-            users.map(user => user.id === id ? user : newdata)
-
-            fs.promises.writeFile(this.path, JSON.stringify(newdata))
             
-            return 'Usuario modificado'
+            const users = await this.getUsers()
+//console.log(users[6]);
+            users.map(user => user.id === id ? user : newdata)
+//console.log(users[6]);
+            await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2))
+            
+            return newdata
 
         } catch (error) {
             throw error

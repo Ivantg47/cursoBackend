@@ -1,4 +1,4 @@
-import CartDTO from '../dao/DTO/cart.dto.js'
+import CartDTO from '../DTO/cart.dto.js'
 import { ProductService, TicketService } from "./index_repository.js"
 import logger from '../utils/logger.js'
 

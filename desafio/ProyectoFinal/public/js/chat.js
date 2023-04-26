@@ -23,7 +23,6 @@ formMensaje.addEventListener("submit", async (e) => {
     let mensajes = {}
     for (const field of formData.entries()) {
         mensajes[field[0]] = field[1];
-        console.log('lll: ', field);
     }
     
     const response = await fetch("/api/chat", {

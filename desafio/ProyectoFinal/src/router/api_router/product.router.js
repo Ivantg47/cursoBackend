@@ -1,6 +1,6 @@
 import uploader from "../../dao/multer.js";
 import { ProductService } from "../../repositories/index_repository.js";
-import { generateProduct } from "../../utils.js";
+import logger from "../../utils/logger.js";
 import MiRouter from "../router.js";
 
 
@@ -46,11 +46,11 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["ADMIN", "PREMIUM"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 
                 let product = req.body
-                
+                console.log("pro: ",product);
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     product.owner = req.session.user?.email || req.user?.email    
                 }
@@ -59,6 +59,7 @@ export default class ProductRouter extends MiRouter {
                     product.thumbnail = ['/img/noimage.jpg']
                 } else {
                     product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
+                    uploader.array('thumbnail')
                 }
                 
                 const prod = await ProductService.addProduct(product)
@@ -66,13 +67,14 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)     
                 
             } catch (error) {
-                req.logger.error(error.message);
+                // req.logger.error(error.message);
+                // req.logger.error(error);
                 console.error(error);
                 //return next()
             }
         })
         
-        this.put('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
+        this.put('/:pid', ["ADMIN", "PREMIUM","PUBLIC"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const newProd = req.body
