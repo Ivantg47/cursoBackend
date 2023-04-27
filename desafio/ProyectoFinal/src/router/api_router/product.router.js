@@ -46,10 +46,10 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["ADMIN", "PREMIUM"], async (req, res, next) => {
+        this.post('/', ["ADMIN", "PREMIUM"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
-                
-                let product = req.body
+                console.log(req);
+                const product = req.body
                 console.log("pro: ",product);
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     product.owner = req.session.user?.email || req.user?.email    
@@ -59,7 +59,7 @@ export default class ProductRouter extends MiRouter {
                     product.thumbnail = ['/img/noimage.jpg']
                 } else {
                     product.thumbnail = req.files.map(file => file.path.split('\\').slice(0).join('\\'))
-                    uploader.array('thumbnail')
+                    
                 }
                 
                 const prod = await ProductService.addProduct(product)

@@ -2,9 +2,8 @@ import multer from 'multer'
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) { 
-        
         if (file.fieldname == 'thumbnail') {
-            cb(null, '/upload/img/products')
+            cb(null, '/img')
         } else if (file.fieldname == 'profiles') {
             cb(null, '/upload/img/profiles')
         } else if (file.fieldname == 'domicilio') {

@@ -1,13 +1,12 @@
-const tabla = document.getElementById('listaTiempo')
-
-formProd.addEventListener("submit", async (e) => {
+formDocs.addEventListener("submit", async (e) => {
     e.preventDefault()
+    const id = document.getElementById('id').textContent
+    const formData = new FormData(formDocs);
 
-    const formData = new FormData(formProd);
-
+    const url = `/api/users/${id}/documents`
     // console.log(product);
     // console.log(formData);
-    const response = await fetch("/api/products", {
+    const response = await fetch(url, {
         method: "POST",        
         body: formData,
     });
