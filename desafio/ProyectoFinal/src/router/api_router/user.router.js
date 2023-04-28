@@ -17,12 +17,18 @@ export default class UserRouter extends MiRouter {
 
         this.post('/:uid/documents', ["USER", "PREMIUM","ADMIN"], uploader.fields([{name:'domicilio', maxCount:1}, {name:'estadoCuenta', maxCount:1}]), async (req, res) => {
             try {
-                console.log('post');
-                const data = req.body
+                
                 const file = req.files
-                console.log('data: ', data);
                 console.log('file: ', file);
-                res.send({ststus: "success", payload: data})   
+                if(file.domicilio){
+                    console.log(file.domicilio);
+                }
+
+                if(file.estadoCuenta){
+                    console.log(file.estadoCuenta[0].fieldname);
+                }
+                res.send({ststus: "success", payload: file})   
+
             } catch (error) {
                 console.error(error);
             }

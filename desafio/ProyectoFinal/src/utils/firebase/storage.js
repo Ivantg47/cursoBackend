@@ -1,4 +1,6 @@
-import { initializeApp } from 'firebase-admin/app'
+import { initializeApp } from '@firebase/app';
 import config from '../../config/config.js';
+import { getStorage } from '@firebase/storage';
 const db = initializeApp(config.firebaseConfig);
-export default db 
+const storage = getStorage(db)
+export default storage 

@@ -507,5 +507,19 @@
     "category": "Joyería",
     "status": true,
     "owner": "admin"
+  },
+  {
+    "id": 40,
+    "title": "PS",
+    "description": "consola",
+    "price": 15000,
+    "thumbnail": [
+      "https://firebasestorage.googleapis.com/v0/b/ecommerce-cc190.appspot.com/o/img%2Fproducts%2FPS-1682657247623-89?alt=media&token=44b73293-5fa3-4739-8016-8f725fd662a3"
+    ],
+    "code": "0033",
+    "stock": 2,
+    "category": "juego",
+    "status": true,
+    "owner": "admin"
   }
 ]
