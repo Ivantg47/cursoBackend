@@ -137,3 +137,7 @@ error: Error en la creación del poducto, uno o mas campos se encuentran vacios
 error: Error en la creación del poducto, uno o mas campos se encuentran vacios
 error: undefined {"code":2,"name":"Error de creación de producto"}
 error: undefined {"code":2,"name":"Error de creación de producto"}
+error: Cannot read properties of undefined (reading 'forEach')
+error: Cannot read properties of undefined (reading 'forEach')
+error: fields.forEach is not a function
+error: fields.forEach is not a function
