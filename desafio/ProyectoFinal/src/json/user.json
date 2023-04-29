@@ -8,8 +8,17 @@
     "cart": 15,
     "role": "admin",
     "method": "LOCAL",
-    "documents": [],
-    "last_connection": null
+    "documents": [
+      {
+        "name": "domicilio",
+        "reference": "https://firebasestorage.googleapis.com/v0/b/ecommerce-cc190.appspot.com/o/docs%2Fdomicilio%2Fadminadmin-1682724526914-10?alt=media&token=c1c2283f-9566-4d8c-a636-454168db3086"
+      },
+      {
+        "name": "estadoCuenta",
+        "reference": "https://firebasestorage.googleapis.com/v0/b/ecommerce-cc190.appspot.com/o/docs%2FestadoCuenta%2Fadminadmin-1682724529327-79?alt=media&token=55573510-79e7-4539-98de-40827bdd2047"
+      }
+    ],
+    "last_connection": "Fri Apr 28 2023 17:28:24 GMT-0600 (GMT-06:00)"
   },
   {
     "id": 2,

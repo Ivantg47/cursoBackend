@@ -14,7 +14,7 @@ formProd.addEventListener("submit", async (e) => {
 
     const res = await response.json()
     // console.log(res);
-    if(res.success){
+    if(res.status == "success"){
         Swal.fire({
             icon: 'success',
             text: res.message

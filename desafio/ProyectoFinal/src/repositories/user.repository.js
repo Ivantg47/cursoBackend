@@ -85,7 +85,14 @@ export default class UserRepository {
                 return {code: 404, result: {status: "error", error: 'Not found'}}
             }
             
-            user.role = user.role == 'user' ? 'premium' : 'user'
+            if (user.documents === 3 && user.role == 'user') {
+                user.role = 'premium'    
+            } else if (user.role == 'premium') {
+                user.role = 'user'
+            } else {
+                return {code: 400, result: {status: "Error", message: 'El usuario no cuenta con todos los documentos para cambiar a premium', payload: user.documents} }
+            }
+            
             
             const result = await this.dao.update(username, user)
 
@@ -94,10 +101,12 @@ export default class UserRepository {
             }
             //logger.debug(JSON.stringify(result))
             delete result.password
+
             return {code: 200, result: {status: "success", message: 'Role actualizado', payload: result} }
 
         } catch (error) {
             logger.error(error.message)
+            logger.error(error)
         }
     }
 

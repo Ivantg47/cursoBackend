@@ -7,7 +7,7 @@ import MiRouter from "../router.js";
 //import db from "../../utils/firebase/storage.js";
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import config from "../../config/config.js";
-import storage from "../../utils/firebase/storage.js";
+import storage from "../../modules/storage.js";
 
 export default class ProductRouter extends MiRouter {
 
@@ -85,8 +85,9 @@ export default class ProductRouter extends MiRouter {
             } catch (error) {
                 // req.logger.error(error.message);
                 // req.logger.error(error);
+                //res.status(500).send({status: "Error", message: error.message , payload: error})
                 console.error(error);
-                //return next()
+                return next()
             }
         })
         

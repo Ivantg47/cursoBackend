@@ -65,9 +65,8 @@ export default class SessionRouter extends MiRouter {
                 })
                 //return res.status(200).send('Logout success')
                 const date = new Date()
-                req.user.last_connection = date.toString()
                 
-                await UserService.updateUser(req.user?.id || req.user?._id, req.user)
+                await UserService.updateUser(req.user?.id || req.user?._id, {last_connection: date.toString()})
 
                 res.clearCookie(config.COOKIE_NAME_JWT).redirect("/session/login");
         

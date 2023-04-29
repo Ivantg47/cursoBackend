@@ -12,14 +12,13 @@ formDocs.addEventListener("submit", async (e) => {
     });
 
     const res = await response.json()
-    // console.log(res);
-    if(res.success){
+    
+    if(res.status == "success"){
         Swal.fire({
             icon: 'success',
             text: res.message
         })
-        formProd.reset()
-        socket.emit('updateList')
+        formDocs.reset()
     } else {
         Swal.fire({
             icon: 'error',

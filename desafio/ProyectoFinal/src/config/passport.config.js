@@ -112,12 +112,11 @@ const initializePassport = () => {
                 }
                 
                 if(!isValidPassword(user, password)) return done(null,false)
-
+                
                 delete user.password
                 const date = new Date()
-                user.last_connection = date.toString()
 
-                await UserService.updateUser(user?._id || user?.id, user)
+                await UserService.updateUser(user?._id || user?.id, {last_connection: date.toString()})
 
                 user.token = generateToken(user)
                 

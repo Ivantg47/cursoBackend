@@ -124,12 +124,22 @@ class UserFileManager {
             }
             
             const users = await this.getUsers()
-//console.log(users[6]);
-            users.map(user => user.id === id ? user : newdata)
-//console.log(users[6]);
+            const user = await this.getUserById(id)
+            
+            for (const prop in newdata) {
+                user[prop] = newdata[prop]         
+            }
+
+            // users.map(_user => _user.id === id ? user : _user)
+            for (let i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users[i] = user
+                }
+                
+            }
             await fs.promises.writeFile(this.path, JSON.stringify(users, null, 2))
             
-            return newdata
+            return user
 
         } catch (error) {
             throw error

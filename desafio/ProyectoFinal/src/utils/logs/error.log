@@ -141,3 +141,6 @@ error: Cannot read properties of undefined (reading 'forEach')
 error: Cannot read properties of undefined (reading 'forEach')
 error: fields.forEach is not a function
 error: fields.forEach is not a function
+error: array is not defined
+error: result is not defined
+error: array is not defined
