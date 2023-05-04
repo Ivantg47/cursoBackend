@@ -11,10 +11,21 @@ export default class UserRepository {
     }
 
     getUsers = async () => {
-
+        
         const result = await this.dao.getUsers()
+        
+        if (!result) {
+            return {code: 404, result: {status: "error", error: 'Not found'}}
+        }
 
-        return result
+        result.forEach(user => {
+            delete user.password
+            delete user.cart
+            delete user.documents
+        });
+        
+        return {code: 200, result: {status: "success", payload: result} }
+        
     }
 
     getUserById = async(id) => {
@@ -106,6 +117,29 @@ export default class UserRepository {
 
         } catch (error) {
             logger.error(error.message)
+            logger.error(error)
+        }
+    }
+
+    limpiar = async () => {
+        try {
+            
+            const users = await this.dao.getUsers()
+            
+            for (let i = 0; i < users.length; i++) {
+                const date1 = new Date(users[i].last_connection);
+                const date2 = new Date()
+                if ((date2 - date1)/86400000 > 2) {
+                    await this.sendMail(users[i].email, html, "Cuenta eliminada")                   
+                    await this.dao.deleteUser(users[i].id)
+                    console.log(`Usuario con id: ${users[i].id} fue eliminado`);
+                }
+
+                
+            }
+
+            return {code: 200, result: {status: "success", message: 'Role actualizado', payload: users} }
+        } catch (error) {
             logger.error(error)
         }
     }

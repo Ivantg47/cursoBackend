@@ -26,7 +26,7 @@ class UserFileManager {
         try{
             
             const data =  JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
-
+            
             return data
 
         } catch(error) {

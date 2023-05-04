@@ -7,6 +7,20 @@ import MiRouter from "../router.js";
 
 export default class UserRouter extends MiRouter {
     init () {
+
+        this.get('/', ["ADMIN", "PUBLIC"], async (req, res) => {
+            try {
+                
+                const result = await UserService.getUsers()
+                
+                return res.status(result.code).send(result.result)
+
+            } catch (error) {
+                console.log(error);
+                res.status(500).send({status: "Error", message: error.message , payload: error})
+            }
+        })
+
         this.get('/premium/:uid', ["ADMIN"], async (req, res) => {
             try {
                 const { uid } = req.params
@@ -118,6 +132,17 @@ export default class UserRouter extends MiRouter {
             }
         })
 
+        this.delete('/', ["ADMIN", "PUBLIC"], async (req, res) => {
+            try {
+                
+                const result = await UserService.limpiar()
+                
+                return res.status(result.code).send(result.result)
+
+            } catch (error) {
+                res.status(500).send({status: "Error", message: error.message , payload: error})               
+            }
+        })
         
     }
 }
