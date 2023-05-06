@@ -38,6 +38,7 @@ formProd.addEventListener("submit", async (e) => {
         Swal.fire({
             icon: 'error',
             text: 'No está autorizado para realizar esta acción.'
+            formProd.reset()
         })
     } else {
         const res = await response.json()
