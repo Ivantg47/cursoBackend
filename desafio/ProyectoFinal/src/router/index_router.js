@@ -7,8 +7,8 @@ import MockingRouter from './api_router/mocking.router.js'
 import ProductRouter from './api_router/product.router.js'
 import SessionRouter from './api_router/session.router.js'
 import UserRouter from './api_router/user.router.js'
-import ViewRouter from './views.router.js'
-import UserViewRouter from './views/userViews_router.js'
+import ViewRouter from './views_router/views.router.js'
+import UserViewRouter from './views_router/userViews_router.js'
 
 const router = Router()
 const product = new ProductRouter()

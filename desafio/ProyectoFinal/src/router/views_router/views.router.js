@@ -1,6 +1,7 @@
-import { CartService, ProductService } from "../repositories/index_repository.js";
-import { authToken } from "../utils.js";
-import MiRouter from "./router.js";
+import { CartService, ProductService } from "../../repositories/index_repository.js";
+import { authToken } from "../../utils.js";
+import logger from "../../utils/logger.js";
+import MiRouter from "../router.js";
 
 export default class ViewRouter extends MiRouter {
 
@@ -71,7 +72,7 @@ export default class ViewRouter extends MiRouter {
             
             let prod = result.result.payload
             const index = []
-            
+
             if (prod.isValid) {
                 prod.prevLink = prod.hasPrevPage ? `/products?page=${prod.prevPage}` : ''
                 prod.nextLink = prod.hasNextPage ? `/products?page=${prod.nextPage}` : ''

@@ -45,11 +45,11 @@ export default class MiRouter {
 
     generateCustomResponses = (req, res, next) => {
         res.sendSuccess = payload => res.status(200).send({status: "success", payload})
-        res.sendServerError = error => res.status(500).send({status: "error", error})
-        res.sendUserError = error => res.status(400).send({status: "error", error})
-        res.sendNoAuthenticatedError = error => res.status(401).send({status: "error", error})
-        res.sendNoAuthorizatedError = error => res.status(403).send({status: "error", error})
-        res.sendNoFoundError = error => res.status(404).send({status: "error", error})
+        res.sendServerError = error => res.status(500).render('error/general', {error: error})
+        res.sendUserError = error => res.status(400).render('error/general', {error: error})
+        res.sendNoAuthenticatedError = error => res.status(401).render('error/general', {error: error})
+        res.sendNoAuthorizatedError = error => res.status(403).render('error/general', {error: error})
+        res.sendNoFoundError = error => res.status(404).render('error/general', {error: error})
 
         next()
     }
@@ -60,7 +60,7 @@ export default class MiRouter {
         if (policies.includes('USER') || policies.includes('ADMIN') || policies.includes('PREMIUM')) {
             const authHeaders = req.headers.authorization || req.cookies[config.COOKIE_NAME_JWT]
             
-            if(!authHeaders) return res.sendNoAuthorizatedError('Unauthorized')
+            if(!authHeaders) return res.sendNoAuthorizatedError('No esta autorizado para acceder')
 
             const tokenArray = authHeaders.split(" ")
             const token = (tokenArray.length > 1) ? tokenArray[1] : tokenArray[0]
@@ -68,7 +68,7 @@ export default class MiRouter {
             const user = jwt.verify(token, config.JWT_PRIVATE_KEY)
             
             if(!policies.includes(user.user.role.toUpperCase()) ) {
-                return res.sendNoAuthorizatedError("Unauthorizated")
+                return res.sendNoAuthorizatedError("No esta autorizado para acceder")
             }
             
             req.user = user.user

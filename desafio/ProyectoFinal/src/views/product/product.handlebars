@@ -2,6 +2,7 @@
 
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
+    {{#if prod.isValid}}
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-5 justify-content-center">
             {{#each prod.payload}}
             <div class="col mb-5">
@@ -60,27 +61,12 @@
                         {{/if}}
                     </ul>
                 </nav>
-<!--
-                {{#if prod.hasPrevPage}}
-                <a class="btn btn-outline-dark mt-auto" href="{{prod.prevLink}}"><i class="bi bi-caret-left-fill"></i> Anterior</a>
-                {{else}}
-                <a class="btn btn-outline-dark mt-auto disabled" ><i class="bi bi-caret-left-fill"></i> Anterior</a>
-                {{/if}}
-                <a class="btn btn-outline-dark mt-auto disabled">{{ prod.page }}</a>
-                {{#if prod.hasNextPage}}
-                <a class="btn btn-outline-dark mt-auto" href="{{prod.nextLink}}">Siguiente <i class="bi bi-caret-right-fill"></i></a>
-                {{else}}
-                <a class="btn btn-outline-dark mt-auto disabled" >Siguiente <i class="bi bi-caret-right-fill"></i></a>
-                {{/if}}
-    -->        </div>
+            </div>
         </div>
-    </div>
-    
+    {{else}}
+        <h2>No hay productos disponibles</h2>
+    {{/if}}
+    </div>  
 </section>
-{{#if admin}}
-<script>
-    alert('Ingreso como administrador')
-</script>
-{{/if}}
 
 <script src="/js/carrito.js"></script>

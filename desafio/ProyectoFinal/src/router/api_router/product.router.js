@@ -3,10 +3,7 @@ import uploader from "../../dao/multer.js";
 import { ProductService } from "../../repositories/index_repository.js";
 import logger from "../../utils/logger.js";
 import MiRouter from "../router.js";
-//import { getStorage } from 'firebase-admin/storage'
-//import db from "../../utils/firebase/storage.js";
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-import config from "../../config/config.js";
 import storage from "../../modules/storage.js";
 
 export default class ProductRouter extends MiRouter {
@@ -31,6 +28,7 @@ export default class ProductRouter extends MiRouter {
                 
                 const prod = await ProductService.getPaginate(query, pagination)
                 //const prod = await ProductService.getProducts()
+                
                 return res.status(prod.code).send(prod.result)
 
             } catch (error) {
@@ -91,7 +89,7 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.put('/:pid', ["ADMIN", "PREMIUM","PUBLIC"], async (req, res, next) => {
+        this.put('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
             try {
                 const { pid } = req.params
                 const newProd = req.body
@@ -99,7 +97,7 @@ export default class ProductRouter extends MiRouter {
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
                     if (p.owner != req.session.user.email) {
-                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                        return res.sendNoAuthorizatedError('No esta autorizado para acceder')
                     }
                 }
 
@@ -120,7 +118,7 @@ export default class ProductRouter extends MiRouter {
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     const p = await ProductService.getProductById(pid)
                     if (p.owner != req.session.user.email) {
-                        return res.status(401).send({status: "error", message: 'Sin autorización'})
+                        return res.sendNoAuthorizatedError('No esta autorizado para acceder')
                     }
                 }
                 

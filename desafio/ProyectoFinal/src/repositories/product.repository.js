@@ -32,9 +32,9 @@ export default class ProductRepository {
         try {
 
             const result = await this.dao.getPaginate(query, pagination)
-
+            
             if (!result.isValid) {
-                return {code: 404, result: {status: "error", error: 'Not found'}}
+                return {code: 404, result: {status: "error", error: 'Not found', payload: result}}
             }
 
             return {code: 200, result: {status: "success", payload: result} }

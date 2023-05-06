@@ -57,7 +57,7 @@ export default class SessionRouter extends MiRouter {
             res.render('error/general',{error: 'Failed to register'})
         })
         
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<cerrar usuario>>>>>>>>>>>>>>>>>>>>>>>>>>
+        //<<<<<<<<<<<<<<<<<<<<<<<<<< cerrar sesion >>>>>>>>>>>>>>>>>>>>>>>>>>
         this.get('/logout', ["PUBLIC"], authToken, async (req, res, next) => {
             try {
                 req.session.destroy(err => {
