@@ -13,6 +13,7 @@ describe('Registro, Login and Current', () => {
     const mockUserAdmin = {
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
+        age: faker.date.birthdate(),
         email: faker.internet.email(),
         password: 'secret',
         role: 'admin'
@@ -21,6 +22,7 @@ describe('Registro, Login and Current', () => {
     const mockUser = {
         first_name: faker.name.firstName(),
         last_name: faker.name.lastName(),
+        age: faker.date.birthdate(),
         email: faker.internet.email(),
         password: 'secret'
     }

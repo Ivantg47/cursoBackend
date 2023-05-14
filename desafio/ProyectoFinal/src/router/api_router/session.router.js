@@ -148,10 +148,12 @@ export default class SessionRouter extends MiRouter {
                         border-color: rgba(255, 235, 59, 0.473);
                     }
                     </style>`
+
                     const subject = 'Recuperación de contraseña'
                     UserService.sendMail(email, html, subject)
                     
-                    res.send('Correo enviado...')
+                    res.render('error/general', {title: 'Recuperar Contrasseña', error: 'Correo enviado...'})
+                    //res.send('Correo enviado...')
                     //setTimeout(res.redirect("/session/login"), 5000)
                 }
         

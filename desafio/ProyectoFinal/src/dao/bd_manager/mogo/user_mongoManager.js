@@ -69,8 +69,13 @@ class UserMongoManager {
     update = async (id, newUser) => {
 
         try {
-            const result = await userModel.findOneAndUpdate({_id: id}, newUser, { upsert: true, returnOriginal: false })
             
+            let result = await userModel.findOneAndUpdate({_id: id}, newUser, { upsert: true, returnOriginal: false })
+            
+            if (!result) {
+                result = await userModel.findOneAndUpdate({email: id}, newUser, { upsert: true, returnOriginal: false })
+            }
+
             return result
 
         } catch (error) {
@@ -80,10 +85,18 @@ class UserMongoManager {
         }
     }
 
-    delete = async () => {
+    delete = async (id) => {
 
         try {
             
+            let result = await userModel.deleteOne({_id: id})
+            
+            if (result.deletedCount === 0) {
+                result = await userModel.deleteOne({email: id})
+            }
+            
+            return result.deletedCount !== 0
+
         } catch (error) {
             
             throw error

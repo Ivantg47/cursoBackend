@@ -22,7 +22,7 @@ export default class Mail{
             html
         })
 
-        logger.debug(result)
+        //logger.debug(result)
 
         return result
     }

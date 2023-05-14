@@ -98,13 +98,20 @@ class UserFileManager {
     delete = async(email) => {
 
         try {
-            if (!await this.getUserByEmail(email)) {                
-                return null
+
+            let user = await this.getUserByEmail(email)
+
+            if (!user) {   
+                user = await this.getUserById(email)
+                if (!user) {            
+                    return null
+                }
             }
 
             const users = await this.getUsers()
 
-            const filtro = users.filter((user) => user.email != email)
+            let filtro = users.filter((user) => user.email != email)
+            filtro = users.filter((user) => user.id != email)
 
             await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
@@ -119,12 +126,16 @@ class UserFileManager {
 
         try {
 
-            if (!await this.getUserById(id)) {                
-                return null
+            let user = await this.getUserByEmail(id)
+
+            if (!user) {   
+                user = await this.getUserById(id)
+                if (!user) {            
+                    return null
+                }
             }
             
             const users = await this.getUsers()
-            const user = await this.getUserById(id)
             
             for (const prop in newdata) {
                 user[prop] = newdata[prop]         

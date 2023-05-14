@@ -5,6 +5,7 @@ $().ready(function () {
         rules: {
             first_name: "required",
             last_name: "required",
+            date: "required", 
             email: {
                 required: true,
                 email: true
@@ -22,6 +23,7 @@ $().ready(function () {
         messages:  {
             first_name: "Favor de introducir un nombre",
             last_name: "Favor de introducir un apellido",
+            date: "Favor de introducir fecha nacimiento",
             email: {
                 required: "Favor de introducir correo",
                 email: "Introduzca un correo valido"

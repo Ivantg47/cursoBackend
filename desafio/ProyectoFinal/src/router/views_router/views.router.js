@@ -8,10 +8,10 @@ export default class ViewRouter extends MiRouter {
     init () {
         //<<<<<<<<<<<<<<<<<<<<<<<<<<Vistas Producto>>>>>>>>>>>>>>>>>>>>>>>>>>
         this.get('/', ["PUBLIC"], async (req, res) => {
-
-            if (!req.session.user) {
-                res.redirect('session/login')
-            } else {
+            // logger.debug(req.session.user)
+            // if (!req.session.user) {
+            //     res.redirect('session/login')
+            // } else {
         
                 let query = {}
                 let pagination = {
@@ -47,7 +47,7 @@ export default class ViewRouter extends MiRouter {
                 }
                 
                 res.render('product/home', {title: "Products List", prod, query: filter, user: req.session?.user || req.user, pagination})
-            }
+            // }
         })
 
         this.get('/realtimeproducts', ["PUBLIC"], async (req, res) => {

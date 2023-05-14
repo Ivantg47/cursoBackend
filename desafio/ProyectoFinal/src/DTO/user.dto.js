@@ -11,7 +11,7 @@ export default class UserDTO {
         this.role = user.role || 'user'
         this.method = user.method
         this.documents = user.documents || []
-        this.last_connection = user.last_connection || null
+        this.last_connection = user.last_connection
     }
     
 }

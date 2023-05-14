@@ -27,6 +27,6 @@ router.use('/api/users', user.getRouter())
 router.use('/', /*passportCall('jwt'),*/ view.getRouter())
 router.use('/session', session.getRouter())
 router.use('/api/mocking', mocking.getRouter())
-router.use('/profile', userV.getRouter())
+router.use('/users', userV.getRouter())
 
 export default router

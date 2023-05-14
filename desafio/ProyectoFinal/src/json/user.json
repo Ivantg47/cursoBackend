@@ -18,7 +18,7 @@
         "reference": "https://firebasestorage.googleapis.com/v0/b/ecommerce-cc190.appspot.com/o/docs%2FestadoCuenta%2Fadminadmin-1682724529327-79?alt=media&token=55573510-79e7-4539-98de-40827bdd2047"
       }
     ],
-    "last_connection": "Wed May 03 2023 16:21:14 GMT-0600 (GMT-06:00)"
+    "last_connection": "Sat May 13 2023 21:34:13 GMT-0500 (hora de verano central)"
   },
   {
     "id": 2,
@@ -27,9 +27,41 @@
     "email": "pepe@pecas.com",
     "password": "$2b$10$85BP.pyShwlDhzMRJxEvdOyQxr50bC/J6iZdYemvCyltCpxQZjJo6",
     "cart": 16,
-    "role": "user",
+    "role": "premium",
     "method": "LOCAL",
-    "documents": [],
-    "last_connection": null
+    "documents": [
+      {
+        "name": "domicilio"
+      },
+      {
+        "name": "estadoCuenta"
+      },
+      {
+        "name": "identific"
+      }
+    ],
+    "last_connection": "Thu May 12 2023 16:10:17 GMT-0500 (hora de verano central)"
+  },
+  {
+    "id": 3,
+    "first_name": "Pepe",
+    "last_name": "admin",
+    "email": "pepe@peca.com",
+    "password": "$2b$10$8UtBWu4K6IoXQ4DRT9t1PupHL1SROJECG2GKlyt4/Wa7UR9ZhFXeK",
+    "cart": 15,
+    "role": "admin",
+    "method": "LOCAL",
+    "documents": [
+      {
+        "name": "domicilio"
+      },
+      {
+        "name": "estadoCuenta"
+      },
+      {
+        "name": "identific"
+      }
+    ],
+    "last_connection": "Thu May 10 2023 16:09:42 GMT-0500 (hora de verano central)"
   }
 ]

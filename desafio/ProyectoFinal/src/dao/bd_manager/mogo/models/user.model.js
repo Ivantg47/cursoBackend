@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     last_name: { type: String, trim: true },
     email:{ type: String, unique: true },
     password: { type: String, trim: true },
-    age:{ type: Number, trim: true },
+    age:{ type: Date, trim: true },
     cart: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'carts', default: null

@@ -24,7 +24,7 @@ export default class UserRouter extends MiRouter {
         this.get('/premium/:uid', ["ADMIN"], async (req, res) => {
             try {
                 const { uid } = req.params
-
+                
                 const result = await UserService.setUserRole(uid)
 
                 return res.status(result.code).send(result.result)    
@@ -43,7 +43,7 @@ export default class UserRouter extends MiRouter {
                 let conteo = 0
                 const user = req.user
                 const docs = []
-                
+                logger.debug(user)
                 if(file.identificacion){
                     
                     conteo++
@@ -136,7 +136,20 @@ export default class UserRouter extends MiRouter {
             try {
                 
                 const result = await UserService.limpiar()
-                
+                //logger.debug(result)
+                return res.status(result.code).send(result.result)
+
+            } catch (error) {
+                res.status(500).send({status: "Error", message: error.message , payload: error})               
+            }
+        })
+
+        this.delete('/:uid', ["ADMIN", "PUBLIC"], async (req, res) => {
+            try {
+                const { uid } = req.params
+                console.log('premiun: ', uid);
+                const result = await UserService.deleteUser(uid)
+                logger.debug(result)
                 return res.status(result.code).send(result.result)
 
             } catch (error) {
