@@ -145,18 +145,20 @@ class ProductFileManager {
 
         try{
             
-            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
+            const prod = await this.getProductById(id)
 
-            if (!await this.getProductById(id)) {                
+            if (!prod) {                
                 return null
             }
+
+            const prods = JSON.parse(await fs.promises.readFile(this.path, 'utf-8'))
             
             const filtro = prods.filter((prod) => prod.id != id)
 
             //await fs.promises.writeFile(this.path, JSON.stringify(filtro))
             await fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
-            return 'Producto eliminado'
+            return prod
         
         } catch(error) {
             throw error

@@ -169,3 +169,12 @@ error: undefined
 error: undefined
 error: undefined
 error: Assignment to constant variable.
+error: Mail.send is not a function
+error: Cannot read properties of undefined (reading 'code')
+error: Mail.send is not a constructor
+error: Cannot read properties of undefined (reading 'code')
+error: Error en la creación del poducto, uno o mas campos se encuentran vacios
+error: product is not defined
+error: product is not defined
+error: product is not defined
+error: result is not defined

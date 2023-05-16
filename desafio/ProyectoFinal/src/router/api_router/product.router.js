@@ -1,10 +1,7 @@
-import { initializeApp } from "@firebase/app";
 import uploader from "../../dao/multer.js";
 import { ProductService } from "../../repositories/index_repository.js";
 import logger from "../../utils/logger.js";
 import MiRouter from "../router.js";
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-import storage from "../../modules/storage.js";
 
 export default class ProductRouter extends MiRouter {
 
@@ -49,34 +46,17 @@ export default class ProductRouter extends MiRouter {
             }
         })
 
-        this.post('/', ["ADMIN", "PREMIUM"], uploader.array('thumbnail'), async (req, res, next) => {
+        this.post('/', ["ADMIN", "PREMIUM", "PUBLIC"], uploader.array('thumbnail'), async (req, res, next) => {
             try {
                 
                 const product = req.body
+                const files = req.files
                 
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
                     product.owner = req.session.user?.email || req.user?.email    
                 }
                 
-                if(req.files?.length === 0 || !req.files) {
-                    product.thumbnail = ['/img/noimage.jpg']
-                } else {
-                    
-                    product.thumbnail = await Promise.all(req.files.map(async (file) => {
-
-                        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E2)
-                        const storageRef = ref(storage, `/img/products/${product.title}-${uniqueSuffix}`)
-                        const metadata = { contentType: file.mimetype, name: `${file.fieldname}-${uniqueSuffix}`}
-                        const snapshot = await uploadBytesResumable(storageRef, file.buffer, metadata)
-                        
-                        const downloadURL = await getDownloadURL(snapshot.ref);
-                        
-                        return downloadURL
-                        
-                    }))
-                }
-                
-                const prod = await ProductService.addProduct(product)
+                const prod = await ProductService.addProduct(product, files)
         
                 return res.status(prod.code).send(prod.result)     
                 
@@ -111,8 +91,9 @@ export default class ProductRouter extends MiRouter {
             }
         })
         
-        this.delete('/:pid', ["ADMIN", "PREMIUM"], async (req, res, next) => {
+        this.delete('/:pid', ["ADMIN", "PREMIUM", "PUBLIC"], async (req, res, next) => {
             try {
+
                 const { pid } = req.params
 
                 if (req.session.user?.role == 'premium' || req.user?.role == 'premium') {
@@ -127,6 +108,7 @@ export default class ProductRouter extends MiRouter {
                 return res.status(prod.code).send(prod.result)
                 
             } catch (error) {
+                console.error(error);
                 req.logger.error(error.message);
                 //return next()
             }

@@ -83,9 +83,20 @@ class ProductMongoManager{
     deleteProduct = async(id) => {
 
         try{
+
+            const prod = await this.getProductById(id)
+
+            if (!prod) {
+                return null
+            }
+
             const result = await productModel.deleteOne({_id: id})
             
-            return result.deletedCount !== 0
+            if (result.deletedCount !== 0) {
+                return prod
+            }
+
+            return null
         
         } catch(error) {
             
