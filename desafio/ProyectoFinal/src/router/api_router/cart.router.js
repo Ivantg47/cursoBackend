@@ -7,7 +7,7 @@ import config from "../../config/config.js";
 export default class CartRouter extends MiRouter {
 
     init () {
-        this.get('/', ["ADMIN"], async (req, res, next) => {
+        this.get('/', ["ADMIN", "PUBLIC"], async (req, res, next) => {
             try {
                 const cart = await CartService.getCarts()
 
@@ -66,7 +66,7 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.post('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
+        this.post('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
@@ -88,20 +88,21 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.delete('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
+        this.delete('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 
                 const cart = await CartService.deleteProdCart(cid, pid)
             
                 return res.status(cart.code).send(cart.result)
+
             } catch (error) {
                 req.logger.error(error.message);
                 return next()
             }
         })
 
-        this.put('/:cid/product/:pid', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
+        this.put('/:cid/product/:pid', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 const { cid, pid } = req.params
                 const { quantity } = req.body
@@ -115,18 +116,25 @@ export default class CartRouter extends MiRouter {
             }
         })
 
-        this.get('/:cid/purchase', ["USER", "PREMIUM", "ADMIN"], async (req, res, next) => {
+        this.get('/:cid/purchase', ["USER", "PREMIUM"], async (req, res, next) => {
             try {
                 
                 const { cid } = req.params
-                const email = req.session.user?.email || req.user?.email
+                const user = req.session?.user || req?.user
                 
-                const cart = await CartService.purchase(cid, email)
+                const cart = await CartService.purchase(cid, user)
                 
-                return res.status(cart.code).send(cart.result)
+                if (cart.code == 200) {
+                    
+                    return res.status(cart.code).render('cart/compra', {title: 'Confirmación de Compra', user: user, ticket: cart.result.payload})
+                    
+                }
+
+                return res.sendServerError(cart.result.error)
 
             } catch (error) {
                 req.logger.error(error.message);
+                res.sendServerError(cart.result.error)
                 return next()
             }
         })

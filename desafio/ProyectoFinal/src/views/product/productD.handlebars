@@ -38,7 +38,7 @@
                     <span style="color: red;"><b>No Disponible</b></span>
                     {{/if}}
                 </div>
-                <form id="addProduct" action="javascript:addProducts('63c1f48201b5a3071ad7e987','{{data._id}}')">
+                <form id="addProduct" action="javascript:addProducts('{{user.cart}}','{{data.id}}')">
                     <div style="margin-bottom: 25px; margin-top: 10px;">
                         <label for="quantity">Cantidad:</label>
                         <select class="dd" name="quantity" id="quantity" style="width: 15%;">

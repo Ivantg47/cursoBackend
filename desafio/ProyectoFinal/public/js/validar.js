@@ -1,5 +1,5 @@
 $().ready(function () {
-    console.log('validar');
+    
     $("#registro").validate({
         
         rules: {

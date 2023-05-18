@@ -1,4 +1,5 @@
 import { UserService } from "../../repositories/index_repository.js";
+import logger from "../../utils/logger.js";
 import MiRouter from "../router.js";
 
 export default class UserViewRouter extends MiRouter {
@@ -6,9 +7,15 @@ export default class UserViewRouter extends MiRouter {
     init () {
 
         this.get('/profile/documents', ["PUBLIC"], async (req, res) => {
-            const user = req.session?.user || req.user
-            user.id = user?._id
-            res.render('user/documentos', {title: "Documentos", user})
+            try {
+                const user = req.session?.user || req.user
+                user.id = user?._id
+                res.render('user/documentos', {title: "Documentos", user})
+            
+            } catch (error) {
+                console.error(error);
+                logger.error(error.message)
+            }
         })
 
         this.get('/', ["PUBLIC"], async (req, res) => {
@@ -26,7 +33,8 @@ export default class UserViewRouter extends MiRouter {
                 res.render('user/users', {title: "Usuarios", users: users.result, user})
 
             } catch (error) {
-                console.log(error);
+                console.error(error);
+                logger.error(error.message)
             }
         })
     }

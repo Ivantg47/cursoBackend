@@ -3,7 +3,7 @@
         <div class="bg-image h-100">
             <div class="mask d-flex align-items-center h-100">
                 <div class="container" style="margin-top: 50px;">
-                    <h1>Cart: <samp id="cart">{{cart._id}}</samp></h1>
+                    <h1>Cart: <samp id="cart">{{cart.id}}</samp></h1>
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="card shadow-2-strong">
@@ -33,13 +33,13 @@
                                                         <td align="right">{{this.product.price}}</td>
                                                         <td align="right">{{this.quantity}}</td>
                                                         <td align="right">{{this.subTotal}}</td>
-                                                        <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deleteProduct('{{this.product._id}}')"><i class="bi bi-x-lg" width="32" height="32" fill="red"></i></button></td>
+                                                        <td style="text-align: center;"><button class="btn btn-outline-danger"  onclick="deleteProduct('{{this.product._id}}')"><i class="bi bi-trash" width="24" height="224" fill="red"></i></button></td>
                                                     </tr>
                                                 {{/each}}
                                                 <tr>
                                                     <td colspan="4" height="40px">
                                                         <div>
-                                                            <a class="btn btn-dark" href="/api/carts/{{cart._id}}/purchase">Proceder al pago</a>
+                                                            <a class="btn btn-dark" href="/api/carts/{{cart.id}}/purchase">Proceder al pago</a>
                                                         </div>
                                                     </td>
                                                     <td align="right" style="background:#ccc; font-weight:bold">TOTAL</td>

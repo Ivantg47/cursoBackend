@@ -26,7 +26,7 @@
     "last_name": "Pecas",
     "email": "pepe@pecas.com",
     "password": "$2b$10$85BP.pyShwlDhzMRJxEvdOyQxr50bC/J6iZdYemvCyltCpxQZjJo6",
-    "cart": 16,
+    "cart": 14,
     "role": "premium",
     "method": "LOCAL",
     "documents": [
@@ -40,7 +40,7 @@
         "name": "identific"
       }
     ],
-    "last_connection": "Thu May 12 2023 16:10:17 GMT-0500 (hora de verano central)"
+    "last_connection": "Wed May 17 2023 19:46:55 GMT-0500 (hora de verano central)"
   },
   {
     "id": 3,

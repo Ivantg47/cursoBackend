@@ -178,3 +178,20 @@ error: product is not defined
 error: product is not defined
 error: product is not defined
 error: result is not defined
+error: Cannot read properties of undefined (reading 'products')
+error: Cannot read properties of undefined (reading 'products')
+error: Cannot read properties of undefined (reading 'products')
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: user is not defined
+error: Cannot read properties of undefined (reading 'products')
+error: req is not defined
+error: req is not defined
+error: html.append is not a function
+error: Assignment to constant variable.

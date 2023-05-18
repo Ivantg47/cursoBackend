@@ -81,7 +81,7 @@ class TicketFileManager {
 
             tickets.push(ticket)
 
-            await fs.promises.writeFile(this.path, JSON.stringify(tickets))
+            await fs.promises.writeFile(this.path, JSON.stringify(tickets, null, 2))
             
             return ticket
 
@@ -102,7 +102,7 @@ class TicketFileManager {
 
             const filtro = tickets.filter((ticket) => ticket.id != id)
 
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
             return 'Ticket eliminado'
         
@@ -121,7 +121,7 @@ class TicketFileManager {
             const tickets = await this.get()
             tickets.map(ticket => ticket.id === id ? ticket : newTicket)
             
-            fs.promises.writeFile(this.path, JSON.stringify(filtro))
+            fs.promises.writeFile(this.path, JSON.stringify(filtro, null, 2))
             
             return 'Ticket modificado'
         

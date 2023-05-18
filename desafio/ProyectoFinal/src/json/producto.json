@@ -8,7 +8,7 @@
       "\\img\\3cc31cb51f6d5dfd.jpg"
     ],
     "code": "002",
-    "stock": 5,
+    "stock": 9,
     "category": "electronico",
     "status": true
   },
@@ -21,7 +21,7 @@
       "/img/noimage.jpg"
     ],
     "code": "003",
-    "stock": 14,
+    "stock": 11,
     "category": "electronico",
     "status": true
   },
@@ -34,7 +34,7 @@
       "/img/noimage.jpg"
     ],
     "code": "004",
-    "stock": 5,
+    "stock": 98,
     "category": "electronico",
     "status": true
   },
@@ -47,7 +47,7 @@
       "/img/noimage.jpg"
     ],
     "code": "005",
-    "stock": 10,
+    "stock": 8,
     "category": "electronico",
     "status": true
   },
@@ -59,7 +59,7 @@
       "/img/noimage.jpg"
     ],
     "code": "006",
-    "stock": 1,
+    "stock": 0,
     "category": "electronico",
     "id": 6,
     "status": true
@@ -83,7 +83,7 @@
     "description": "computador",
     "code": "VZ5Y-KJ4C0-ECJ4",
     "price": 1212,
-    "stock": 2,
+    "stock": 1,
     "thumbnail": [
       "\\img\\CuaAAhLiLLIwYVGniAhIbghvRi5Bjt.jpg",
       "\\img\\JzDLEevvAudBIFVXJGDWChkT2hoHMC.jpeg",
@@ -167,7 +167,7 @@
       "/img/noimage.jpg"
     ],
     "code": "EL005",
-    "stock": 15,
+    "stock": 14,
     "category": "electronico",
     "status": true,
     "owner": "adminCoder@coder.com"

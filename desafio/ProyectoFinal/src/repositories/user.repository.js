@@ -3,6 +3,7 @@ import { CartService } from "./index_repository.js"
 import Mail from '../modules/mail.js'
 import logger from '../utils/logger.js'
 import storage from '../modules/storage.js'
+import { deleteObject, ref } from 'firebase/storage'
 
 export default class UserRepository {
 
@@ -33,14 +34,31 @@ export default class UserRepository {
         
         const result = await this.dao.getUserById(id)
 
+        if (!result) {
+            return {code: 404, result: {status: "error", error: 'Not found'}}
+        }
+        
+        if(result?._id) result.id = result._id
+
         return result
     }
 
     getUserByEmail = async(username) => {
+        try {
+            
+            const result = await this.dao.getUserByEmail(username)
+    
+            if (!result) {
+                return {code: 404, result: {status: "error", error: 'Not found'}}
+            }
+            
+            if(result?._id) result.id = result._id
+    
+            return result
         
-        const result = await this.dao.getUserByEmail(username)
-
-        return result
+        } catch (error) {
+            console.error(error);    
+        }
     }
 
     addUser = async(user) => {

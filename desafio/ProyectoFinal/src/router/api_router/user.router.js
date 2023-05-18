@@ -8,7 +8,7 @@ import MiRouter from "../router.js";
 export default class UserRouter extends MiRouter {
     init () {
 
-        this.get('/', ["ADMIN", "PUBLIC"], async (req, res) => {
+        this.get('/', ["ADMIN"], async (req, res) => {
             try {
                 
                 const result = await UserService.getUsers()
@@ -36,14 +36,14 @@ export default class UserRouter extends MiRouter {
             
         })
 
-        this.post('/:uid/documents', ["USER", "PREMIUM","ADMIN"], uploader.fields([{name:'identificacion', maxCount:1}, {name:'domicilio', maxCount:1}, {name:'estadoCuenta', maxCount:1}]), async (req, res) => {
+        this.post('/:uid/documents', ["USER", "PREMIUM"], uploader.fields([{name:'identificacion', maxCount:1}, {name:'domicilio', maxCount:1}, {name:'estadoCuenta', maxCount:1}]), async (req, res) => {
             try {
                 const { uid } = req.params
                 const file = req.files
                 let conteo = 0
                 const user = req.user
                 const docs = []
-                logger.debug(user)
+                //logger.debug(user)
                 if(file.identificacion){
                     
                     conteo++
@@ -132,7 +132,7 @@ export default class UserRouter extends MiRouter {
             }
         })
 
-        this.delete('/', ["ADMIN", "PUBLIC"], async (req, res) => {
+        this.delete('/', ["ADMIN"], async (req, res) => {
             try {
                 
                 const result = await UserService.limpiar()
@@ -144,7 +144,7 @@ export default class UserRouter extends MiRouter {
             }
         })
 
-        this.delete('/:uid', ["ADMIN", "PUBLIC"], async (req, res) => {
+        this.delete('/:uid', ["ADMIN"], async (req, res) => {
             try {
                 const { uid } = req.params
                 console.log('premiun: ', uid);
